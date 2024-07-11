@@ -13,6 +13,7 @@
         >修改密码
         </el-button
         >
+        <el-button size="mini" type="info" @click="gopersonal">个人中心</el-button>
         <el-button size="mini" type="info" @click="logout">安全退出</el-button>
 
       </div>
@@ -192,6 +193,9 @@ export default {
           });
     },
 
+    gopersonal(){
+      this.$router.push('/personal');
+    },
 
     //修改密码
     changePassword() {
@@ -284,6 +288,8 @@ export default {
 
 .span {
   margin-left: 15px;
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  font-family: 'SimSun', sans-serif;
 }
 
 .el-aside {
@@ -296,6 +302,10 @@ export default {
 
 .el-main {
   background-color: #eaedf1;
+}
+
+.el-submenu .el-menu-item {
+  padding-left: 70px!important; /* 根据需要调整这个值来改变缩进 */
 }
 
 .img {
