@@ -268,14 +268,14 @@ public class ScoreController {
     }
 
 
-    @ApiOperation("田赛资格赛晋级决赛")
+    @ApiOperation("游泳晋级决赛")
     @PostMapping("/fieldfinal")
 //    @RequiresRoles(value = {"1"})
     @Transactional
     public ServerResponse addScore3(@RequestParam int itemId, @RequestParam String process) {
 
 
-        scoreService.checkAndPromoteTwo(itemId, process);
+        scoreService.checkAndPromoteTopSixteen(itemId, process);
 
         return ServerResponse.createBySuccessMessage("结束");
 

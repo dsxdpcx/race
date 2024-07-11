@@ -1,3 +1,4 @@
 # Project exclude paths
-/scms/target/
-/logs
+scms/target
+logs
+.idea
