@@ -37,10 +37,6 @@ const routes = [{
     redirect: "/login",
 },
     {
-        path: "/login",
-        component: Login
-    },
-    {
         path: "/personal",
         component: Index
     },
@@ -51,6 +47,10 @@ const routes = [{
     {
         path: "/personal/mycollect",
         component: My_collect
+    },
+    {
+        path: "/login",
+        component: Login
     },
     {
         path: "/home",
@@ -105,7 +105,7 @@ const routes = [{
                 component: MyBorrow
             },
             {
-                path: "/athlete/shenhelist",
+                path: "/athleteenhelist",
                 component: ShenheList
             },
             {
@@ -124,118 +124,39 @@ const routes = [{
                 path: "/ranking/teamRanking",
                 component: TeamRanking
             },
+
             {
-                path: "/login",
-                component: Login
+                path: "/record/recordlist",
+                component: RecordList
+            },
+
+            {
+                path: "/syslog/sysloglist",
+                component: SyslogList
             },
             {
-                path: "/home",
-                component: Home,
-                redirect: "welcome",
-                children: [{
-                    path: "/welcome",
-                    component: Welcome
-                },
-                    {
-                        path: "/401",
-                        component: Page401
-                    },
-                    {
-                        path: "/season/seasonlist",
-                        component: SeasonList
-                    },
-                    {
-                        path: "/team/teamlist",
-                        component: TeamList
-                    },
-                    {
-                        path: "/user/userlist",
-                        component: UserList
-                    },
-                    {
-                        path: "/item/itemlist",
-                        component: ItemList
-                    },
-                    {
-                        path: "/athlete/athletelist",
-                        component: AthleteList
-                    },
-                    {
-                        path: "/athlete/caipanlist",
-                        component: CaipanList
-                    },
-                    {
-                        path: "/equipment/equipmentlist",
-                        component: EquipmentList
-                    },
-                    {
-                        path: "/equipment/borrowlist",
-                        component: BorrowList
-                    },
-                    {
-                        path: "/equipment/borrow",
-                        component: Borrow
-                    },
-                    {
-                        path: "/equipment/myborrow",
-                        component: MyBorrow
-                    },
-                    {
-                        path: "/athlete/shenhelist",
-                        component: ShenheList
-                    },
-                    {
-                        path: "/score/scorelist",
-                        component: ScoreList
-                    },
-                    {
-                        path: "/score/athletescorelist",
-                        component: AthleteScoreList
-                    },
-                    {
-                        path: "/ranking/personRanking",
-                        component: PersonRanking
-                    },
-                    {
-                        path: "/ranking/teamRanking",
-                        component: TeamRanking
-                    },
-
-                    {
-                        path: "/record/recordlist",
-                        component: RecordList
-                    },
-
-                    {
-                        path: "/syslog/sysloglist",
-                        component: SyslogList
-                    },
-                    {
-                        path: "/syslog/systemreset",
-                        component: SystemReset
-                    },
+                path: "/syslog/systemreset",
+                component: SystemReset
+            },
 
 
-                    {
-                        path: "/athleteItem/signitem",
-                        component: SignItem
-                    },
-                    {
-                        path: "/athleteItem/myitem",
-                        component: MyItem
-                    },
-                    {
-                        path: "/message/mymessage",
-                        component: MessageList
-                    },
-                    {
-                        path: "/race/racefootball",
-                        component: racefootball
-                    }
-                ]
-            }
+            {
+                path: "/athleteItem/signitem",
+                component: SignItem
+            }, {
+                path: "/athleteItem/myitem",
+                component: MyItem
+            },{
+                path: "/message/mymessage",
+                component: MessageList
+            },
+            {
+                path: "/race/racefootball",
+                component: racefootball
+            },
         ]
-    }];
+    }
+];
 
 const router = new VueRouter({
     mode: 'history',
