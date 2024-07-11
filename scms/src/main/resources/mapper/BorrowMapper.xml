@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ashuo.scms.mapper.BorrowMapper">
+
+    <resultMap id="borrowMap" type="com.ashuo.scms.entity.Borrow">
+        <id column="bo_id" property="boId"/>
+        <result column="user_id" property="userId"/>
+        <result column="eq_id" property="eqId"/>
+        <result column="bo_num" property="boNum"/>
+        <result column="bo_starttime" property="boStarttime"/>
+        <result column="bo_endtime" property="boEndtime"/>
+        <result column="bo_state" property="boState"/>
+        <result column="bo_description" property="boDescription"/>
+        <association property="user" javaType="com.ashuo.scms.entity.User">
+            <id column="user_id" property="userId"/>
+            <result column="user_no" property="userNo"/>
+            <result column="user_sex" property="userSex"/>
+            <result column="nickname" property="nickname"/>
+            <association property="team" javaType="com.ashuo.scms.entity.Team">
+                <result column="team_id" property="teamId"/>
+                <result column="team_name" property="teamName"/>
+            </association>
+        </association>
+        <association property="equipment" javaType="com.ashuo.scms.entity.Equipment">
+            <result column="eq_id" property="eqId"/>
+            <result column="eq_name" property="eqName"/>
+            <result column="eq_model" property="eqModel"/>
+            <result column="eq_place" property="eqPlace"/>
+            <result column="eq_sum" property="eqSum"/>
+        </association>
+
+    </resultMap>
+
+
+    <select id="queryBorrowByBorrowCondition" resultMap="borrowMap">
+        SELECT
+        b.bo_id,
+        b.bo_num,
+        b.bo_starttime,
+        b.bo_endtime,
+        b.bo_state,
+        b.bo_description,
+        e.eq_id,
+        e.eq_name,
+        e.eq_model,
+        e.eq_place,
+        e.eq_sum,
+        u.user_id,
+        u.user_no,
+        u.nickname,
+        u.user_sex,
+        t.team_id,
+        t.team_name ,
+        u2.nickname AS scorer
+        FROM
+        `borrow` b INNER JOIN `user` u ON b.user_id = u.user_id
+        INNER JOIN `equipment` e ON b.eq_id = e.eq_id
+        <where>
+            <if test="borrow.boId!=null and borrow.boId!=0">AND
+                b.bo_id=#{borrow.boId}
+            </if>
+            <if test="borrow.user!=null and borrow.user.userId!=null and athlete.user.userId!=0">AND
+                u.user_id=#{athlete.user.userId}
+            </if>
+            <if test="borrow.equipment!=null and borrow.equipment.eqName!=null">AND e.eqName LIKE
+                '%${borrow.equipment.eqName}%'
+            </if>
+            <if test="borrow.equipment!=null and borrow.equipment.eqId!=null and borrow.equipment.eqId!=0">AND
+                e.eq_id=#{borrow.equipment.eqId}
+            </if>
+        </where>
+        ORDER BY
+        e.eq_id
+        DESC
+    </select>
+
+</mapper>
