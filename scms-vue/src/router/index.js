@@ -25,6 +25,7 @@ import BorrowList from "@/components/admin/Borrow";
 import MyBorrow from "@/components/fuzeren/MyBorrow";
 import Borrow from "@/components/fuzeren/BorrowList";
 import MessageList from "@/components/admin/MessageList";
+import racefootball from "@/components/admin/racefootball";
 
 Vue.use(VueRouter);
 
@@ -32,110 +33,116 @@ const routes = [{
     path: "/",
     redirect: "/login",
 },
-    {
-        path: "/login",
-        component: Login
+{
+    path: "/login",
+    component: Login
+},
+{
+    path: "/home",
+    component: Home,
+    redirect: "welcome",
+    children: [{
+        path: "/welcome",
+        component: Welcome
     },
     {
-        path: "/home",
-        component: Home,
-        redirect: "welcome",
-        children: [{
-            path: "/welcome",
-            component: Welcome
-        },
-            {
-                path: "/401",
-                component: Page401
-            },
-            {
-                path: "/season/seasonlist",
-                component: SeasonList
-            },
-            {
-                path: "/team/teamlist",
-                component: TeamList
-            },
-            {
-                path: "/user/userlist",
-                component: UserList
-            },
-            {
-                path: "/item/itemlist",
-                component: ItemList
-            },
-            {
-                path: "/athlete/athletelist",
-                component: AthleteList
-            },
-            {
-                path: "/athlete/caipanlist",
-                component: CaipanList
-            },
-            {
-                path: "/equipment/equipmentlist",
-                component: EquipmentList
-            },
-            {
-                path: "/equipment/borrowlist",
-                component: BorrowList
-            },
-            {
-                path: "/equipment/borrow",
-                component: Borrow
-            },
-            {
-                path: "/equipment/myborrow",
-                component: MyBorrow
-            },
-            {
-                path: "/athlete/shenhelist",
-                component: ShenheList
-            },
-            {
-                path: "/score/scorelist",
-                component: ScoreList
-            },
-            {
-                path: "/score/athletescorelist",
-                component: AthleteScoreList
-            },
-            {
-                path: "/ranking/personRanking",
-                component: PersonRanking
-            },
-            {
-                path: "/ranking/teamRanking",
-                component: TeamRanking
-            },
+        path: "/401",
+        component: Page401
+    },
+    {
+        path: "/season/seasonlist",
+        component: SeasonList
+    },
+    {
+        path: "/team/teamlist",
+        component: TeamList
+    },
+    {
+        path: "/user/userlist",
+        component: UserList
+    },
+    {
+        path: "/item/itemlist",
+        component: ItemList
+    },
+    {
+        path: "/athlete/athletelist",
+        component: AthleteList
+    },
+    {
+        path: "/athlete/caipanlist",
+        component: CaipanList
+    },
+    {
+        path: "/equipment/equipmentlist",
+        component: EquipmentList
+    },
+    {
+        path: "/equipment/borrowlist",
+        component: BorrowList
+    },
+    {
+        path: "/equipment/borrow",
+        component: Borrow
+    },
+    {
+        path: "/equipment/myborrow",
+        component: MyBorrow
+    },
+    {
+        path: "/athlete/shenhelist",
+        component: ShenheList
+    },
+    {
+        path: "/score/scorelist",
+        component: ScoreList
+    },
+    {
+        path: "/score/athletescorelist",
+        component: AthleteScoreList
+    },
+    {
+        path: "/ranking/personRanking",
+        component: PersonRanking
+    },
+    {
+        path: "/ranking/teamRanking",
+        component: TeamRanking
+    },
 
-            {
-                path: "/record/recordlist",
-                component: RecordList
-            },
+    {
+        path: "/record/recordlist",
+        component: RecordList
+    },
 
-            {
-                path: "/syslog/sysloglist",
-                component: SyslogList
-            },
-            {
-                path: "/syslog/systemreset",
-                component: SystemReset
-            },
+    {
+        path: "/syslog/sysloglist",
+        component: SyslogList
+    },
+    {
+        path: "/syslog/systemreset",
+        component: SystemReset
+    },
 
 
-            {
-                path: "/athleteItem/signitem",
-                component: SignItem
-            }, {
-                path: "/athleteItem/myitem",
-                component: MyItem
-            },{
-                path: "/message/mymessage",
-                component: MessageList
-            }
-        ]
+    {
+        path: "/athleteItem/signitem",
+        component: SignItem
+    },
+    {
+        path: "/athleteItem/myitem",
+        component: MyItem
+    },
+    {
+        path: "/message/mymessage",
+        component: MessageList
+    },
+    {
+        path: "/race/racefootball",
+        component: racefootball
     }
+    ]
+}
 ];
 
 const router = new VueRouter({
