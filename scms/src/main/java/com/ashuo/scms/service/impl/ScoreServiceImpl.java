@@ -124,6 +124,11 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
+    public void checkAndPromoteTopSixteen(int itemId, String process) {
+
+    }
+
+    @Override
     public void checkAndPromoteTwo(int itemId, String process) {
         var groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
         System.out.println(groups);

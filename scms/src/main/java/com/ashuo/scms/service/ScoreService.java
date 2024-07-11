@@ -34,4 +34,5 @@ public interface ScoreService {
 
     void checkAndPromoteThree(int itemId, String process);
 
+    void checkAndPromoteTopSixteen(int itemId, String process);
 }
