@@ -403,6 +403,53 @@
           </el-select>
         </el-form-item>
 
+
+        <el-form-item label="比赛类型">
+          <el-select v-model="addForm.competitionType" placeholder="请选择比赛类型">
+            <el-option
+                v-for="type in competitionTypes"
+                :key="type.id"
+                :label="type.label"
+                :value="type.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item v-if="addForm.competitionType !== 'finals_only'" label="预赛晋级规则">
+          <el-select v-model="addForm.prelimsAdvancementRule" placeholder="请选择预赛晋级规则">
+            <el-option
+                v-for="rule in advancementRuleOptions"
+                :key="rule.value"
+                :label="rule.label"
+                :value="rule.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item v-if="addForm.competitionType === 'all_rounds'" label="半决赛晋级规则">
+          <el-select v-model="addForm.semiFinalsAdvancementRule" placeholder="请选择半决赛晋级规则">
+            <el-option
+                v-for="rule in advancementRuleOptions"
+                :key="rule.value"
+                :label="rule.label"
+                :value="rule.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="决赛晋级规则">
+          <el-select v-model="addForm.finalsAdvancementRule" placeholder="请选择决赛晋级规则">
+            <el-option
+                v-for="rule in advancementRuleOptions"
+                :key="rule.value"
+                :label="rule.label"
+                :value="rule.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+
+
         <el-form-item label="项目人数">
           <el-input v-model="addForm.itemAmount" placeholder="请输入项目人数"></el-input>
         </el-form-item>
@@ -463,6 +510,28 @@ export default {
     return {
 
 
+      // 当前选择的比赛类型
+      selectedCompetitionType: null,
+
+      // 比赛类型选项
+      competitionTypes: [
+        { id: 'all_rounds', label: '预赛、半决赛和决赛' },
+        { id: 'no_semi', label: '预赛和决赛' },
+        { id: 'finals_only', label: '只有决赛' }
+      ],
+
+      advancementRuleOptions: {
+        all_rounds: [
+          { value: 'top_50_percent', label: '前50%' },
+          { value: 'top_3_each_group', label: '每组前3名' }
+        ],
+        no_semi: [
+          { value: 'top_8_overall', label: '总排名前8名' }
+        ],
+        finals_only: [
+          { value: 'winner_takes_all', label: '胜者为王' }
+        ]
+      },
       reverse: true,
       activities: [{
         content: '报名成功',

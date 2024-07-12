@@ -243,7 +243,7 @@ public class ScoreController {
 
 
     @ApiOperation("获取比赛类别")
-    @PostMapping("/catalog")
+    @GetMapping ("/catalog")
 //    @RequiresRoles(value = {"1"})
     @Transactional
     public ServerResponse catalog(@RequestParam int itemId) {
