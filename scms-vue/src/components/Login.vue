@@ -137,6 +137,8 @@ export default {
         }
       });
     },
+
+
     resetForm(loginForm) {
       this.loginForm = {
         username: "",
@@ -170,12 +172,16 @@ export default {
 .login_container {
   //background-color: #2b4b6b;
   height: 100%;
+  display: flex;
+
 }
 
 /*输入框样式*/
 .login_box {
-  width: 1650px;
-  height: 600px;
+  //width: 1650px;
+  //height: 600px;
+  width: 100%;
+  height: 100%;
   background-color: #999999;
   border-radius: 3px;
   position: absolute;
@@ -205,7 +211,7 @@ export default {
   @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
   font-family: 'SimSun', sans-serif;
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 50px;
@@ -221,15 +227,46 @@ export default {
 
 .login_form {
   position: absolute;
-  bottom: 0%;
+  bottom: 0;
   width: 30%;
   padding: 0 10px;
   box-sizing: border-box;
   left: 50%;
-  top: 80%;
+  top: 60%;
   transform: translate(-50%, -50%);
   font-size: 16px;
   @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
   font-family: 'SimSun', sans-serif;
+}
+@media (max-width: 768px) {
+  .login_box {
+    width: 90%;
+    height: 90%;
+  }
+
+  .avatar_box {
+    width: 100px;
+    height: 100px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login_box {
+    width: 80%;
+    height: 80%;
+  }
+
+  .avatar_box {
+    width: 80px;
+    height: 80px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
 }
 </style>
