@@ -2,6 +2,7 @@ package com.ashuo.scms.mapper;
 
 import com.ashuo.scms.dto.AthleteScoreDto;
 import com.ashuo.scms.entity.Score;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author AShuo
  * @since 2021-04-05
  */
-public interface ScoreMapper {
+public interface ScoreMapper extends BaseMapper<Score> {
     //增加单个Score
     int insertScore(Score score);
 
@@ -44,10 +45,22 @@ public interface ScoreMapper {
     //查询返回Dto对象
     IPage<AthleteScoreDto> queryAthleteScoreDto(Page<AthleteScoreDto> page, @Param("score") Score score);
 
-    List<Integer> promoteTopThreeAndGetAtheleteIds(int itemId, int group, String process);
+    List<Integer> promoteTopThreeAndGetAtheleteIds(int itemId,String process);
 
 
     void promoteRemainThree(@Param("itemId") int itemId, @Param("process") String process);
 
     void promoteRemainTwo(@Param("itemId") int itemId, @Param("process") String process);
+
+    List<Integer> promoteTopTopSixteenAndGetAtheleteIds(int itemId, String process);
+
+    void promoteTopSixteen(int itemId, String process);
+    void promoteTopX(int number,int itemId, String process);
+
+
+    int countNonQualifiedAthletesswim(int itemId, String process);
+
+    List<Integer> promoteTopTopEightAndGetAtheleteIds(int itemId, String process);
+
+    List<Integer> getWinners(int itemId);
 }

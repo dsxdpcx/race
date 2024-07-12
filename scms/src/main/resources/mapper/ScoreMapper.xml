@@ -105,6 +105,28 @@
                                          ORDER BY s.score DESC
                                              LIMIT 2) as temp )
     </update>
+    <update id="promoteTopSixteen">
+    UPDATE athlete
+        SET promotion = 1
+        WHERE u_id IN (select u_id from (SELECT a.u_id
+                                         FROM athlete a
+                                                  JOIN score s ON a.athlete_id = s.a_id
+                                         WHERE a.i_id = #{itemId}
+                                           AND a.process = #{process}
+                                         ORDER BY s.score DESC
+                                             LIMIT 16) as temp )
+    </update>
+    <update id="promoteTopX">
+        UPDATE athlete
+        SET promotion = 1
+        WHERE u_id IN (select u_id from (SELECT a.u_id
+                                         FROM athlete a
+                                                  JOIN score s ON a.athlete_id = s.a_id
+                                         WHERE a.i_id = #{itemId}
+                                           AND a.process = #{process}
+                                         ORDER BY s.score DESC
+                                             LIMIT ${number}) as temp )
+    </update>
 
 
     <delete id="deleteScore">
@@ -167,6 +189,7 @@
         INNER JOIN `athlete` a ON s.a_id = a.athlete_id
         INNER JOIN `item` i ON a.i_id = i.item_id
         WHERE i.item_id = #{itemId}
+        AND a.process = 'finals'
         ORDER BY s.score
         ${condition}
     </select>
@@ -241,7 +264,25 @@
     </select>
 
     <select id="promoteTopThreeAndGetAtheleteIds" resultType="java.lang.Integer">
-        SELECT a.athlete_id FROM athlete a JOIN score s ON a.athlete_id = s.a_id WHERE a.i_id = #{itemId} AND a.group_id = #{group} AND a.process = #{process} AND a.promotion = 1 ORDER BY s.score DESC LIMIT 3
+        SELECT a.athlete_id FROM athlete a JOIN score s ON a.athlete_id = s.a_id WHERE a.i_id = #{itemId} AND a.process = #{process} AND a.promotion = 1
     </select>
+
+    <select id="countNonQualifiedAthletesswim" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM athlete WHERE i_id = #{itemId} AND process = #{process} AND score_status = 0
+    </select>
+
+    <select id="promoteTopTopSixteenAndGetAtheleteIds" resultType="java.lang.Integer">
+        SELECT a.athlete_id FROM athlete a JOIN score s ON a.athlete_id = s.a_id WHERE a.i_id = #{itemId} AND a.process = #{process} AND a.promotion = 1
+    </select>
+
+
+    <select id="getWinners" resultType="java.lang.Integer">
+        SELECT a.athlete_id FROM athlete a JOIN score s ON a.athlete_id = s.a_id
+                            WHERE a.i_id = #{itemId}
+                              AND a.process = 'finals'
+                              AND a.promotion = 1
+
+    </select>
+
 
 </mapper>

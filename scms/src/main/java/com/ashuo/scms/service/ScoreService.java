@@ -4,6 +4,7 @@ import com.ashuo.scms.dto.AthleteScoreDto;
 import com.ashuo.scms.entity.Score;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @author AShuo
  * @since 2021-04-05
  */
-public interface ScoreService {
+public interface ScoreService extends IService<Score> {
 
     IPage<Score> getScoreByScoreCondition(Page<Score> page, Score score);
 
@@ -35,4 +36,9 @@ public interface ScoreService {
     void checkAndPromoteThree(int itemId, String process);
 
     void checkAndPromoteTopSixteen(int itemId, String process);
+
+    void checkAndPromoteTopX(int number,int itemId, String process);
+    List<Integer> getWinners(int itemId);
+
+//    void checkAndPromotefield(int itemId, String process);
 }

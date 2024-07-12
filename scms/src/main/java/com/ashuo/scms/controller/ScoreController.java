@@ -7,6 +7,7 @@ import com.ashuo.scms.entity.*;
 import com.ashuo.scms.entity.Record;
 import com.ashuo.scms.service.*;
 import com.ashuo.scms.util.ObjectUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -45,6 +46,9 @@ public class ScoreController {
 
     @Autowired
     private RecordService recordService;
+
+    @Autowired
+    private WinnersService winnersService;
 
     @ApiOperation("查询运动员项目分数")
     @GetMapping("/queryScore")
@@ -225,6 +229,7 @@ public class ScoreController {
                 ranking.setAthlete(s.getAthlete());
                 //设置排名得分3、2、1
                 ranking.setRank(limitAmount);
+                ranking.setPoints(3-limitAmount);
                 ranking.setEditTime(LocalDateTime.now());
                 rankingList.add(ranking);
                 tempScore = s;
@@ -237,13 +242,102 @@ public class ScoreController {
     }
 
 
+    @ApiOperation("获取比赛类别")
+    @PostMapping("/catalog")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse catalog(@RequestParam int itemId) {
+
+            Item item = itemService.getById(itemId);
+            if (item == null) {
+                return ServerResponse.createByErrorMessage("查询不到该项目信息");
+            }
+            String catalog = item.getCatalog();
+            return ServerResponse.createBySuccess(catalog.length());
+    }
 
 
-    @ApiOperation("径赛晋级半决赛")
+    @ApiOperation("半决赛")
+    @PostMapping("/semi")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse semi(@RequestParam int itemId, @RequestParam String process) {
+
+
+        Item item = itemService.getById(itemId);
+        String catalog = item.getCatalog();
+        process="heats";
+        if(catalog.charAt(1)=='1'){
+            scoreService.checkAndPromoteThree(itemId, process);
+        }
+        else if(catalog.charAt(1)=='2'){
+            scoreService.checkAndPromoteTwo(itemId, process);
+        }
+        else if(catalog.charAt(1)=='3'){
+            fieldfinal(itemId, process);
+        }else if(catalog.charAt(1)=='4'){
+            scoreService.checkAndPromoteTopSixteen(itemId, process);
+        }else if(catalog.charAt(1)=='5'){
+            scoreService.checkAndPromoteTopX(8,itemId, process);
+        }
+
+
+        scoreService.checkAndPromoteThree(itemId, process);
+
+        return ServerResponse.createBySuccessMessage("结束");
+
+    }
+    @ApiOperation("决赛")
+    @PostMapping("/finals")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse finals(@RequestParam int itemId, @RequestParam String process) {
+
+        Item item = itemService.getById(itemId);
+        String catalog = item.getCatalog();
+
+        if(catalog.length()==2) {
+            process="semifinals";
+            if (catalog.charAt(1) == '1') {
+                scoreService.checkAndPromoteThree(itemId, process);
+            } else if (catalog.charAt(1) == '2') {
+                scoreService.checkAndPromoteTwo(itemId, process);
+            } else if (catalog.charAt(1) == '3') {
+                fieldfinal(itemId, process);
+            } else if (catalog.charAt(1) == '4') {
+                scoreService.checkAndPromoteTopSixteen(itemId, process);
+            } else if (catalog.charAt(1) == '5') {
+                scoreService.checkAndPromoteTopX(8, itemId, process);
+            }
+        }
+        else if(catalog.length()==3){
+            process="semifinals";
+            if (catalog.charAt(2) == '1') {
+                scoreService.checkAndPromoteThree(itemId, process);
+            } else if (catalog.charAt(2) == '2') {
+                scoreService.checkAndPromoteTwo(itemId, process);
+            } else if (catalog.charAt(2) == '3') {
+                fieldfinal(itemId, process);
+            } else if (catalog.charAt(2) == '4') {
+                scoreService.checkAndPromoteTopSixteen(itemId, process);
+            } else if (catalog.charAt(2) == '5') {
+                scoreService.checkAndPromoteTopX(8, itemId, process);
+            }
+        }
+
+        scoreService.checkAndPromoteThree(itemId, process);
+
+        return ServerResponse.createBySuccessMessage("结束");
+
+
+
+    }
+
+        @ApiOperation("径赛晋级半决赛")
     @PostMapping("/tracksemi")
 //    @RequiresRoles(value = {"1"})
     @Transactional
-    public ServerResponse addScore(@RequestParam int itemId, @RequestParam String process) {
+    public ServerResponse tracksemi(@RequestParam int itemId, @RequestParam String process) {
 
 
         scoreService.checkAndPromoteThree(itemId, process);
@@ -258,7 +352,7 @@ public class ScoreController {
     @PostMapping("/trackfinal")
 //    @RequiresRoles(value = {"1"})
     @Transactional
-    public ServerResponse addScore2(@RequestParam int itemId, @RequestParam String process) {
+    public ServerResponse trackfinal(@RequestParam int itemId, @RequestParam String process) {
 
 
         scoreService.checkAndPromoteTwo(itemId, process);
@@ -268,19 +362,79 @@ public class ScoreController {
     }
 
 
-//    @ApiOperation("游泳晋级决赛")
-//    @PostMapping("/fieldfinal")
-////    @RequiresRoles(value = {"1"})
-//    @Transactional
-//    public ServerResponse addScore3(@RequestParam int itemId, @RequestParam String process) {
-//
-//
-//        scoreService.checkAndPromoteTopSixteen(itemId, process);
-//
-//        return ServerResponse.createBySuccessMessage("结束");
-//
-//    }
+    @ApiOperation("游泳晋级半决赛")
+    @PostMapping("/swimsemi")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse swimsemi(@RequestParam int itemId, @RequestParam String process) {
 
+
+        scoreService.checkAndPromoteTopSixteen(itemId, process);
+
+        return ServerResponse.createBySuccessMessage("结束");
+
+    }
+
+
+    @ApiOperation("游泳晋级决赛")
+    @PostMapping("/swimfinal")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse swimfinal(@RequestParam int itemId, @RequestParam String process) {
+
+        scoreService.checkAndPromoteTopX(8,itemId, process);
+
+        return ServerResponse.createBySuccessMessage("结束");
+
+    }
+
+
+
+    @ApiOperation("田赛晋级决赛")
+    @PostMapping("/fieldfinal")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse fieldfinal(@RequestParam int itemId, @RequestParam String process) {
+
+
+        QueryWrapper <Score> queryWrapper = new QueryWrapper<>();
+        queryWrapper.gt("score",8.15);
+        List<Score> scoreList=scoreService.list(queryWrapper);
+
+        if(scoreList.size()<12){
+            scoreService.checkAndPromoteTopX(12,itemId, process);
+        }
+        else{
+            scoreService.checkAndPromoteTopX(scoreList.size(),itemId, process);
+        }
+
+        return ServerResponse.createBySuccessMessage("结束");
+
+    }
+
+
+    @ApiOperation("生成获奖名单")
+    @PostMapping("/winners")
+//    @RequiresRoles(value = {"1"})
+    @Transactional
+    public ServerResponse winners(@RequestParam int itemId) {
+
+
+        scoreService.checkAndPromoteThree(itemId,"finals");
+        List<Integer> winnersid=scoreService.getWinners(itemId);
+
+
+        for(Integer id:winnersid) {
+            Winners winners = new Winners();
+            winners.setItemId(itemId);
+            winners.setUserId(id);
+
+            winnersService.save(winners);
+        }
+
+        return ServerResponse.createBySuccessMessage("结束");
+
+    }
 
 
 
