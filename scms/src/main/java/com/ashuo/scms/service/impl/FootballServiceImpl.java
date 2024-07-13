@@ -78,4 +78,10 @@ public class FootballServiceImpl implements FootballService {
             }
         }
     }
+
+    @Override
+    public List<Football> queryWinnerName(Football football){
+        List<Football> footballList=footballMapper.queryWinnerName(football);
+        return footballList;
+    }
 }

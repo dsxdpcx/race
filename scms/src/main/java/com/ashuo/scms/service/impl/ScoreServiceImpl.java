@@ -93,7 +93,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
     @Override
     public void checkAndPromoteThree(int itemId, String process) {
-        var groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
+        List<Integer> groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
         System.out.println(groups);
         for (int group : groups) {
             if (scoreMapper.countNonQualifiedAthletes(itemId, group, process) == 0) {
@@ -130,7 +130,7 @@ public class ScoreServiceImpl implements ScoreService {
 
     @Override
     public void checkAndPromoteTwo(int itemId, String process) {
-        var groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
+        List<Integer>  groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
         System.out.println(groups);
         for (int group : groups) {
             if (scoreMapper.countNonQualifiedAthletes(itemId, group, process) == 0) {

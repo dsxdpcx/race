@@ -36,8 +36,8 @@
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addschedule = true"
-          >生成赛程对抗表
+          <el-button type="success" @click="addraceDialogVisible = true"
+          >生成小组赛
           </el-button>
         </el-col>
       </el-row>
@@ -120,7 +120,7 @@
           >
           </el-date-picker>
         </el-form-item>
-        </el-form-item>
+
         <el-form-item label="地点">
           <el-input v-model="addForm.location"></el-input>
         </el-form-item>
@@ -143,6 +143,29 @@
       </span>
     </el-dialog>
 
+     <!--生成小组赛对话框-->
+    <el-dialog
+        :visible.sync="addraceDialogVisible"
+        title="生成小组赛"
+        width="40%"
+        @close="addraceDialogClosed"
+    >
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          class="demo-ruleForm"
+          label-width="80px"
+      >
+      <el-form-item label="赛程名称">
+        <el-input v-model="addForm.name"></el-input>
+      </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addracetable">确定</el-button>
+        <el-button @click="addraceDialogVisible = false">取消</el-button>
+      </span>
+    </el-dialog>
+
     <!--修改赛程对话框-->
     <el-dialog
         :visible.sync="editDialogVisible"
@@ -156,34 +179,38 @@
           class="demo-ruleForm"
           label-width="80px"
       >
-        <el-form-item label="赛程编号">
-          <el-input v-model="editForm.schedule_id" disabled></el-input>
-        </el-form-item>
+      
         <el-form-item label="赛程名称">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="时间">
-          <el-input v-model="editForm.time"></el-input>
+        <el-form-item label="比赛时间">
+          <el-date-picker
+              v-model="addForm.time"
+              placeholder="选择时间"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+          >
+        </el-date-picker>
         </el-form-item>
-        <el-form-item label="地点">
+        <el-form-item label="地点" prop="location">
           <el-input v-model="editForm.location"></el-input>
         </el-form-item>
-        <el-form-item label="裁判">
+        <el-form-item label="裁判" prop="referee">
           <el-input v-model="editForm.referee"></el-input>
         </el-form-item>
-        <el-form-item label="A队">
+        <el-form-item label="A队" prop="team_a">
           <el-input v-model="editForm.team_a"></el-input>
         </el-form-item>
-        <el-form-item label="A队得分">
+        <el-form-item label="A队得分" prop="a_score">
           <el-input v-model="editForm.a_score"></el-input>
         </el-form-item>
-        <el-form-item label="B队">
+        <el-form-item label="B队" prop="team_b">
           <el-input v-model="editForm.team_b"></el-input>
         </el-form-item>
-        <el-form-item label="B队得分">
+        <el-form-item label="B队得分" prop="b_score">
           <el-input v-model="editForm.b_score"></el-input>
         </el-form-item>
-        <el-form-item label="赛程性质">
+        <el-form-item label="赛程性质" prop="match_class">
           <el-input v-model="editForm.match_class"></el-input>
         </el-form-item>
       </el-form>
@@ -210,6 +237,7 @@ export default {
       },
       total: 0,
       addDialogVisible: false,
+      addraceDialogVisible:false,
       editDialogVisible: false,
       addForm: {
         name: "",
@@ -221,7 +249,6 @@ export default {
         match_class: "",
       },
       editForm: {
-        schedule_id: "",
         name: "",
         time: "",
         location: "",
@@ -254,6 +281,17 @@ export default {
     addrace() {
       const _this = this;
       axios.post("/racefootball/addrace", _this.addForm).then((res) => {
+        if (res.data.status != 200) {
+          return _this.$message.error(res.data.msg);
+        }
+        _this.$message.success("操作成功");
+        _this.addDialogVisible = false;
+        _this.page();
+      });
+    },
+    addracetable() {
+      const _this = this;
+      axios.post("/racefootball/addracetable", _this.addForm).then((res) => {
         if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
         }
@@ -297,7 +335,9 @@ export default {
     },
     editSchedule() {
       const _this = this;
+      console.log(_this.editForm);
       axios.post("/racefootball/updateSchedule", _this.editForm).then((res) => {
+        console.log(_this.editForm);
         if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
         }

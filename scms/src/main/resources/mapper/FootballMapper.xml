@@ -40,9 +40,17 @@
             <if test="a_score!=null">a_score=#{a_score},</if>
             <if test="team_b!=null">team_b=#{team_b},</if>
             <if test="b_score!=null">b_score=#{b_score},</if>
-            <if test="winner!=null">winner=#{winner},</if>
             <if test="match_class!=null">match_class=#{match_class},</if>
             <if test="time!=null">time=#{time},</if>
+            winner =
+            <choose>
+                <when test="a_score != null and b_score != null and a_score > b_score">
+                    #{team_a}
+                </when>
+                <otherwise>
+                    #{team_b}
+                </otherwise>
+            </choose>
         </set>
         WHERE schedule_id=#{schedule_id}
     </update>
@@ -60,13 +68,23 @@
         </where>
     </select>
 
+    <select id="queryWinnerName" resultMap="football">
+        SELECT * FROM football
+        <where>
+            <if test="football.name!=null">AND name LIKE '%${football.name}%'</if>
+            <if test="football.winner!=null">AND winner LIKE '%${football.winner}%'</if>
+            <if test="football.match_class!=null">AND match_class LIKE '%${football.match_class}%'</if>
+        </where>
+    </select>
+
     <select id="queryByFootballCondition" resultMap="football">
         SELECT * FROM football
         <where>
             <if test="football!=null and football.schedule_id!=null and football.schedule_id!=0">AND schedule_id=#{football.schedule_id}</if>
             <if test="football!=null and football.name!=null">AND name LIKE '%${football.name}%'</if>
             <if test="football!=null and football.time!=null">AND time LIKE '%${football.time}%'</if>
-            <if test="football!=null and football.location!=null">AND name LIKE '%${football.location}%'</if>
+            <if test="football!=null and football.location!=null">AND location LIKE '%${football.location}%'</if>
+            <if test="football!=null and football.match_class!=null">AND match_class LIKE '%${football.match_class}%'</if>
         </where>
     </select>
 

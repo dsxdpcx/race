@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ashuo.scms.mapper.TeamEnterMapper">
+
+    <insert id="insertTeamEnter" parameterType="com.ashuo.scms.entity.TeamEnter"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO TeamEnter(
+        <if test="id!=null and id!=0">
+            id,
+        </if>
+        event_name, team_name)
+        VALUES (
+        <if test="id!=null and id!=0">
+            #{id},
+        </if>
+        #{eventName}, #{teamName})
+    </insert>
+
+    <update id="updateTeamEnter" parameterType="com.ashuo.scms.entity.TeamEnter">
+        UPDATE TeamEnter
+        <set>
+            <if test="eventName!=null">event_name=#{eventName},</if>
+            <if test="teamName!=null">team_name=#{teamName},</if>
+            <if test="groupName!=null">group_name=#{groupName},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteTeamEnter">
+        DELETE
+        FROM TeamEnter
+        WHERE id = #{id}
+    </delete>
+
+    <select id="queryTeamEnterByevent" resultType="com.ashuo.scms.entity.TeamEnter">
+        SELECT * FROM TeamEnter
+        <where>
+            <if test="TeamEnter.eventName!=null">AND event_name LIKE '%${TeamEnter.eventName}%'</if>
+        </where>
+    </select>
+
+    <select id="queryTeamEnterByCondition" resultType="com.ashuo.scms.entity.TeamEnter">
+        SELECT * FROM TeamEnter
+        <where>
+            <if test="teamEnter!=null and teamEnter.id!=null and teamEnter.id!=0">AND id=#{teamEnter.id}</if>
+            <if test="teamEnter!=null and teamEnter.eventName!=null">AND event_name LIKE '%${teamEnter.eventName}%'</if>
+        </where>
+    </select>
+
+
+</mapper>
