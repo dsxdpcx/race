@@ -5,12 +5,12 @@
         <!--顶部头像栏-->
         <div class="mhy-container mhy-account-center-header">
           <div class="mhy-avatar mhy-account-center-header__avatar mhy-avatar__xxl">
-            <img src="https://img-static.mihoyo.com/communityweb/upload/c9d11674eac7631d2210a1ba20799958.png" class="mhy-avatar__img">
+            <img src="https://file03.16sucai.com/2016/10/1100/16sucai_v20161030020_07b.JPG" class="mhy-avatar__img">
           </div>
           <div class="mhy-account-center-user">
             <div class="mhy-account-center-user__header">
               <div class="mhy-account-center-user__title">
-                <span class="mhy-account-center-user__name">hellofang</span>
+                <span class="mhy-account-center-user__name">{{currentUser.nickname}}</span>
                 <!---->
                 <img src="https://img-static.mihoyo.com/level/level1.png" class="mhy-img-icon mhy-account-center-user__level mhy-account-center-user__level--self">
                 <!---->
@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="mhy-account-center-user__audit">
-              <span class="mhy-account-center-user__uid">userID:378888828</span>
+              <span class="mhy-account-center-user__uid">userID:{{currentUser.userNo}}</span>
               <!---->
             </div>
             <div class="mhy-account-center-user__intro">
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -84,7 +86,8 @@ export default {
       menus: [
         {name:'个人简介',path:'/personal/userinfo',icon:'el-icon-document'},
         {name:'我的收藏',path:'/personal/mycollect',icon:'el-icon-document'},
-      ]
+      ],
+      currentUser: "",
     };
   },
   mounted() {
@@ -93,17 +96,20 @@ export default {
       that.activeIndex = that.$router.currentRoute.path;
     },300);
   },
+  created() {
+    this.currentUser = JSON.parse(localStorage.getItem("user"));
+  },
   methods: {
     selMenu(item){
       this.activeIndex = item.path;
       this.$router.push({path: item.path});
     },
     updateMyInfo(){
-      this.$router.push({path: '/personal/user_info'});
+      this.$router.push({path: '/personal/userinfo'});
     },
     updateHome(){
       this.$router.push({path: '/home'});
-    }
+    },
   }
 };
 </script>

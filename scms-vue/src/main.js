@@ -8,7 +8,13 @@ import 'less-loader'
 import store from './store'
 import "./permission"
 import axios from 'axios'
+import Vue2OrgTree from 'vue2-org-tree'
+import 'vue2-org-tree/dist/style.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
+Vue.use(ElementUI)
+Vue.use(Vue2OrgTree)
 Vue.config.productionTip = false;
 // 挂在axios
 Vue.prototype.$http = axios;

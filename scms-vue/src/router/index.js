@@ -29,6 +29,9 @@ import Index from "@/components/personal/index";
 import My_collect from "@/components/personal/my_collect";
 import User_info from "@/components/personal/user_info";
 import racefootball from "@/components/admin/racefootball";
+import Mycheer from "@/components/athlete/Mycheer";
+import CheerList from "@/components/admin/CheerList";
+import Schedule from "@/components/admin/Schedule";
 
 Vue.use(VueRouter);
 
@@ -65,7 +68,7 @@ const routes = [{
                 component: Page401
             },
             {
-                path: "asonasonlist",
+                path: "/season/seasonlist",
                 component: SeasonList
             },
             {
@@ -117,6 +120,10 @@ const routes = [{
                 component: AthleteScoreList
             },
             {
+                path: "/score/schedule",
+                component: Schedule
+            },
+            {
                 path: "/ranking/personRanking",
                 component: PersonRanking
             },
@@ -139,11 +146,11 @@ const routes = [{
                 component: SystemReset
             },
 
-
             {
                 path: "/athleteItem/signitem",
                 component: SignItem
-            }, {
+            },
+            {
                 path: "/athleteItem/myitem",
                 component: MyItem
             },{
@@ -153,6 +160,14 @@ const routes = [{
             {
                 path: "/race/racefootball",
                 component: racefootball
+            },
+            {
+                path: "/radio/mycheer",
+                component: Mycheer
+            },
+            {
+                path: "/radio/cheerlist",
+                component: CheerList
             },
         ]
     }

@@ -154,7 +154,8 @@ export default {
         900: "iconfont icon-dangtuanzhishijuesai",
         1000: "iconfont icon-xinxibeian",
         1100:"iconfont icon-jiaoshijieyong",
-
+        1200:"iconfont icon-xinxibeian",
+        1300:"iconfont icon-shiwuzhaoling",
       },
     };
   },

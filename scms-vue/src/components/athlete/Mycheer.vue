@@ -3,15 +3,15 @@
     <!--导航-->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>我的参赛项目</el-breadcrumb-item>
-      <el-breadcrumb-item>我的参赛项目</el-breadcrumb-item>
+      <el-breadcrumb-item>广播管理</el-breadcrumb-item>
+      <el-breadcrumb-item>我的加油稿</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!--项目列表主体-->
     <el-card>
       <el-row :gutter="25">
         <div style="float: left">
-          <el-col>
+          <el-col :span="16">
             <el-select
                 v-model="selectSeasonId"
                 filterable
@@ -27,64 +27,43 @@
               </el-option>
             </el-select>
           </el-col>
+          <!--添加按钮-->
+          <el-col :span="4">
+            <el-button type="primary" @click="addDialogVisible = true"
+            >提交
+            </el-button
+            >
+          </el-col>
+          <!-- 添加对话框 -->
+          <el-dialog :visible.sync="addDialogVisible" title="提交加油稿">
+            <el-form ref="addCheerForm" :model="addCheerForm">
+              <el-form-item label="加油稿内容">
+                <el-input type="textarea" v-model="addCheerForm.content"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="addCheer">提交</el-button>
+              </el-form-item>
+            </el-form>
+          </el-dialog>
         </div>
       </el-row>
 
       <!--项目列表 stripe隔行变色-->
       <!--参数运动员列表 stripe隔行变色-->
-      <el-table :data="athletelist" border stripe>
+      <el-table :data="cheerlist" border stripe>
         <!--索引列-->
-
-        <el-table-column type="index"></el-table-column>
-        <el-table-column label="学号" prop="user.userNo"></el-table-column>
-        <el-table-column
-            label="参数运动员"
-            prop="user.nickname"
-        ></el-table-column>
-        <el-table-column label="性别" prop="user.userSex"></el-table-column>
-
-        <el-table-column
-            label="参赛项目"
-            prop="item.itemName"
-        ></el-table-column>
-        <el-table-column label="地点" prop="item.itemPlace"></el-table-column>
-        <el-table-column
-            label="开始时间"
-            prop="item.startTime"
-        ></el-table-column>
-        <el-table-column label="结束时间" prop="item.endTime"></el-table-column>
-<!--        <el-table-column label="报名时间" prop="signTime"></el-table-column>-->
-<!--        <el-table-column label="审核状态" prop="shenhe"></el-table-column>-->
-<!--        <el-table-column label="审核时间" prop="shenheTime"></el-table-column>-->
-        <el-table-column label="分组" prop="groupId"></el-table-column>
-        <el-table-column label="道次" prop="track"></el-table-column>
-<!--        <el-table-column label="编辑时间" prop="editTime"></el-table-column>-->
-
-        <el-table-column label="操作" prop="state">
+        <el-table-column label="用户Id" prop="userId"></el-table-column>
+        <el-table-column label="加油稿Id" prop="cheerId"></el-table-column>
+        <el-table-column label="加油稿内容" prop="content">
           <template slot-scope="scope">
-            <!--取消报名-->
-            <el-button
-                :disabled="scope.row.userIds!=null"
-                size="mini"
-                type="danger"
-                @click="deleteAthlete(scope.row.athleteId)"
-            >取消报名
-            </el-button
-            >
+            <span v-if="scope.row.content.length > 35">{{ scope.row.content.substring(0, 35) }}...</span>
+            <span v-else>{{ scope.row.content }}</span>
+            <el-button type="text" @click="showContent(scope.row)">详情</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="状态" prop="state">
-          <template slot-scope="scope">
-            <el-steps :active=actnum >
-              <el-step v-for="(item,index) in activities"
-                       :key="index"
-                       :title="item.content"
-                       :description="item.timestamp"></el-step>
 
-            </el-steps>
-          </template>
-        </el-table-column>
       </el-table>
+
       <!--分页组件-->
       <div>
         <el-pagination
@@ -99,6 +78,13 @@
         </el-pagination>
       </div>
     </el-card>
+<!--    <el-steps :active=actnum >-->
+<!--      <el-step v-for="(item,index) in activities"-->
+<!--               :key="index"-->
+<!--               :title="item.content"-->
+<!--               :description="item.timestamp"></el-step>-->
+
+<!--    </el-steps>-->
   </div>
 </template>
 
@@ -106,13 +92,14 @@
 import axios from "axios";
 
 export default {
-  name: "ItemList",
+  name: "Mycheer",
   data() {
     return {
-
-      reverse: false,
-      actnum: 0,
-      activities: [{
+      addDialogVisible: false,
+      addCheerForm: {
+        content: "",
+      },
+      /*activities: [{
         content: '报名成功',
         timestamp: '',
         color: ''
@@ -120,12 +107,10 @@ export default {
         content: '通过审核',
         timestamp: '',
         color: ''
-      }, {
-        content: '分组结束',
-        timestamp: '',
-        color: ''
-      }],
-      athletelist: [],
+      },],*/
+      reverse: false,
+      actnum: 0,
+      cheerlist: [],
       scorers: [],
       itemDetail: [],
       //所有运动会届时列表
@@ -133,7 +118,6 @@ export default {
       //选择的届时
       selectSeasonId: "",
       userId: JSON.parse(localStorage.getItem("user")).userId,
-
       queryInfo: {
         currentPage: 1,
         pageSize: 10,
@@ -146,6 +130,7 @@ export default {
     };
   },
   created() {
+    this.page();
     this.getSeasons();
   },
   methods: {
@@ -157,38 +142,47 @@ export default {
       const _this = this;
       axios
           .get(
-              "/athlete/queryAthlete?item.season.seasonId=" + _this.selectSeasonId + "&user.userId=" + this.userId + "&queryInfo=", {params: _this.queryInfo}
+              "/cheer/querycheer?userId=" +this.userId
           )
           .then((res) => {
             let data = res.data.data;
-            _this.athletelist = data.records;
-            _this.activities[0].timestamp = _this.athletelist[0].signTime;
+            _this.cheerlist = data;
+            /*_this.activities[0].timestamp = _this.cheerlist[0].cheersubmitTime;
             if(_this.activities[0].timestamp!='') {
               _this.actnum = 1;
             }
-            _this.activities[1].timestamp = _this.athletelist[0].shenheTime;
+            _this.activities[1].timestamp = _this.cheerlist[0].cheershenheTime;
             if(_this.activities[1].timestamp!='') {
               _this.actnum = 2;
-            }
-            _this.activities[2].timestamp = _this.athletelist[0].editTime;
-            if (_this.activities[2].timestamp != '') {
-              _this.actnum = 3;
-
             }
             _this.queryInfo.currentPage = data.current;
             _this.total = data.total;
             _this.queryInfo.pageSize = data.size;
 
-            _this.athletelist.forEach((athlete, index) => {
-              if (athlete.shenhe == 1) {
-                athlete.shenhe = "已通过";
-              } else if (athlete.shenhe == 0){
-                athlete.shenhe = "未通过";
+            _this.cheerlist.forEach((cheer, index) => {
+              if (cheer.shenhe == 1) {
+                cheer.shenhe = "已通过";
+              } else if (cheer.shenhe == 0){
+                cheer.shenhe = "未通过";
               }else {
-                athlete.shenhe = "未审核";
+                cheer.shenhe = "未审核";
               }
-            });
+            });*/
           });
+    },
+
+    async addCheer() {
+      // 使用Axios提交加油稿
+      try {
+        const response = await axios.post("/cheer/addcheer", {
+          content: this.addCheerForm.content,
+          userId: this.userId, // 从后端服务获取的当前用户ID
+        });
+        this.page(); // 更新表格数据
+        this.$message.success("提交成功");
+      } catch (error) {
+        this.$message.error("提交失败");
+      }
     },
 
 //获取运动会届时
@@ -212,34 +206,6 @@ export default {
             _this.page();
           });
     },
-
-
-    async deleteAthlete(athleteId) {
-      const _this = this;
-      const confirmResult = await _this
-          .$confirm("是否确定取消报名？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
-          })
-          .catch((err) => err);
-      if (confirmResult !== "confirm") {
-        return _this.$message.info("已取消操作");
-      }
-      axios
-          .delete("/athlete/deleteAthlete?athleteId=" + athleteId)
-          .then((res) => {
-            if (res.data.status == 200) {
-
-              _this.$message.success("已取消该项目");
-              _this.addDialogVisible = false;
-              _this.page();
-            } else {
-              _this.$message.error(res.data.msg);
-            }
-          });
-    },
-
     handleSizeChange(newSize) {
       const _this = this;
       _this.queryInfo.pageSize = newSize;
@@ -249,6 +215,25 @@ export default {
       const _this = this;
       _this.queryInfo.currentPage = newPage;
       _this.page();
+    },
+    showContent(row) {
+      // 弹出一个对话框，显示完整的加油稿内容
+      this.$alert(row.content, '详情', {
+        confirmButtonText: '确定',
+        callback: action => {
+          if (action === 'confirm') {
+            this.$message({
+              type: 'success',
+              message: '已显示详情'
+            });
+          } else {
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            });
+          }
+        }
+      });
     },
   },
 };

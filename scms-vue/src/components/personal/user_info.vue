@@ -20,7 +20,7 @@
             头像
           </template>
           <div>
-            <el-image src="https://img-static.mihoyo.com/communityweb/upload/c9d11674eac7631d2210a1ba20799958.png" style="width: 50px;height: 50px;"></el-image>
+            <el-image src="https://file03.16sucai.com/2016/10/1100/16sucai_v20161030020_07b.JPG" style="width: 50px;height: 50px;"></el-image>
           </div>
         </el-descriptions-item>
         <el-descriptions-item>
@@ -156,7 +156,7 @@ export default {
       loading: false,
       box: false,
       form: {
-        avatar:'https://img-static.mihoyo.com/communityweb/upload/c9d11674eac7631d2210a1ba20799958.png',//回显头像
+        avatar:'https://file03.16sucai.com/2016/10/1100/16sucai_v20161030020_07b.JPG',//回显头像
         nickname: '',
         gender: '',
         file: null,
