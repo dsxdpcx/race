@@ -34,6 +34,8 @@ public class Ranking implements Serializable {
 
     private Integer rank;
 
+    private Integer points;
+
     @JsonIgnore
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime editTime;

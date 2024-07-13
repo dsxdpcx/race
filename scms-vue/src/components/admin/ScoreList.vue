@@ -80,11 +80,24 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="addvance()"
+            <el-button type="primary" :disabled="semiCanUse" @click="addvance1()"
             >生成半决赛名单
             </el-button
             >
           </el-col>
+          <el-col :span="4">
+            <el-button type="primary" :disabled="finalCanUse" @click="addvance2()"
+            >生成半决赛名单
+            </el-button
+            >
+          </el-col>
+          <el-col :span="4">
+            <el-button type="primary" :disabled="winnerCanUse" @click="addvance3()"
+            >生成获奖名单
+            </el-button
+            >
+          </el-col>
+
 
         </div>
       </el-row>
@@ -357,6 +370,9 @@ export default {
       //选择的届时
       selectSeasonId: "",
       selectItemId: "",
+      semiCanUse:true,
+      finalCanUse:true,
+      winnerCanUse:true,
       statusOptions: [
         {
           value: "0",
@@ -385,11 +401,6 @@ export default {
           label: "决赛",
         },
       ],
-
-
-
-
-
       //下拉框选择的条件
       athlete: {
         item: {
@@ -442,6 +453,7 @@ export default {
         this.queryInfo.currentPage = 1;
         this.queryInfo.pageSize = 10;
       }
+      this.getCatalog();
       const _this = this;
       axios
           .get(
@@ -463,6 +475,7 @@ export default {
             _this.total = data.total;
             _this.queryInfo.pageSize = data.size;
           });
+
     },
 
     //获取记分员
@@ -537,6 +550,33 @@ export default {
     },
 
 
+    async getCatalog() {
+      const _this = this;
+        axios.get("/score/catalog?itemId="+_this.selectItemId).then((res) => {
+
+          if (res.data.status != 200) {
+            return _this.$message.error(res.data.msg);
+          }
+          if (res.data.data ==3) {
+            _this.semiCanUse = false;
+            _this.finalCanUse = false;
+            _this.winnerCanUse = false;
+          }
+          if (res.data.data == 2) {
+            _this.semiCanUse = true;
+            _this.finalCanUse = false;
+            _this.winnerCanUse = false;
+          }
+          if (res.data.data == 1) {
+            _this.semiCanUse = true;
+            _this.finalCanUse = true;
+            _this.winnerCanUse = false;
+          }
+          // _this.page();
+        });
+    },
+
+
     //修改分数
     async editScore() {
       const _this = this;
@@ -574,11 +614,37 @@ export default {
       }
     },
     //晋级处理
-    async addvance() {
+    async addvance1() {
       const _this = this;
       _this.scoreHandle();
       if (_this.scoreForm.score !== "") {
-        axios.post("/score/prmotion?itemId="+_this.selectItemId+"&process=heats").then((res) => {
+        axios.post("/score/semi?itemId="+_this.selectItemId+"&process=heats").then((res) => {
+          if (res.data.status != 200) {
+            return _this.$message.error(res.data.msg);
+          }
+          _this.$message.success("操作成功");
+          _this.page();
+        });
+      }
+    },
+    async addvance2() {
+      const _this = this;
+      _this.scoreHandle();
+      if (_this.scoreForm.score !== "") {
+        axios.post("/score/finals?itemId="+_this.selectItemId+"&process=semifinals").then((res) => {
+          if (res.data.status != 200) {
+            return _this.$message.error(res.data.msg);
+          }
+          _this.$message.success("操作成功");
+          _this.page();
+        });
+      }
+    },
+    async addvance3() {
+      const _this = this;
+      _this.scoreHandle();
+      if (_this.scoreForm.score !== "") {
+        axios.post("/score/winner?itemId="+_this.selectItemId+"&process=heats").then((res) => {
           if (res.data.status != 200) {
             return _this.$message.error(res.data.msg);
           }

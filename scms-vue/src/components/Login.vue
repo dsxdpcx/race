@@ -2,7 +2,8 @@
   <div :style="bg" class="login_container">
     <!--登录块-->
     <div class="login_box">
-      <div class="title">运 动 会 综 合 管 理 系 统</div>
+      <div ref="vantaRef" style="width: 100%; height: 100vh"></div>
+      <div class="title">赛 事 领 航</div>
       <!--logo-->
       <!-- <div class="avatar_box">
         <img src="../assets/logo.png" alt />
@@ -19,7 +20,6 @@
         <el-form-item>
           用户名：
           <el-input
-              id="name"
               v-model="loginForm.username"
               prefix-icon="iconfont icon-denglu"
           ></el-input>
@@ -28,7 +28,6 @@
         <el-form-item>
           密码：
           <el-input
-              id="password"
               v-model="loginForm.password"
               prefix-icon="iconfont icon-mima"
               type="password"
@@ -37,7 +36,7 @@
         </el-form-item>
         <!--按钮-->
         <el-form-item class="btns">
-          <el-button id="login" type="primary" @click="submitForm('loginForm')"
+          <el-button type="primary" @click="submitForm('loginForm')"
           >登录
           </el-button
           >
@@ -52,17 +51,13 @@
 </template>
 
 <script>
+import * as THREE from "three";
+import CLOUDS from "vanta/src/vanta.clouds";
+
 export default {
   name: "Login",
   data() {
     return {
-      bg: {
-        backgroundImage: "url(" + require("../assets/hzu_gate.jpg") + ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "0 -400px",
-      },
-
       loginForm: {
         username: "",
         password: "",
@@ -88,6 +83,33 @@ export default {
         ],
       },
     };
+  },
+  mounted() {
+    this.vantaEffect = CLOUDS({
+      el: this.$refs.vantaRef,
+      THREE: THREE,
+    });
+    VANTA.CLOUDS({
+      el: this.$refs.vantaRef,
+      /*以下为样式配置*/
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      skyColor: 0x26b9f2,
+      cloudColor: 0xb7c9e8,
+      cloudShadowColor: 0x2f3a48,
+      sunColor: 0x5c452f,
+      sunGlareColor: 0xd4a798,
+      sunlightColor: 0xdc9c59,
+      speed: 1.2,
+    });
+  },
+  beforeDestroy() {
+    if (this.vantaEffect) {
+      this.vantaEffect.destroy();
+    }
   },
   methods: {
     /*处理登录*/
@@ -115,6 +137,8 @@ export default {
         }
       });
     },
+
+
     resetForm(loginForm) {
       this.loginForm = {
         username: "",
@@ -127,21 +151,40 @@ export default {
 
 <style lang="less" scoped>
 /*根节点样式*/
+::v-deep .el-input__inner {
+  background-color: transparent; // 设置为透明色
+  outline: none; // 移除聚焦时的边框
+  color: #fff; // 设置文字颜色，如果你背景是深色的话
+}
+
+::v-deep .el-input__inner:focus {
+  border: 1px solid #dcdfe6; //
+}
+::v-deep .btns .el-button {
+  background-color: transparent;
+  border: none;
+  color: #222222;
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  font-family: 'SimSun', sans-serif;
+  font-size: 16px;
+}
+
 .login_container {
   //background-color: #2b4b6b;
   height: 100%;
+  display: flex;
+
 }
 
 /*输入框样式*/
 .login_box {
-  width: 450px;
-  height: 330px;
-  background-color: #909399;
+  //width: 1650px;
+  //height: 600px;
+  width: 100%;
+  height: 100%;
+  background-color: #999999;
   border-radius: 3px;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
 
   .avatar_box {
     width: 130px;
@@ -165,23 +208,65 @@ export default {
 }
 
 .title {
-  font-family: "Helvetica Neue";
-  text-align: center;
-  font-size: large;
-  height: 40px;
-  margin-top: 30px;
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  font-family: 'SimSun', sans-serif;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  color: #fff;
 }
 
 .btns {
   display: flex;
   justify-content: flex-end;
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  font-family: 'SimSun', sans-serif;
 }
 
 .login_form {
   position: absolute;
-  bottom: 0%;
-  width: 100%;
+  bottom: 0;
+  width: 30%;
   padding: 0 10px;
   box-sizing: border-box;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  font-family: 'SimSun', sans-serif;
+}
+@media (max-width: 768px) {
+  .login_box {
+    width: 90%;
+    height: 90%;
+  }
+
+  .avatar_box {
+    width: 100px;
+    height: 100px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login_box {
+    width: 80%;
+    height: 80%;
+  }
+
+  .avatar_box {
+    width: 80px;
+    height: 80px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
 }
 </style>

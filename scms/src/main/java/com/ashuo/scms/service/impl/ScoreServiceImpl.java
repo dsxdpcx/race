@@ -8,6 +8,7 @@ import com.ashuo.scms.mapper.ScoreMapper;
 import com.ashuo.scms.service.ScoreService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @since 2021-04-05
  */
 @Service
-public class ScoreServiceImpl implements ScoreService {
+public class ScoreServiceImpl extends ServiceImpl<ScoreMapper,Score> implements ScoreService {
     @Autowired
     ScoreMapper scoreMapper;
     @Autowired
@@ -92,72 +93,143 @@ public class ScoreServiceImpl implements ScoreService {
         }
     }
     @Override
-    public void checkAndPromoteThree(int itemId, String process) {
+    public void checkAndPromoteTopSixteen(int itemId, String process) {
+
+            if (scoreMapper.countNonQualifiedAthletesswim(itemId, process) == 0) {
+                scoreMapper.promoteTopSixteen(itemId, process);
+                List<Integer> atheleteIds = scoreMapper.promoteTopTopSixteenAndGetAtheleteIds(itemId, process);
+
+                System.out.println(atheleteIds);
+                if (process.equals("heats")){
+                    for (Integer athleteId:atheleteIds) {
+                        Athlete athlete=athleteMapper.selectById(athleteId);
+                        athlete.setProcess("semifinals");
+                        athlete.setScoreStatus(0);
+                        athleteMapper.insert(athlete);
+                    }
+                }else if(process.equals("semifinals")){
+                    for (Integer athleteId:atheleteIds) {
+                        Athlete athlete = athleteMapper.selectById(athleteId);
+                        athlete.setProcess("finals");
+                        athlete.setScoreStatus(0);
+                        athleteMapper.insert(athlete);
+                    }
+                }
+            }
+    }
+
+    @Override
+    public void checkAndPromoteTopX(int number, int itemId, String process) {
+
+        if (scoreMapper.countNonQualifiedAthletesswim(itemId, process) == 0) {
+            scoreMapper.promoteTopX(number,itemId, process);
+            List<Integer> atheleteIds = scoreMapper.promoteTopTopSixteenAndGetAtheleteIds(itemId, process);
+            System.out.println(atheleteIds);
+            if (process.equals("heats")){
+                for (Integer athleteId:atheleteIds) {
+                    Athlete athlete=athleteMapper.selectById(athleteId);
+                    athlete.setProcess("semifinals");
+                    athlete.setScoreStatus(0);
+                    athleteMapper.insert(athlete);
+                }
+            }else if(process.equals("semifinals")){
+                for (Integer athleteId:atheleteIds) {
+                    Athlete athlete = athleteMapper.selectById(athleteId);
+                    athlete.setProcess("finals");
+                    athlete.setScoreStatus(0);
+                    athleteMapper.insert(athlete);
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Integer> getWinners(int itemId) {
+        return scoreMapper.getWinners(itemId);
+    }
+
+
+
+    public void checkAndPromoteTopEight(int itemId, String process) {
+
+        if (scoreMapper.countNonQualifiedAthletesswim(itemId, process) == 0) {
+            scoreMapper.promoteTopSixteen(itemId, process);
+            List<Integer> atheleteIds = scoreMapper.promoteTopTopSixteenAndGetAtheleteIds(itemId, process);
+            System.out.println(atheleteIds);
+            if (process.equals("heats")){
+                for (Integer athleteId:atheleteIds) {
+                    Athlete athlete=athleteMapper.selectById(athleteId);
+                    athlete.setProcess("semifinals");
+                    athlete.setScoreStatus(0);
+                    athleteMapper.insert(athlete);
+                }
+            }else if(process.equals("semifinals")){
+                for (Integer athleteId:atheleteIds) {
+                    Athlete athlete = athleteMapper.selectById(athleteId);
+                    athlete.setProcess("finals");
+                    athlete.setScoreStatus(0);
+                    athleteMapper.insert(athlete);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void checkAndPromoteTwo(int itemId, String process) {
+        List<Integer> groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
+        System.out.println(groups);
+        for (int group : groups) {
+            if (scoreMapper.countNonQualifiedAthletes(itemId, group, process) == 0) {
+                scoreMapper.promoteTopTwo(itemId, group, process);
+            }
+        }
+        scoreMapper.promoteRemainTwo(itemId, process);
+        List<Integer> atheleteIds = scoreMapper.promoteTopThreeAndGetAtheleteIds(itemId, process);
+        if (process.equals("heats")){
+            for (Integer athleteId:atheleteIds) {
+                Athlete athlete=athleteMapper.selectById(athleteId);
+                athlete.setProcess("semifinals");
+                athlete.setScoreStatus(0);
+                athleteMapper.insert(athlete);
+            }
+        }else if(process.equals("semifinals")){
+            for (Integer athleteId:atheleteIds) {
+                Athlete athlete = athleteMapper.selectById(athleteId);
+                athlete.setProcess("finals");
+                athlete.setScoreStatus(0);
+                athleteMapper.insert(athlete);
+            }
+        }
+    }
+
+    @Override
+    public void checkAndPromoteThree(int itemId,String process) {
         List<Integer> groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
         System.out.println(groups);
         for (int group : groups) {
             if (scoreMapper.countNonQualifiedAthletes(itemId, group, process) == 0) {
                 scoreMapper.promoteTopThree(itemId, group, process);
-                scoreMapper.promoteRemainThree(itemId, process);
-                List<Integer> atheleteIds = scoreMapper.promoteTopThreeAndGetAtheleteIds(itemId, group, process);
-                System.out.println(atheleteIds);
-                if (process.equals("heats")){
-                    for (Integer athleteId:atheleteIds) {
-                        Athlete athlete=athleteMapper.selectById(athleteId);
-                        athlete.setProcess("semifinals");
-                        athlete.setScoreStatus(0);
-                        athleteMapper.insert(athlete);
-                    }
-                }else if(process.equals("semifinals")){
-                    for (Integer athleteId:atheleteIds) {
-                        Athlete athlete = athleteMapper.selectById(athleteId);
-                        athlete.setProcess("finals");
-                        athlete.setScoreStatus(0);
-                        athleteMapper.insert(athlete);
-                    }
-                }
-
-
 
             }
         }
-    }
-
-    @Override
-    public void checkAndPromoteTopSixteen(int itemId, String process) {
-
-    }
-
-    @Override
-    public void checkAndPromoteTwo(int itemId, String process) {
-        List<Integer>  groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
-        System.out.println(groups);
-        for (int group : groups) {
-            if (scoreMapper.countNonQualifiedAthletes(itemId, group, process) == 0) {
-                scoreMapper.promoteTopThree(itemId, group, process);
-                scoreMapper.promoteRemainThree(itemId, process);
-                List<Integer> atheleteIds = scoreMapper.promoteTopThreeAndGetAtheleteIds(itemId, group, process);
-                System.out.println(atheleteIds);
-                if (process.equals("heats")){
-                    for (Integer athleteId:atheleteIds) {
-                        Athlete athlete=athleteMapper.selectById(athleteId);
-                        athlete.setProcess("semifinals");
-                        athlete.setScoreStatus(0);
-                        athleteMapper.insert(athlete);
-                    }
-                }else if(process.equals("semifinals")){
-                    for (Integer athleteId:atheleteIds) {
-                        Athlete athlete = athleteMapper.selectById(athleteId);
-                        athlete.setProcess("finals");
-                        athlete.setScoreStatus(0);
-                        athleteMapper.insert(athlete);
-                    }
-                }
-
-
-
+        scoreMapper.promoteRemainThree(itemId, process);
+        List<Integer> atheleteIds = scoreMapper.promoteTopThreeAndGetAtheleteIds(itemId, process);
+        if (process.equals("heats")){
+            for (Integer athleteId:atheleteIds) {
+                Athlete athlete=athleteMapper.selectById(athleteId);
+                athlete.setProcess("semifinals");
+                athlete.setScoreStatus(0);
+                athleteMapper.insert(athlete);
+            }
+        }else if(process.equals("semifinals")){
+            for (Integer athleteId:atheleteIds) {
+                Athlete athlete = athleteMapper.selectById(athleteId);
+                athlete.setProcess("finals");
+                athlete.setScoreStatus(0);
+                athleteMapper.insert(athlete);
             }
         }
+
     }
 
 }
