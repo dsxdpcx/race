@@ -340,6 +340,20 @@ public class ScoreController {
     public ServerResponse tracksemi(@RequestParam int itemId, @RequestParam String process) {
 
 
+            Item tempItem = itemService.getById(itemId);
+        if(process.equals("heats")&&tempItem.getCatalog().length()==2){
+            tempItem.setProcess("finals");
+        }
+        else if(process.equals("heats")&&tempItem.getCatalog().length()==3){
+            tempItem.setProcess("semifinals");
+        }
+        else if(process.equals("semifinals")){
+            tempItem.setProcess("finals");
+        }
+
+        if (itemService.getOneItemByCondition(tempItem) != null) {
+            return ServerResponse.createByErrorCodeMessage(400, "不能重复生成");
+        }
         scoreService.checkAndPromoteThree(itemId, process);
 
         return ServerResponse.createBySuccessMessage("结束");

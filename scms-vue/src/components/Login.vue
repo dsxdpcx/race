@@ -164,8 +164,9 @@ export default {
   background-color: transparent;
   border: none;
   color: #222222;
-  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  font-family: 'SimSun', sans-serif;
+  font: 1em Georgia, serif;
+  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  //font-family: 'SimSun', sans-serif;
   font-size: 16px;
 }
 
@@ -208,8 +209,9 @@ export default {
 }
 
 .title {
-  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  font-family: 'SimSun', sans-serif;
+  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  //font-family: 'SimSun', sans-serif;
+  font: 1em Georgia, serif;
   position: absolute;
   top: 30%;
   left: 50%;
@@ -221,8 +223,9 @@ export default {
 .btns {
   display: flex;
   justify-content: flex-end;
-  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  font-family: 'SimSun', sans-serif;
+  font: 1em Georgia, serif;
+  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  //font-family: 'SimSun', sans-serif;
 }
 
 .login_form {
@@ -235,8 +238,9 @@ export default {
   top: 60%;
   transform: translate(-50%, -50%);
   font-size: 16px;
-  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  font-family: 'SimSun', sans-serif;
+  font: 1em Georgia, serif;
+  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  //font-family: 'SimSun', sans-serif;
 }
 @media (max-width: 768px) {
   .login_box {

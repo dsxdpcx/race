@@ -1,22 +1,38 @@
 <template>
   <div class="dailySchdule">
     <!-- 选择运动会组件 -->
-    <div style="float: right">
+    <div style="float: left">
+<!--      <el-col :span="16">-->
+<!--        <el-select-->
+<!--            v-model="selectSeasonId"-->
+<!--            filterable-->
+<!--            placeholder="请选择运动会"-->
+<!--            @change="page(true)"-->
+<!--        >-->
+<!--          <el-option-->
+<!--              v-for="item in allSeasonOptions"-->
+<!--              :key="item.seasonId"-->
+<!--              :label="item.seasonName"-->
+<!--              :value="item.seasonId"-->
+<!--          >-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-col>-->
       <el-col :span="16">
-        <el-select
-            v-model="selectSeasonId"
-            filterable
-            placeholder="请选择运动会"
-            @change="page(true)"
-        >
-          <el-option
-              v-for="item in allSeasonOptions"
-              :key="item.seasonId"
-              :label="item.seasonName"
-              :value="item.seasonId"
-          >
-          </el-option>
-        </el-select>
+      <el-input
+          v-model="football.name"
+          clearable
+          placeholder="请输入赛事名称"
+          @clear="page"
+          @keyup.enter.native="page"
+      >
+        <!--搜索按钮-->
+        <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="page"
+        ></el-button>
+      </el-input>
       </el-col>
     </div>
     <!-- 其他元素 -->
@@ -32,7 +48,7 @@
     <div id="game4">
       <p>第<br>四<br>轮</p>
     </div>
-    <div style="font-size:15px;margin-top:0px;">
+    <div style="font-size:15px;margin-top:-20px;">
       <vue2-org-tree
           id="matches"
           :data="treeData.data"
@@ -55,7 +71,7 @@
 
 <style scoped>
 #matches{
-  position: absolute;
+  /*position: absolute;*/
   left: 350px;
   width: calc(100% - 350px);
   margin-top: 0px;
@@ -73,10 +89,10 @@
   border-radius: 25px;
   font-weight: bold;
 }
-#game1 { top: 90px; left: 250px; height: 100px; }
-#game2 { top: 330px; left: 250px; height: 120px; }
-#game3 { top: 510px; left: 250px; height: 190px; }
-#game4 { top: 770px; left: 250px; height: 120px; }
+#game1 { top: 70px; left: 500px; height: 100px; }
+#game2 { top: 310px; left: 350px; height: 120px; }
+#game3 { top: 490px; left: 350px; height: 190px; }
+#game4 { top: 750px; left: 350px; height: 120px; }
 </style>
 <script>
 import axios from "axios";
@@ -94,6 +110,9 @@ export default {
       actnum: 0,
       scorers: [],
       cheerlist:[],
+      football:{
+        name:"",
+      },
       itemDetail: [],
       //所有运动会届时列表
       allSeasonOptions: [],
@@ -298,25 +317,19 @@ export default {
     }
   },
   created () {
-    this.getValue();;
-    this.getSeasons();
+
     this.page();
   },
 
   methods: {
-    async page(isSelect) {
-      if (isSelect === true) {
-        this.queryInfo.currentPage = 1;
-        this.queryInfo.pageSize = 10;
-      }
+    async page() {
       const _this = this;
       axios
-          .get(
-              "/cheer/querycheer?userId=" +this.userId
-          )
+          .post("/racefootball/showRaceTable",_this.football)
           .then((res) => {
             let data = res.data.data;
-            _this.cheerlist = data;
+            console.log(data)
+            _this.treeData.data=data;
           });
     },
     async getSeasons() {
@@ -336,6 +349,16 @@ export default {
               }
             })
             _this.allSeasonOptions = data;
+            _this.page();
+          });
+    },
+    async getSchedule() {
+      const _this = this;
+      axios
+          .post("/racefootballshow/RaceTable"+this.football)
+          .then((res) => {
+            let data = res.data.data;
+            _this.treeData.data=data;
             _this.page();
           });
     },

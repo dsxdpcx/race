@@ -108,7 +108,7 @@ const routes = [{
                 component: MyBorrow
             },
             {
-                path: "/athleteenhelist",
+                path: "/athlete/shenhelist",
                 component: ShenheList
             },
             {

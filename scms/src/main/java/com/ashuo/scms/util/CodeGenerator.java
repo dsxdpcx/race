@@ -42,7 +42,7 @@ public class CodeGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("D:\\SCMS\\scms");
+        String projectPath = System.getProperty("D:\\race\\scms");
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("AShuo");
         gc.setOpen(false);

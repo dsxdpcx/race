@@ -36,8 +36,23 @@
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addraceDialogVisible = true"
-          >生成小组赛
+          <el-button type="success" @click="addraceDialogVisible1 = true"
+          >生成八分之一决赛
+          </el-button>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="success" @click="addraceDialogVisible2 = true"
+          >生成四分之一决赛
+          </el-button>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="success" @click="addraceDialogVisible3 = true"
+          >生成半决赛
+          </el-button>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="success" @click="addraceDialogVisible4 = true"
+          >生成决赛
           </el-button>
         </el-col>
       </el-row>
@@ -143,12 +158,12 @@
       </span>
     </el-dialog>
 
-     <!--生成小组赛对话框-->
+     <!--生成八分之一决赛对话框-->
     <el-dialog
-        :visible.sync="addraceDialogVisible"
-        title="生成小组赛"
+        :visible.sync="addraceDialogVisible1"
+        title="生成八分之一决赛"
         width="40%"
-        @close="addraceDialogClosed"
+        @close="addraceDialogClosed1"
     >
       <el-form
           ref="addFormRef"
@@ -159,10 +174,115 @@
       <el-form-item label="赛程名称">
         <el-input v-model="addForm.name"></el-input>
       </el-form-item>
+        <el-form-item label="比赛时间">
+          <el-date-picker
+              v-model="addForm.time"
+              placeholder="选择时间"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+          >
+          </el-date-picker>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addracetable">确定</el-button>
-        <el-button @click="addraceDialogVisible = false">取消</el-button>
+        <el-button @click="addraceDialogVisible1 = false">取消</el-button>
+      </span>
+    </el-dialog>
+
+    <!--生成四分之一决赛对话框-->
+    <el-dialog
+        :visible.sync="addraceDialogVisible2"
+        title="生成四分之一决赛"
+        width="40%"
+        @close="addraceDialogClosed2"
+    >
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          class="demo-ruleForm"
+          label-width="80px"
+      >
+        <el-form-item label="赛程名称">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="比赛时间">
+          <el-date-picker
+              v-model="addForm.time"
+              placeholder="选择时间"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addracetable">确定</el-button>
+        <el-button @click="addraceDialogVisible2 = false">取消</el-button>
+      </span>
+    </el-dialog>
+
+    <!--生成半决赛对话框-->
+    <el-dialog
+        :visible.sync="addraceDialogVisible3"
+        title="生成半决赛"
+        width="40%"
+        @close="addraceDialogClosed3"
+    >
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          class="demo-ruleForm"
+          label-width="80px"
+      >
+        <el-form-item label="赛程名称">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="比赛时间">
+          <el-date-picker
+              v-model="addForm.time"
+              placeholder="选择时间"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addracetable">确定</el-button>
+        <el-button @click="addraceDialogVisible3 = false">取消</el-button>
+      </span>
+    </el-dialog>
+
+    <!--生成决赛对话框-->
+    <el-dialog
+        :visible.sync="addraceDialogVisible4"
+        title="生成决赛"
+        width="40%"
+        @close="addraceDialogClosed4"
+    >
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          class="demo-ruleForm"
+          label-width="80px"
+      >
+        <el-form-item label="赛程名称">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="比赛时间">
+          <el-date-picker
+              v-model="addForm.time"
+              placeholder="选择时间"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addracetable">确定</el-button>
+        <el-button @click="addraceDialogVisible4 = false">取消</el-button>
       </span>
     </el-dialog>
 
@@ -237,7 +357,10 @@ export default {
       },
       total: 0,
       addDialogVisible: false,
-      addraceDialogVisible:false,
+      addraceDialogVisible1:false,
+      addraceDialogVisible2:false,
+      addraceDialogVisible3:false,
+      addraceDialogVisible4:false,
       editDialogVisible: false,
       addForm: {
         name: "",

@@ -62,7 +62,7 @@
         <el-table-column label="项目性别" prop="itemSex"></el-table-column>
         <el-table-column label="项目地点" prop="itemPlace"></el-table-column>
         <el-table-column
-            label="项目记分员"
+            label="项目裁判"
             prop="user.nickname"
         ></el-table-column>
         <el-table-column
@@ -82,6 +82,7 @@
                 icon="el-icon-tickets"
                 size="mini"
                 type="primary"
+                :isabled="scope.row.process==='semifianls'||(scope.row.process==='finals'&&scope.row.catalog.length!==1)"
                 @click="
                 signItem(scope.row);
               "

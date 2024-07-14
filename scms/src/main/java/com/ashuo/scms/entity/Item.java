@@ -50,6 +50,9 @@ public class Item implements Serializable {
 
     private Integer groupAmount;
     private String catalog;
+    private String process;
+
+
     @JsonIgnore
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime startTime;

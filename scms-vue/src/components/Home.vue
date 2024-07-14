@@ -156,6 +156,7 @@ export default {
         1100:"iconfont icon-jiaoshijieyong",
         1200:"iconfont icon-xinxibeian",
         1300:"iconfont icon-shiwuzhaoling",
+        1400:"iconfont icon-baoleiji",
       },
     };
   },
@@ -289,8 +290,9 @@ export default {
 
 .span {
   margin-left: 15px;
-  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  font-family: 'SimSun', sans-serif;
+  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  //font-family: 'SimSun', sans-serif;
+  font: 1em Georgia, serif;
 }
 
 .el-aside {
