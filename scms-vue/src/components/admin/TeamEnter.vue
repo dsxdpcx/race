@@ -24,26 +24,18 @@
                 v-for="item in allItemOptions"
                 :key="item.itemId"
                 :label="item.itemName"
-                :value="item.itemId"
+                :value="item.itemName"
             >
             </el-option>
           </el-select>
         </el-col>
 
-          <el-input
-              v-model="queryInfo.query"
-              clearable
-              placeholder="请输入项目名称"
-              @clear="page"
-              @keyup.enter.native="page"
-          >
-            <!--搜索按钮-->
-            <el-button
-                slot="append"
-                icon="el-icon-search"
-                @click="page"
-            ></el-button>
-          </el-input>
+          <el-col :span="4">
+            <el-button type="primary" @click="signTeam"
+            >报名
+            </el-button
+            >
+          </el-col>
         </el-col>
         <div style="float: left">
           <el-col>
@@ -63,33 +55,50 @@
             </el-select>
           </el-col>
         </div>
-        
+        <div style="float: left">
+          <el-col>
+            <el-select
+                v-model="selectTeamId"
+                filterable
+                placeholder="请选择团队"
+                @change="page(true)"
+            >
+              <el-option
+                  v-for="item in allTeamOptions"
+                  :key="item.teamId"
+                  :label="item.teamName"
+                  :value="item.teamName"
+              >
+              </el-option>
+            </el-select>
+          </el-col>
+        </div>
       </el-row>
       <!--项目列表 stripe隔行变色-->
       <el-table :data="itemList" border stripe>
         <!--索引列-->
 
         <el-table-column type="index"></el-table-column>
-        <el-table-column label="赛事名称" prop="itemName"></el-table-column>
-        <el-table-column label="参赛队名" prop="itemSex"></el-table-column>
-        <el-table-column label="队伍组号" prop="itemPlace"></el-table-column>
-        <el-table-column label="操作" prop="state">
-          <template slot-scope="scope">
-            <!--详情-->
+        <el-table-column label="赛事名称" prop="eventName"></el-table-column>
+        <el-table-column label="参赛队名" prop="teamName"></el-table-column>
+<!--        <el-table-column label="队伍组号" prop="groupName"></el-table-column>-->
+<!--        <el-table-column label="操作" prop="state">-->
+<!--          <template slot-scope="scope">-->
+<!--            &lt;!&ndash;详情&ndash;&gt;-->
 
-            <el-button
-                icon="el-icon-tickets"
-                size="mini"
-                type="primary"
-                :isabled="scope.row.process==='semifianls'||(scope.row.process==='finals'&&scope.row.catalog.length!==1)"
-                @click="
-                signItem(scope.row);
-              "
-            >报名
-            </el-button
-            >
-          </template>
-        </el-table-column>
+<!--            <el-button-->
+<!--                icon="el-icon-tickets"-->
+<!--                size="mini"-->
+<!--                type="primary"-->
+<!--                :isabled="scope.row.process==='semifianls'||(scope.row.process==='finals'&&scope.row.catalog.length!==1)"-->
+<!--                @click="-->
+<!--                signItem(scope.row);-->
+<!--              "-->
+<!--            >报名-->
+<!--            </el-button-->
+<!--            >-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
       <!--分页组件-->
       <div>
@@ -127,10 +136,11 @@ export default {
 //所有运动会届时列表
       allSeasonOptions: [],
       allItemOptions: [],
-
+     allTeamOptions: [],
       //选择的届时
       selectSeasonId: "",
       selectItemId: "",
+      selectTeamId: "",
 
       signItemInfo: {
         user: {
@@ -154,7 +164,10 @@ export default {
       },
       //select远程搜索加载中
       loading: false,
-
+      addTeamEnter: {
+        eventName: "",
+        teamName: "",
+      },
       queryInfo: {
         currentPage: 1,
         pageSize: 10,
@@ -169,6 +182,7 @@ export default {
   created() {
     this.getSeasons();
     this.getItem();
+    this.getTeam();
   },
   methods: {
     async page(isSelect) {
@@ -178,7 +192,7 @@ export default {
       }
       const _this = this;
       axios
-          .get("/item/queryItem?season.seasonId=" + _this.selectSeasonId + "&queryInfo=", {params: _this.queryInfo})
+          .get("/teamEnter/queryTeamEnter?eventName="+_this.selectItemId+"&queryInfo=", {params: _this.queryInfo})
           .then((res) => {
             let data = res.data.data;
             _this.itemList = data.records;
@@ -221,6 +235,17 @@ export default {
             _this.page()
           });
     },
+    async getTeam() {
+      const _this = this;
+      axios
+          .get("/team/queryTeam?query=&currentPage=1&pageSize=999999999")
+          .then((res) => {
+            let data = res.data.data.records;
+
+            _this.allTeamOptions = data;
+            _this.page()
+          });
+    },
     async getItemDetail(id) {
       const _this = this;
       axios.get("/item/getItem?itemId=" + id).then((res) => {
@@ -241,20 +266,11 @@ export default {
       _this.page();
     },
 
-    //项目报名
-    async signItem(row) {
+    async signTeam() {
       const _this = this;
-      if (row.itemAmount > 1) {
-        _this.addAthletesItemForm.item.itemId = row.itemId;
-        _this.addAthletesItemForm.itemName = row.itemName;
-        _this.addAthletesItemForm.itemSex = row.itemSex;
-        _this.addAthletesItemForm.itemPlace = row.itemPlace;
 
-        _this.dialogTableVisible = true;
-        return;
-      }
       const confirmResult = await _this
-          .$confirm("确定报名参赛该项目吗", "提示", {
+          .$confirm("确定报名吗", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning",
@@ -263,40 +279,7 @@ export default {
       if (confirmResult !== "confirm") {
         return _this.$message.info("已取消报名");
       }
-
-      if (JSON.parse(localStorage.getItem("user")).userSex != row.itemSex) {
-        return _this.$message.info("参赛性别不符合");
-      }
-      _this.signItemInfo.user.userId = JSON.parse(
-          localStorage.getItem("user")
-      ).userId;
-      _this.signItemInfo.item.itemId = row.itemId;
-      axios.post("/athlete/addAthlete", _this.signItemInfo).then((res) => {
-        if (res.data.status != 200) {
-          return _this.$message.error(res.data.msg);
-        }
-        _this.$message.success("报名成功");
-        _this.page();
-      });
-    },
-
-    async signCaipan() {
-      const _this = this;
-
-      const confirmResult = await _this
-          .$confirm("确定报名裁判吗", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
-          })
-          .catch((err) => err);
-      if (confirmResult !== "confirm") {
-        return _this.$message.info("已取消报名");
-      }
-      _this.addCaipanForm.userId =JSON.parse(localStorage.getItem("user")).userId;
-      _this.addCaipanForm.name =JSON.parse(localStorage.getItem("user")).username;
-      _this.addCaipanForm.phone =JSON.parse(localStorage.getItem("user")).phone;
-      axios.post("/athlete/addCaipan", _this.addCaipanForm).then((res) => {
+     axios.post("/teamEnter/addTeamEnter", _this.addTeamEnter).then((res) => {
         if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
         }

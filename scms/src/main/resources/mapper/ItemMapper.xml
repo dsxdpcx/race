@@ -191,7 +191,7 @@
             <if test="item.itemPlace!=null">AND i.item_place=#{item.itemPlace}</if>
             <if test="item.itemUnit!=null">AND i.item_unit=#{item.itemUnit}</if>
             <if test="item.itemSex!=null">AND i.item_sex=#{item.itemSex}</if>
-            <if test="item.itemAmount!=null and item.itemAmount!=0">AND i.item_amount!=1</if>
+            AND i.item_amount!=1
             <if test="item.athleteAmount!=null ">AND i.athlete_amount=#{item.athleteAmount}</if>
             <if test="item.startTime!=null">AND i.start_time=#{item.startTime}</if>
             <if test="item.endTime!=null">AND i.end_time=#{item.endTime}</if>
