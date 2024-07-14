@@ -39,7 +39,7 @@ public class Football implements Serializable {
     private String match_class;
 
     private String winner;
-    @JsonIgnore
+    //@JsonIgnore
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime time;
 }

@@ -487,12 +487,23 @@ public class FootballController {
         data.setId(index);
         Player player1 = new Player();
         Player player2 = new Player();
-        player1.setName(match.getTeam_a());
-        player2.setName(match.getTeam_b());
-        player1.setScore(match.getA_score());
-        player2.setScore(match.getB_score());
-        data.setPlayer1(player1);
-        data.setPlayer2(player2);
+        if(match.getA_score()>match.getB_score())
+        {
+            player1.setName(match.getTeam_a());
+            player2.setName(match.getTeam_b());
+            player1.setScore(match.getA_score());
+            player2.setScore(match.getB_score());
+            data.setPlayer1(player1);
+            data.setPlayer2(player2);
+        }
+        else{
+            player1.setName(match.getTeam_b());
+            player2.setName(match.getTeam_a());
+            player1.setScore(match.getB_score());
+            player2.setScore(match.getA_score());
+            data.setPlayer1(player1);
+            data.setPlayer2(player2);
+        }
         List<Node> children = new ArrayList<>();
         Node child1 = convertToNestedData(footballList, 2 * index);
         if (child1 != null) {
