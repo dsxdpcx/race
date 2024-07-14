@@ -212,7 +212,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="项目记分员">
+        <el-form-item label="项目caipan">
           <el-select v-model="addForm.user.userId" placeholder="请选择">
             <el-option
                 v-for="item in scorers"
@@ -815,6 +815,10 @@ export default {
             return _this.$message.error(res.data.msg);
           }
           console.log("addForm", _this.addForm);
+          console.log("catalog", _this.catalog);
+          console.log("rule1", _this.rule1);
+          console.log("rule2", _this.rule2);
+
           _this.$message.success("操作成功");
           _this.addDialogVisible = false;
           _this.addTemplateDialogVisible = false;

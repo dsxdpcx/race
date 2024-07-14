@@ -6,6 +6,7 @@ import com.ashuo.scms.entity.Item;
 import com.ashuo.scms.entity.QueryInfo;
 import com.ashuo.scms.entity.Season;
 import com.ashuo.scms.service.ItemService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -38,7 +39,17 @@ public class ItemController {
         return ServerResponse.createBySuccess(itemList);
     }
 
+    @ApiOperation("查询当前项目")
+    @GetMapping("/querytimeItem")
+//    @RequiresAuthentication
+    public ServerResponse queryItem() {
 
+        LocalDateTime now = LocalDateTime.now();
+        QueryWrapper<Item> queryWrapper = new QueryWrapper<>();
+        queryWrapper.gt("start_time", now);  // 使用gt（"greater than"）来查询之后的日期
+        List<Item> itemList = itemService.list(queryWrapper);
+        return ServerResponse.createBySuccess(itemList);
+    }
     @ApiOperation("添加项目")
     @PostMapping("/addItem")
     @Transactional
