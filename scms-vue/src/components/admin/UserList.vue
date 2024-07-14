@@ -292,21 +292,16 @@ export default {
 
       userRole: [
         {
-          value: 4,
-          label:"器材管理员"
-
-        },
-        {
           value: 3,
           label: "普通学生",
         },
         {
           value: 2,
-          label: "负责人",
+          label: "裁判",
         },
         {
           value: 1,
-          label: "项目管理员",
+          label: "管理员",
         },
       ],
       queryInfo: {

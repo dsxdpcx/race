@@ -172,7 +172,7 @@ export default {
 
       myChart.setOption({
         title: {
-          text: "团队总分排名",
+          text: "团队总分",
         },
         tooltip: {},
         xAxis: {

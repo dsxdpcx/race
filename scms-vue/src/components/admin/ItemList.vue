@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column label="项目分数单位" prop="itemUnit" width="100">
         </el-table-column>
-        <el-table-column label="项目记分员" prop="user.nickname" width="80">
+        <el-table-column label="项目裁判" prop="user.nickname" width="80">
         </el-table-column>
         <el-table-column label="项目开始时间" prop="startTime" width="140">
         </el-table-column>
@@ -212,7 +212,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="项目caipan">
+        <el-form-item label="项目裁判">
           <el-select v-model="addForm.user.userId" placeholder="请选择">
             <el-option
                 v-for="item in scorers"
