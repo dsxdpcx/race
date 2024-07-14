@@ -342,7 +342,7 @@
       </span>
     </el-dialog>
     <el-dialog
-        :visible.sync="addDialogVisible"
+        :visible.sync="addaddDialogVisible"
         title="添加时间地点，裁判"
         width="40%"
         @close="addDialogClosed"
@@ -491,6 +491,7 @@ export default {
       dialogTableVisible: false,
       EditDialogVisible: false,
       dialogFormVisible: false,
+      addaddDialogVisible:false,
     };
   },
   created() {

@@ -71,7 +71,7 @@
 
 <style scoped>
 #matches{
-  position: absolute;
+  /*position: absolute;*/
   left: 350px;
   width: calc(100% - 350px);
   margin-top: 0px;
@@ -325,9 +325,10 @@ export default {
     async page() {
       const _this = this;
       axios
-          .post("/racefootballshow/RaceTable",_this.football)
+          .post("/racefootball/showRaceTable",_this.football)
           .then((res) => {
             let data = res.data.data;
+            console.log(data)
             _this.treeData.data=data;
           });
     },
