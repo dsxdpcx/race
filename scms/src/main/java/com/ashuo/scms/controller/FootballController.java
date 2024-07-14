@@ -135,6 +135,7 @@ public class FootballController {
     @ApiOperation("生成小组赛")
     @PostMapping("/groupRace")
     //@RequiresRoles(value = {"1"})
+    //只需要传入赛程名称和小组赛开始时间就行
     public ServerResponse addracetable(@RequestBody Football football) {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
@@ -444,12 +445,16 @@ public class FootballController {
     //@RequiresRoles(value = {"1"})
     //传入的football只需要有赛程名称(如狮子山杯)
     public ServerResponse showRaceTable(@RequestBody Football football) {
-        if (football == null ) {
+        if (football.getName()=="" ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
         }
+
         Football football1=new Football();
         football1.setName(football.getName());
         List<Football> list1=footballService.queryWinnerName(football1);
+        if(list1.size()==0){
+            return ServerResponse.createByErrorCodeMessage(400, "该比赛不存在");
+        }
         // 使用 Collections.sort 方法排序
         Collections.sort(list1, new Comparator<Football>() {
             @Override
@@ -478,7 +483,7 @@ public class FootballController {
     }
 
     public static Node convertToNestedData(List<Football> footballList, int index) {
-        if (index >= footballList.size()) {
+        if (index > footballList.size()) {
             return null;
         }
 

@@ -327,6 +327,10 @@ export default {
       axios
           .post("/racefootball/showRaceTable",_this.football)
           .then((res) => {
+          if (res.data.status != 200) {
+              return _this.$message.error(res.data.msg);
+            }
+            _this.$message.success("操作成功");
             let data = res.data.data;
             console.log(data)
             _this.treeData.data=data;
@@ -357,6 +361,9 @@ export default {
       axios
           .post("/racefootballshow/RaceTable"+this.football)
           .then((res) => {
+             if (res.data.status != 200) {
+              return _this.$message.error(res.data.msg);
+            }
             let data = res.data.data;
             _this.treeData.data=data;
             _this.page();
