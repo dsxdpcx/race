@@ -110,4 +110,16 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper,Item> implements Ite
         return item;
     }
 
+    @Override
+    public IPage<Item> getItemByExclude(Page<Item> page, Item item) {
+
+        IPage<Item> itemList = itemMapper.queryItemByExclude(page, item);
+        if (itemList.getRecords() != null && itemList.getRecords().size() > 0) ;
+        //项目名称加上性别
+        itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getItemSex() + ")")).collect(Collectors.toList()));
+        itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getProcess() + ")")).collect(Collectors.toList()));
+        return itemList;
+
+    }
+
 }

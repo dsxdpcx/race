@@ -435,18 +435,29 @@
         </el-form-item>
 
         <el-form-item v-if="catalog === '0'" label="半决赛晋级规则">
-          <el-select v-model="rule2" placeholder="请选择半决赛晋级规则">
-            <el-option
-                v-for="rule in advancementRuleOptions"
-                :key="rule.id"
-                :label="rule.label"
-                :value="rule.id">
-            </el-option>
-          </el-select>
+<!--          <el-select v-model="rule2" placeholder="请选择半决赛晋级规则">-->
+<!--            <el-option-->
+<!--                v-for="rule in advancementRuleOptions"-->
+<!--                :key="rule.id"-->
+<!--                :label="rule.label"-->
+<!--                :value="rule.id">-->
+<!--            </el-option>-->
+<!--          </el-select>-->
+          <div class="block">
+            <el-cascader
+                v-model="rule2"
+                :options="advancementRuleOptions"
+                :props="{ expandTrigger: 'hover' }"
+            ></el-cascader>
+          </div>
         </el-form-item>
 
-        <el-form-item label="项目人数">
-          <el-input v-model="addForm.itemAmount" placeholder="请输入项目人数"></el-input>
+<!--        <el-form-item label="项目人数">-->
+<!--          <el-input v-model="addForm.itemAmount" placeholder="请输入项目人数"></el-input>-->
+<!--        </el-form-item>-->
+
+        <el-form-item label="分组（人/组）">
+          <el-input-number v-model="addForm.groupAmount" :min="0" label="分组人数"></el-input-number>
         </el-form-item>
 
       </el-form>
@@ -517,24 +528,24 @@ export default {
 
       advancementRuleOptions: [
         {
-          id: "1",
+          value: "1",
           label: "游泳比赛规则",
 
-          children: [{id: '1', label: '前16晋级'},
-            {id: '3', label: '前8晋级'},]
+          children: [{value: '1', label: '前16晋级'},
+            {value: '3', label: '前8晋级'},]
         },
 
         {
-          id: "1",
+          value: "1",
           label: "跑步比赛规则",
 
-          children: [{id: '0', label: '小组前两名再加两名最好成绩晋级'},
-            {id: '2', label: '小组前三再加三名最好成绩晋级'},]
+          children: [{value: '0', label: '小组前两名再加两名最好成绩晋级'},
+            {value: '2', label: '小组前三再加三名最好成绩晋级'},]
         },
         {
-          id: "1",
+          value: "1",
           label: "跑步比赛规则",
-          children: [{id: '4', label: '成绩大于8米15晋级,晋级人数不足12人，则取成绩最好的12名运动员晋级(跳远)'}
+          children: [{value: '4', label: '成绩大于8米15晋级,晋级人数不足12人，则取成绩最好的12名运动员晋级(跳远)'}
             ,]
         }
 
@@ -624,8 +635,8 @@ export default {
 
 
       catalog: "",
-      rule1: "",
-      rule2: "",
+      rule1: [],
+      rule2: [],
       addForm: {
         itemName: "",
         parentId: "",
@@ -635,6 +646,7 @@ export default {
         itemSex: "",
         startTime: "",
         endTime: "",
+        groupAmount: "",
         user: {
           userId: "",
         },
@@ -857,6 +869,9 @@ export default {
         }
         _this.editForm.itemName = _this.editForm.itemName.replace("(男)", "")
         _this.editForm.itemName = _this.editForm.itemName.replace("(女)", "")
+        _this.editForm.itemName=_this.editForm.itemName.replace("(heats)","")
+        _this.editForm.itemName=_this.editForm.itemName.replace("(semifinals)","")
+        _this.editForm.itemName=_this.editForm.itemName.replace("(finals)","")
         axios.put("/item/editItem", _this.editForm).then((res) => {
           if (res.data.status != 200) {
             return _this.$message.error(res.data.msg);
@@ -871,7 +886,12 @@ export default {
   computed: {
     computedCatalog: {
       get() {
-        return this.catalog + this.rule1 + this.rule2;
+        if(typeof rule1 === 'undefined')
+          return this.catalog;
+        else if(typeof rule2 === 'undefined')
+          return this.catalog + this.rule1[1];
+        else
+        return this.catalog + this.rule1[1] + this.rule2[1];
       },
       set(newValue) {
         this.addForm.catalog = newValue;

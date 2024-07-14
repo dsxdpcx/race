@@ -30,4 +30,5 @@ public interface ItemService extends IService<Item> {
 
     Item getItemTemplateDetail(Item item);
 
+    IPage<Item> getItemByExclude(Page<Item> page, Item item);
 }

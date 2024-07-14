@@ -39,4 +39,5 @@ public interface ItemMapper extends BaseMapper<Item> {
     Item queryItemTemplateDetail(@Param("item") Item item);
 
 
+    IPage<Item> queryItemByExclude(Page<Item> page, Item item);
 }

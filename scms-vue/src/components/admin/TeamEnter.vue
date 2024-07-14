@@ -114,12 +114,9 @@
 import axios from "axios";
 
 export default {
-  name: "ItemList",
+  name: "TeamEnter",
   data() {
     return {
-
-
-
 
       userList: [],
       // selectUids:[],
@@ -129,8 +126,11 @@ export default {
       itemDetail: [],
 //所有运动会届时列表
       allSeasonOptions: [],
+      allItemOptions: [],
+
       //选择的届时
       selectSeasonId: "",
+      selectItemId: "",
 
       signItemInfo: {
         user: {
@@ -168,6 +168,7 @@ export default {
   },
   created() {
     this.getSeasons();
+    this.getItem();
   },
   methods: {
     async page(isSelect) {
@@ -206,7 +207,20 @@ export default {
           });
     },
 
-
+    async getItem() {
+      const _this = this;
+      axios
+          .get("/item/queryItem3?query=&currentPage=1&pageSize=999999999")
+          .then((res) => {
+            let data = res.data.data.records;
+            data.push({
+              itemId: 0,
+              itemName: "所有项目",
+            });
+            _this.allItemOptions = data;
+            _this.page()
+          });
+    },
     async getItemDetail(id) {
       const _this = this;
       axios.get("/item/getItem?itemId=" + id).then((res) => {

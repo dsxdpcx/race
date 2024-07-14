@@ -31,7 +31,7 @@ public class ItemController {
 
     @ApiOperation("查询项目")
     @GetMapping("/queryItem")
-    @RequiresAuthentication
+//    @RequiresAuthentication
     public ServerResponse queryItem(QueryInfo queryInfo, Item item) {
         item.setItemName(queryInfo.getQuery());
         Page<Item> page = new Page(queryInfo.getCurrentPage(), queryInfo.getPageSize());
@@ -39,10 +39,33 @@ public class ItemController {
         return ServerResponse.createBySuccess(itemList);
     }
 
+    @ApiOperation("查询可报名项目")
+    @GetMapping("/queryItem2")
+    @RequiresAuthentication
+    public ServerResponse queryItem2(QueryInfo queryInfo, Item item) {
+        item.setItemName(queryInfo.getQuery());
+        Page<Item> page = new Page(queryInfo.getCurrentPage(), queryInfo.getPageSize());
+        item.setProcess("heats");
+        IPage<Item> itemList = itemService.getItemByItemCondition(page, item);
+
+
+        return ServerResponse.createBySuccess(itemList);
+    }
+    @ApiOperation("查询多人项目")
+    @GetMapping("/queryItem3")
+//    @RequiresAuthentication
+    public ServerResponse queryItem3(QueryInfo queryInfo, Item item) {
+        item.setItemName(queryInfo.getQuery());
+        Page<Item> page = new Page(queryInfo.getCurrentPage(), queryInfo.getPageSize());
+        IPage<Item> itemList = itemService.getItemByExclude(page, item);
+        return ServerResponse.createBySuccess(itemList);
+    }
+
+
     @ApiOperation("查询当前项目")
     @GetMapping("/querytimeItem")
 //    @RequiresAuthentication
-    public ServerResponse queryItem() {
+    public ServerResponse querytimeItem() {
 
         LocalDateTime now = LocalDateTime.now();
         QueryWrapper<Item> queryWrapper = new QueryWrapper<>();
@@ -66,6 +89,7 @@ public class ItemController {
         Item tempItem = new Item();
         tempItem.setParentId(item.getParentId());
         tempItem.setItemSex(item.getItemSex());
+        tempItem.setProcess(item.getProcess());
         if (item.getSeason() != null && item.getSeason().getSeasonId() != null && item.getSeason().getSeasonId() != 0) {
             Season season = item.getSeason();
             tempItem.setSeason(season);
@@ -85,13 +109,21 @@ public class ItemController {
         }
         //设置初始人数
         item.setAthleteAmount(0);
+        item.setItemAmount(1);
         //设置创建时间
         item.setCreateTime(LocalDateTime.now());
         item.setEditTime(LocalDateTime.now());
+        if(item.getCatalog().length()==1){
+            item.setProcess("finals");
+        }
+        else {
+            item.setProcess("heats");
+        }
         int effNum = 0;
         try {
             effNum = itemService.addItem(item);
         } catch (Exception e) {
+             e.printStackTrace(); // 打印堆栈跟踪
             return ServerResponse.createByErrorCodeMessage(400, "添加失败");
         }
         if (effNum == 0) {
@@ -149,6 +181,7 @@ public class ItemController {
         Item tempItem = new Item();
         tempItem.setItemName(item.getItemName());
         tempItem.setItemSex(item.getItemSex());
+        tempItem.setProcess(item.getProcess());
         //如果不是添加模板，则需要加上seasonId来区分是否会和之前届的冲突
         if (item.getSeason() != null && item.getSeason().getSeasonId() != null && item.getSeason().getSeasonId() != 0) {
             Season season = item.getSeason();

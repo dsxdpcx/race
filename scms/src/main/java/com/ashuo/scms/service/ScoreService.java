@@ -35,10 +35,14 @@ public interface ScoreService extends IService<Score> {
 
     void checkAndPromoteThree(int itemId, String process);
 
+    boolean qualify(int itemId, String process);
+
     void checkAndPromoteTopSixteen(int itemId, String process);
 
     void checkAndPromoteTopX(int number,int itemId, String process);
     List<Integer> getWinners(int itemId);
+
+    void produceWinners(int itemId);
 
 //    void checkAndPromotefield(int itemId, String process);
 }

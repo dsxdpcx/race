@@ -91,8 +91,10 @@ public class ScoreController {
         athlete.setScoreStatus(1);
         athleteService.modifyAthlete(athlete);
 
-        //分数排名处理
+        if(item.getProcess().equals("finals")){
+//        //分数排名处理
         scoreRankingHandle(score);
+    }
         return ServerResponse.createBySuccessMessage("添加成功");
 
     }
@@ -263,8 +265,18 @@ public class ScoreController {
     @Transactional
     public ServerResponse semi(@RequestParam int itemId, @RequestParam String process) {
 
-
+        if(!scoreService.qualify(itemId, process)){
+            return ServerResponse.createByErrorCodeMessage(400, "比赛未完成，不能生成下一轮比赛");
+        }
         Item item = itemService.getById(itemId);
+        QueryWrapper<Item> queryWrapper = new QueryWrapper<>();
+        String name = item.getItemName();
+        queryWrapper.eq("item_name", name);
+        queryWrapper.eq("process", "semifinals");
+        List<Item> itemList = itemService.list(queryWrapper);
+        if (itemList.size() > 0) {
+            return ServerResponse.createByErrorCodeMessage(400, "不能重复生成");
+        }
         String catalog = item.getCatalog();
         process="heats";
         if(catalog.charAt(1)=='1'){
@@ -293,34 +305,46 @@ public class ScoreController {
     @Transactional
     public ServerResponse finals(@RequestParam int itemId, @RequestParam String process) {
 
+        if(!scoreService.qualify(itemId, process)){
+            return ServerResponse.createByErrorCodeMessage(400, "比赛未完成，不能生成下一轮比赛");
+        }
+
         Item item = itemService.getById(itemId);
+        QueryWrapper<Item> queryWrapper = new QueryWrapper<>();
+        String name = item.getItemName();
+        queryWrapper.eq("item_name", name);
+        queryWrapper.eq("process", "finals");
+        List<Item> itemList = itemService.list(queryWrapper);
+        if (itemList.size() > 0) {
+            return ServerResponse.createByErrorCodeMessage(400, "不能重复生成");
+        }
         String catalog = item.getCatalog();
 
         if(catalog.length()==2) {
-            process="semifinals";
-            if (catalog.charAt(1) == '1') {
+             process= "heats";
+            if (catalog.charAt(1) == '2') {
                 scoreService.checkAndPromoteThree(itemId, process);
-            } else if (catalog.charAt(1) == '2') {
+            } else if (catalog.charAt(1) == '0') {
                 scoreService.checkAndPromoteTwo(itemId, process);
-            } else if (catalog.charAt(1) == '3') {
-                fieldfinal(itemId, process);
             } else if (catalog.charAt(1) == '4') {
+                fieldfinal(itemId, process);
+            } else if (catalog.charAt(1) == '1') {
                 scoreService.checkAndPromoteTopSixteen(itemId, process);
-            } else if (catalog.charAt(1) == '5') {
+            } else if (catalog.charAt(1) == '3') {
                 scoreService.checkAndPromoteTopX(8, itemId, process);
             }
         }
         else if(catalog.length()==3){
             process="semifinals";
-            if (catalog.charAt(2) == '1') {
+            if (catalog.charAt(1) == '2') {
                 scoreService.checkAndPromoteThree(itemId, process);
-            } else if (catalog.charAt(2) == '2') {
+            } else if (catalog.charAt(1) == '0') {
                 scoreService.checkAndPromoteTwo(itemId, process);
-            } else if (catalog.charAt(2) == '3') {
+            } else if (catalog.charAt(1) == '4') {
                 fieldfinal(itemId, process);
-            } else if (catalog.charAt(2) == '4') {
+            } else if (catalog.charAt(1) == '1') {
                 scoreService.checkAndPromoteTopSixteen(itemId, process);
-            } else if (catalog.charAt(2) == '5') {
+            } else if (catalog.charAt(1) == '3') {
                 scoreService.checkAndPromoteTopX(8, itemId, process);
             }
         }
@@ -432,22 +456,15 @@ public class ScoreController {
 //    @RequiresRoles(value = {"1"})
     @Transactional
     public ServerResponse winners(@RequestParam int itemId) {
-
-
-        scoreService.checkAndPromoteThree(itemId,"finals");
+        scoreService.produceWinners(itemId);
         List<Integer> winnersid=scoreService.getWinners(itemId);
-
-
         for(Integer id:winnersid) {
             Winners winners = new Winners();
             winners.setItemId(itemId);
             winners.setUserId(id);
-
             winnersService.save(winners);
         }
-
         return ServerResponse.createBySuccessMessage("结束");
-
     }
 
 

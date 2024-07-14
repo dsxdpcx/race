@@ -453,7 +453,7 @@ export default {
     },
     addracetable() {
       const _this = this;
-      axios.post("/racefootball/addracetable", _this.addForm).then((res) => {
+      axios.post("/racefootball/groupRace", _this.addForm).then((res) => {
         if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
         }

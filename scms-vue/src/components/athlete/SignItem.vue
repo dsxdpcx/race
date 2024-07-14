@@ -228,7 +228,7 @@ export default {
       }
       const _this = this;
       axios
-          .get("/item/queryItem?season.seasonId=" + _this.selectSeasonId + "&queryInfo=", {params: _this.queryInfo})
+          .get("/item/queryItem2?season.seasonId=" + _this.selectSeasonId +"&queryInfo=", {params: _this.queryInfo})
           .then((res) => {
             let data = res.data.data;
             _this.itemList = data.records;

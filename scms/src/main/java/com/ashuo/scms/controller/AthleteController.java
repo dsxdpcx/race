@@ -187,6 +187,7 @@ public class AthleteController {
         //设置记分状态，为0表示尚未记分\
         athlete.setScoreStatus(0);
         athlete.setShenhe(-1);
+        athlete.setProcess(item.getProcess());
         int effNum = athleteService.addAthlete(athlete);
         Message message = new Message();
         message.setUserId(athlete.getUId());

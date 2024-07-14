@@ -394,7 +394,7 @@
 import axios from "axios";
 
 export default {
-  name: "AthleteList",
+  name: "ScoreList",
   data() {
     return {
       athleteList: [],
@@ -629,7 +629,42 @@ export default {
           // _this.page();
         });
     },
+    async addvance1() {
+      const _this = this;
 
+        axios.post("/score/semi?itemId="+_this.selectItemId+"&process=heats").then((res) => {
+          if (res.data.status != 200) {
+            return _this.$message.error(res.data.msg);
+          }
+          _this.$message.success("操作成功");
+          _this.page();
+        });
+
+    },
+    async addvance2() {
+      const _this = this;
+
+        axios.post("/score/finals?itemId="+_this.selectItemId+"&process=semifinals").then((res) => {
+          if (res.data.status != 200) {
+            return _this.$message.error(res.data.msg);
+          }
+          _this.$message.success("操作成功");
+          _this.page();
+        });
+
+    },
+    async addvance3() {
+      const _this = this;
+
+        axios.post("/score/winner?itemId="+_this.selectItemId+"&process=heats").then((res) => {
+          if (res.data.status != 200) {
+            return _this.$message.error(res.data.msg);
+          }
+          _this.$message.success("操作成功");
+          _this.page();
+        });
+
+    },
 
     //修改分数
     async editScore() {
@@ -668,45 +703,7 @@ export default {
       }
     },
     //晋级处理
-    async addvance1() {
-      const _this = this;
-      _this.scoreHandle();
-      if (_this.scoreForm.score !== "") {
-        axios.post("/score/semi?itemId="+_this.selectItemId+"&process=heats").then((res) => {
-          if (res.data.status != 200) {
-            return _this.$message.error(res.data.msg);
-          }
-          _this.$message.success("操作成功");
-          _this.page();
-        });
-      }
-    },
-    async addvance2() {
-      const _this = this;
-      _this.scoreHandle();
-      if (_this.scoreForm.score !== "") {
-        axios.post("/score/finals?itemId="+_this.selectItemId+"&process=semifinals").then((res) => {
-          if (res.data.status != 200) {
-            return _this.$message.error(res.data.msg);
-          }
-          _this.$message.success("操作成功");
-          _this.page();
-        });
-      }
-    },
-    async addvance3() {
-      const _this = this;
-      _this.scoreHandle();
-      if (_this.scoreForm.score !== "") {
-        axios.post("/score/winner?itemId="+_this.selectItemId+"&process=heats").then((res) => {
-          if (res.data.status != 200) {
-            return _this.$message.error(res.data.msg);
-          }
-          _this.$message.success("操作成功");
-          _this.page();
-        });
-      }
-    },
+
 
     //查看分数详情
     async showScoreDetail(userId, itemId, isEdit) {
