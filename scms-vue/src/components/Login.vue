@@ -1,10 +1,9 @@
 <template>
   <div :style="bg" class="login_container">
+    <h1 class="title">赛 事 领 航</h1>
     <!--登录块-->
     <div class="login_box">
-      <div ref="vantaRef" style="width: 100%; height: 100vh"></div>
-      <div class="title">赛 事 领 航</div>
-      <!--logo-->
+      <!-- logo -->
       <!-- <div class="avatar_box">
         <img src="../assets/logo.png" alt />
       </div> -->
@@ -62,6 +61,7 @@ export default {
         username: "",
         password: "",
       },
+
       loginRules: {
         username: [
           {required: true, message: "请输入用户名", trigger: "blur"},
@@ -84,33 +84,7 @@ export default {
       },
     };
   },
-  mounted() {
-    this.vantaEffect = CLOUDS({
-      el: this.$refs.vantaRef,
-      THREE: THREE,
-    });
-    VANTA.CLOUDS({
-      el: this.$refs.vantaRef,
-      /*以下为样式配置*/
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: false,
-      minHeight: 200.0,
-      minWidth: 200.0,
-      skyColor: 0x26b9f2,
-      cloudColor: 0xb7c9e8,
-      cloudShadowColor: 0x2f3a48,
-      sunColor: 0x5c452f,
-      sunGlareColor: 0xd4a798,
-      sunlightColor: 0xdc9c59,
-      speed: 1.2,
-    });
-  },
-  beforeDestroy() {
-    if (this.vantaEffect) {
-      this.vantaEffect.destroy();
-    }
-  },
+
   methods: {
     /*处理登录*/
     submitForm(loginForm) {
@@ -165,27 +139,25 @@ export default {
   border: none;
   color: #222222;
   font: 1em Georgia, serif;
-  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  //font-family: 'SimSun', sans-serif;
   font-size: 16px;
 }
 
 .login_container {
-  //background-color: #2b4b6b;
   height: 100%;
   display: flex;
-
 }
 
 /*输入框样式*/
 .login_box {
-  //width: 1650px;
-  //height: 600px;
   width: 100%;
   height: 100%;
   background-color: #999999;
   border-radius: 3px;
-  position: absolute;
+  //position: absolute;
+  background-image: url('../assets/yhd.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 
   .avatar_box {
     width: 130px;
@@ -209,23 +181,20 @@ export default {
 }
 
 .title {
-  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  //font-family: 'SimSun', sans-serif;
   font: 1em Georgia, serif;
   position: absolute;
   top: 30%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 50px;
-  color: #fff;
+  color: #222222;
 }
 
 .btns {
   display: flex;
   justify-content: flex-end;
   font: 1em Georgia, serif;
-  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  //font-family: 'SimSun', sans-serif;
+
 }
 
 .login_form {
@@ -239,8 +208,7 @@ export default {
   transform: translate(-50%, -50%);
   font-size: 16px;
   font: 1em Georgia, serif;
-  //@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-  //font-family: 'SimSun', sans-serif;
+
 }
 @media (max-width: 768px) {
   .login_box {

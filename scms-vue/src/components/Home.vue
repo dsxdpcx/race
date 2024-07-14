@@ -16,6 +16,7 @@
         <el-button size="mini" type="info" @click="gopersonal">个人中心</el-button>
         <el-button size="mini" type="info" @click="logout">安全退出</el-button>
 
+
       </div>
       <div>
         <div class="button-container">
@@ -24,7 +25,18 @@
           </el-button>
           <span v-if="unreadCount > 0" class="red-dot">{{ unreadCount }}</span>
         </div>
-      </div>
+        <el-button size="mini" type="primary" @click="showForm">反馈</el-button>
+        <div v-if="isFormVisible" class="form-container">
+          <el-form label-position="top">
+            <el-form-item label="请选择身份：">
+              <el-button @click="navigateToOption('option1')">管理员</el-button>
+              <el-button @click="navigateToOption('option2')">用户</el-button>
+              <el-button @click="navigateToOption('cancel')">退出</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+    </div>
+
     </el-header>
     <el-container>
       <el-aside :width="iscollapse ? '64px' : '200px'">
@@ -166,6 +178,29 @@ export default {
     this.activePath = window.sessionStorage.getItem("path");
   },
   methods: {
+    showForm() {
+      this.isFormVisible = true;
+    },
+    navigateToOption(option) {
+      // 根据选项做不同的页面导航处理
+      switch (option) {
+        case 'option1':
+          // 执行页面导航，例如使用路由或直接跳转链接
+          window.open('https://mail.qq.com/cgi-bin/frame_html?sid=D_rxfIz13NhXVQNl&r=47fdaad6138e15a76130566887d642bc', '_blank');
+          break;
+        case 'option2':
+          window.open('mailto:1443164389@qq.com', '_blank');
+          break;
+        case 'cancel':
+          // 执行退出逻辑，例如清除token等
+          window.open('/Home','self');
+          break;
+        default:
+          break;
+      }
+
+    },
+
     logout() {
       const _this = this;
       _this.$http

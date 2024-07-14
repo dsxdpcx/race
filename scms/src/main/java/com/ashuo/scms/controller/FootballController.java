@@ -482,6 +482,7 @@ public class FootballController {
         return ServerResponse.createBySuccess(ans);
     }
 
+
     public static Node convertToNestedData(List<Football> footballList, int index) {
         if (index > footballList.size()) {
             return null;
