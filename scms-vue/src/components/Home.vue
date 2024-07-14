@@ -147,7 +147,7 @@ export default {
       userId: JSON.parse(localStorage.getItem("user")).userId,
 
       editDialogVisible: false,
-
+      isFormVisible:false,
       //当前用户
       currentUser: "",
 
