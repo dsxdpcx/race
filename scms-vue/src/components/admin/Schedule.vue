@@ -135,56 +135,56 @@ export default {
         data: {
           id: 1,
           player1: {
-            name: 'N. Djokovic',
-            score: '6 7 7'
+            name: 'Winner',
+            score: '0'
           },
           player2: {
-            name: 'S. Tsitsipas',
-            score: '3 6 6'
+            name: 'Loser',
+            score: '0'
           },
           children: [
             {
               id: 2,
               player1: {
-                name: 'S. Tsitsipas',
-                score: '7 6 6 6'
+                name: 'Winner',
+                score: '0'
               },
               player2: {
-                name: 'K. Khachanov',
-                score: '6 4 7 3'
+                name: 'Loser',
+                score: '0'
               },
               children: [
                 {
                   id: 4,
                   player1: {
-                    name: 'K. Khachanov',
-                    score: '7 6 3'
+                    name: 'Winner',
+                    score: '0'
                   },
                   player2: {
-                    name: 'S. Korda',
-                    score: '6 3 0'
+                    name: 'Loser',
+                    score: '0'
                   },
                   children: [
                     {
                       id: 8,
                       player1: {
-                        name: 'K. Khachanov',
-                        score: '6 6 7'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'Y. Nishioka',
-                        score: '0 0 6'
+                        name: 'Loser',
+                        score: '0'
                       }
                     },
                     {
                       id: 9,
                       player1: {
-                        name: 'S. Korda',
-                        score: '3 6 6 1 7'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'H. Hurkacz',
-                        score: '6 3 2 6 6'
+                        name: 'Loser',
+                        score: '0'
                       }
                     }
                   ]
@@ -192,34 +192,34 @@ export default {
                 {
                   id: 5,
                   player1: {
-                    name: 'S. Tsitsipas',
-                    score: '6 7 6'
+                    name: 'Winner',
+                    score: '0'
                   },
                   player2: {
-                    name: 'J. Lehecka',
-                    score: '3 6 4'
+                    name: 'Loser',
+                    score: '0'
                   },
                   children: [
                     {
                       id: 10,
                       player1: {
-                        name: 'S. Tsitsipas',
-                        score: '6 6 3 4 6'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'J. Sinner',
-                        score: '4 4 6 6 3'
+                        name: 'Loser',
+                        score: '0'
                       }
                     },
                     {
                       id: 11,
                       player1: {
-                        name: 'J. Lehecka',
-                        score: '4 6 7 7'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'F. Auger-Aliassime',
-                        score: '6 3 6 6'
+                        name: 'Loser',
+                        score: '0'
                       }
                     }
                   ]
@@ -229,45 +229,45 @@ export default {
             {
               id: 3,
               player1: {
-                name: 'N. Djokovic',
-                score: '7 6 6'
+                name: 'Winner',
+                score: '0'
               },
               player2: {
-                name: 'T. Paul',
-                score: '5 1 2'
+                name: 'Loser',
+                score: '0'
               },
               children: [
                 {
                   id: 6,
                   player1: {
-                    name: 'N. Djokovic',
-                    score: '6 6 6'
+                    name: 'Winner',
+                    score: '0'
                   },
                   player2: {
-                    name: 'A. Rublev',
-                    score: '1 2 4'
+                    name: 'Loser',
+                    score: '0'
                   },
                   children: [
                     {
                       id: 12,
                       player1: {
-                        name: 'A. Rublev',
-                        score: '6 3 6 4 7'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'H. Rune',
-                        score: '3 6 3 6 6'
+                        name: 'Loser',
+                        score: '0'
                       }
                     },
                     {
                       id: 13,
                       player1: {
-                        name: 'N. Djokovic',
-                        score: '6 6 6'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'A. de Minaur',
-                        score: '2 1 2'
+                        name: 'Loser',
+                        score: '0'
                       }
                     }
                   ]
@@ -275,34 +275,34 @@ export default {
                 {
                   id: 7,
                   player1: {
-                    name: 'T. Paul',
-                    score: '7 6 5 6'
+                    name: 'Winner',
+                    score: '0'
                   },
                   player2: {
-                    name: 'B. Shelton',
-                    score: '6 3 7 4'
+                    name: 'Loser',
+                    score: '0'
                   },
                   children: [
                     {
                       id: 14,
                       player1: {
-                        name: 'B. Shelton',
-                        score: '6 6 6 7 6'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'J. Wolf',
-                        score: '7 2 7 6 2'
+                        name: 'Loser',
+                        score: '0'
                       }
                     },
                     {
                       id: 15,
                       player1: {
-                        name: 'T. Paul',
-                        score: '6 4 6 7'
+                        name: 'Winner',
+                        score: '0'
                       },
                       player2: {
-                        name: 'R. Bautista Agut',
-                        score: '2 6 2 5'
+                        name: 'Loser',
+                        score: '0'
                       }
                     }
                   ]
@@ -392,7 +392,7 @@ export default {
                   <p class="playerRowTeam" style="color:#0091d2 !important;">{data.player1.name}</p>
                 </div>
                 <div class="playerRowStatusWrapper">
-                  <span class="playerRowStatus">√</span>
+                  <span class="playerRowStatus">★</span>
                   <span class="playerRowScore">{data.player1.score}</span>
                 </div>
               </div>
