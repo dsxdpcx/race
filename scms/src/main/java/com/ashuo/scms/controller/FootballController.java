@@ -135,6 +135,7 @@ public class FootballController {
     @ApiOperation("生成小组赛")
     @PostMapping("/groupRace")
     //@RequiresRoles(value = {"1"})
+    //只需要传入赛程名称和小组赛开始时间就行
     public ServerResponse addracetable(@RequestBody Football football) {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");

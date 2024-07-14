@@ -29,7 +29,7 @@ public class TeamEnterController {
 
     @ApiOperation("查询报名团队")
     @GetMapping("/queryTeamEnter")
-    //@RequiresAuthentication
+    @RequiresAuthentication
     public ServerResponse queryEnter(QueryInfo queryInfo, TeamEnter football) {
         football.setEventName(queryInfo.getQuery());
         Page<TeamEnter> page = new Page<>(queryInfo.getCurrentPage(), queryInfo.getPageSize());
@@ -41,7 +41,7 @@ public class TeamEnterController {
 
     @ApiOperation("添加报名团队")
     @PostMapping("/addTeamEnter")
-    //@RequiresRoles(value = {"1"})
+    @RequiresRoles(value = {"1"})
     public ServerResponse addFootball(@RequestBody TeamEnter teamEnter) {
 
         if (teamEnter == null || teamEnter.getEventName() == null) {
@@ -68,7 +68,7 @@ public class TeamEnterController {
 
     @ApiOperation("删除团体")
     @DeleteMapping("/deleteTeamEnter")
-    //@RequiresRoles(value = {"1"})
+    @RequiresRoles(value = {"1"})
     public ServerResponse deleteTeam(Integer id) {
         int effNum = 0;
         try {
@@ -86,7 +86,7 @@ public class TeamEnterController {
 
     @ApiOperation("获取团体信息")
     @GetMapping("/getTeamEnter")
-    //@RequiresRoles(value = {"1"})
+    @RequiresRoles(value = {"1"})
     public ServerResponse getSchedule(TeamEnter footballCondition) {
 
         List<TeamEnter> football = teamEnterService.getTeamByCondition(footballCondition);
@@ -98,7 +98,7 @@ public class TeamEnterController {
 
     @ApiOperation("修改团体")
     @PostMapping("/updateTeamEnter")
-    //@RequiresRoles(value = {"1"})
+    @RequiresRoles(value = {"1"})
     public ServerResponse editTeam(@RequestBody TeamEnter football) {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "修改失败，团体信息为空");
@@ -123,7 +123,7 @@ public class TeamEnterController {
 
     @ApiOperation("团体分组")
     @PostMapping("/groupTeamEnter")
-    //@RequiresRoles(value = {"1"})
+    @RequiresRoles(value = {"1"})
     public ServerResponse groupTeam(@RequestBody TeamEnter football) {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "分组失败，比赛信息为空");

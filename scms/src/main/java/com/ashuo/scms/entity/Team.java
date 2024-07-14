@@ -24,11 +24,11 @@ public class Team implements Serializable {
 
     private String teamName;
 
-    @JsonIgnore
+   // @JsonIgnore
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
 
-    @JsonIgnore
+    //@JsonIgnore
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime editTime;
 

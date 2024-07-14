@@ -2,3 +2,4 @@
 scms/target
 logs
 .idea
+scms-vue/package-lock.json

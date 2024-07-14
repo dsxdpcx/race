@@ -32,6 +32,7 @@ import racefootball from "@/components/admin/racefootball";
 import Mycheer from "@/components/athlete/Mycheer";
 import CheerList from "@/components/admin/CheerList";
 import Schedule from "@/components/admin/Schedule";
+import TeamEnter from "@/components/admin/TeamEnter";
 
 Vue.use(VueRouter);
 
@@ -39,138 +40,142 @@ const routes = [{
     path: "/",
     redirect: "/login",
 },
-    {
-        path: "/personal",
-        component: Index
+{
+    path: "/personal",
+    component: Index
+},
+{
+    path: "/personal/userinfo",
+    component: User_info
+},
+{
+    path: "/personal/mycollect",
+    component: My_collect
+},
+{
+    path: "/login",
+    component: Login
+},
+{
+    path: "/home",
+    component: Home,
+    redirect: "welcome",
+    children: [{
+        path: "/welcome",
+        component: Welcome
     },
     {
-        path: "/personal/userinfo",
-        component: User_info
+        path: "/401",
+        component: Page401
     },
     {
-        path: "/personal/mycollect",
-        component: My_collect
+        path: "/season/seasonlist",
+        component: SeasonList
     },
     {
-        path: "/login",
-        component: Login
+        path: "/team/teamlist",
+        component: TeamList
     },
     {
-        path: "/home",
-        component: Home,
-        redirect: "welcome",
-        children: [{
-            path: "/welcome",
-            component: Welcome
-        },
-            {
-                path: "/401",
-                component: Page401
-            },
-            {
-                path: "/season/seasonlist",
-                component: SeasonList
-            },
-            {
-                path: "/team/teamlist",
-                component: TeamList
-            },
-            {
-                path: "/user/userlist",
-                component: UserList
-            },
-            {
-                path: "/item/itemlist",
-                component: ItemList
-            },
-            {
-                path: "/athlete/athletelist",
-                component: AthleteList
-            },
-            {
-                path: "/athlete/caipanlist",
-                component: CaipanList
-            },
-            {
-                path: "/equipment/equipmentlist",
-                component: EquipmentList
-            },
-            {
-                path: "/equipment/borrowlist",
-                component: BorrowList
-            },
-            {
-                path: "/equipment/borrow",
-                component: Borrow
-            },
-            {
-                path: "/equipment/myborrow",
-                component: MyBorrow
-            },
-            {
-                path: "/athlete/shenhelist",
-                component: ShenheList
-            },
-            {
-                path: "/score/scorelist",
-                component: ScoreList
-            },
-            {
-                path: "/score/athletescorelist",
-                component: AthleteScoreList
-            },
-            {
-                path: "/score/schedule",
-                component: Schedule
-            },
-            {
-                path: "/ranking/personRanking",
-                component: PersonRanking
-            },
-            {
-                path: "/ranking/teamRanking",
-                component: TeamRanking
-            },
+        path: "/user/userlist",
+        component: UserList
+    },
+    {
+        path: "/item/itemlist",
+        component: ItemList
+    },
+    {
+        path: "/athlete/athletelist",
+        component: AthleteList
+    },
+    {
+        path: "/athlete/caipanlist",
+        component: CaipanList
+    },
+    {
+        path: "/equipment/equipmentlist",
+        component: EquipmentList
+    },
+    {
+        path: "/equipment/borrowlist",
+        component: BorrowList
+    },
+    {
+        path: "/equipment/borrow",
+        component: Borrow
+    },
+    {
+        path: "/equipment/myborrow",
+        component: MyBorrow
+    },
+    {
+        path: "/athlete/shenhelist",
+        component: ShenheList
+    },
+    {
+        path: "/score/scorelist",
+        component: ScoreList
+    },
+    {
+        path: "/score/athletescorelist",
+        component: AthleteScoreList
+    },
+    {
+        path: "/score/schedule",
+        component: Schedule
+    },
+    {
+        path: "/ranking/personRanking",
+        component: PersonRanking
+    },
+    {
+        path: "/ranking/teamRanking",
+        component: TeamRanking
+    },
 
-            {
-                path: "/record/recordlist",
-                component: RecordList
-            },
+    {
+        path: "/record/recordlist",
+        component: RecordList
+    },
 
-            {
-                path: "/syslog/sysloglist",
-                component: SyslogList
-            },
-            {
-                path: "/syslog/systemreset",
-                component: SystemReset
-            },
+    {
+        path: "/syslog/sysloglist",
+        component: SyslogList
+    },
+    {
+        path: "/syslog/systemreset",
+        component: SystemReset
+    },
 
-            {
-                path: "/athleteItem/signitem",
-                component: SignItem
-            },
-            {
-                path: "/athleteItem/myitem",
-                component: MyItem
-            },{
-                path: "/message/mymessage",
-                component: MessageList
-            },
-            {
-                path: "/race/racefootball",
-                component: racefootball
-            },
-            {
-                path: "/radio/mycheer",
-                component: Mycheer
-            },
-            {
-                path: "/radio/cheerlist",
-                component: CheerList
-            },
-        ]
-    }
+    {
+        path: "/athleteItem/signitem",
+        component: SignItem
+    },
+    {
+        path: "/athleteItem/myitem",
+        component: MyItem
+    }, {
+        path: "/message/mymessage",
+        component: MessageList
+    },
+    {
+        path: "/race/racefootball",
+        component: racefootball
+    },
+    {
+        path: "/radio/mycheer",
+        component: Mycheer
+    },
+    {
+        path: "/radio/cheerlist",
+        component: CheerList
+    },
+    {
+        path: "/athlete/teamenter",
+        component: TeamEnter
+    },
+    ]
+}
 ];
 
 const router = new VueRouter({
