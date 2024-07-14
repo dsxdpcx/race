@@ -2,21 +2,37 @@
   <div class="dailySchdule">
     <!-- 选择运动会组件 -->
     <div style="float: right">
+<!--      <el-col :span="16">-->
+<!--        <el-select-->
+<!--            v-model="selectSeasonId"-->
+<!--            filterable-->
+<!--            placeholder="请选择运动会"-->
+<!--            @change="page(true)"-->
+<!--        >-->
+<!--          <el-option-->
+<!--              v-for="item in allSeasonOptions"-->
+<!--              :key="item.seasonId"-->
+<!--              :label="item.seasonName"-->
+<!--              :value="item.seasonId"-->
+<!--          >-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-col>-->
       <el-col :span="16">
-        <el-select
-            v-model="selectSeasonId"
-            filterable
-            placeholder="请选择运动会"
-            @change="page(true)"
-        >
-          <el-option
-              v-for="item in allSeasonOptions"
-              :key="item.seasonId"
-              :label="item.seasonName"
-              :value="item.seasonId"
-          >
-          </el-option>
-        </el-select>
+      <el-input
+          v-model="football.name"
+          clearable
+          placeholder="请输入赛事名称"
+          @clear="page"
+          @keyup.enter.native="page"
+      >
+        <!--搜索按钮-->
+        <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="page"
+        ></el-button>
+      </el-input>
       </el-col>
     </div>
     <!-- 其他元素 -->
@@ -32,7 +48,7 @@
     <div id="game4">
       <p>第<br>四<br>轮</p>
     </div>
-    <div style="font-size:90%;margin-top:0px;">
+    <div style="font-size:8px;margin-top:0px;">
       <vue2-org-tree
           id="matches"
           :data="treeData.data"
@@ -94,6 +110,9 @@ export default {
       actnum: 0,
       scorers: [],
       cheerlist:[],
+      football:{
+        name:"",
+      },
       itemDetail: [],
       //所有运动会届时列表
       allSeasonOptions: [],
@@ -298,25 +317,18 @@ export default {
     }
   },
   created () {
-    this.getValue();;
-    this.getSeasons();
+
     this.page();
   },
 
   methods: {
-    async page(isSelect) {
-      if (isSelect === true) {
-        this.queryInfo.currentPage = 1;
-        this.queryInfo.pageSize = 10;
-      }
+    async page() {
       const _this = this;
       axios
-          .get(
-              "/cheer/querycheer?userId=" +this.userId
-          )
+          .post("/racefootballshow/RaceTable",_this.football)
           .then((res) => {
             let data = res.data.data;
-            _this.cheerlist = data;
+            _this.treeData.data=data;
           });
     },
     async getSeasons() {
@@ -336,6 +348,16 @@ export default {
               }
             })
             _this.allSeasonOptions = data;
+            _this.page();
+          });
+    },
+    async getSchedule() {
+      const _this = this;
+      axios
+          .post("/racefootballshow/RaceTable"+this.football)
+          .then((res) => {
+            let data = res.data.data;
+            _this.treeData.data=data;
             _this.page();
           });
     },
@@ -390,26 +412,3 @@ export default {
   }
 }
 </script>
-
-<style>
-/* 媒体查询样式 */
-@media (max-width: 768px) {
-  #game1, #game2, #game3, #game4 {
-    width: 50px; /* 宽度缩小到原来的50% */
-    height: 50px; /* 高度缩小到原来的50% */
-    top: 50%; /* 垂直居中 */
-    left: 50%; /* 水平居中 */
-    transform: translate(-50%, -50%); /* 移动到父元素的中心 */
-  }
-}
-
-@media (max-width: 480px) {
-  #game1, #game2, #game3, #game4 {
-    width: 40px; /* 宽度缩小到原来的40% */
-    height: 40px; /* 高度缩小到原来的40% */
-    top: 50%; /* 垂直居中 */
-    left: 50%; /* 水平居中 */
-    transform: translate(-50%, -50%); /* 移动到父元素的中心 */
-  }
-}
-</style>

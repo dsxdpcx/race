@@ -20,14 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * <p>
- * 前端控制器
- * </p>
- *
- * @author AShuo
- * @since 2021-04-01
- */
 @Api(tags = "运动项目接口")
 @RestController
 @Slf4j
@@ -40,7 +32,6 @@ public class ItemController {
     @GetMapping("/queryItem")
     @RequiresAuthentication
     public ServerResponse queryItem(QueryInfo queryInfo, Item item) {
-
         item.setItemName(queryInfo.getQuery());
         Page<Item> page = new Page(queryInfo.getCurrentPage(), queryInfo.getPageSize());
         IPage<Item> itemList = itemService.getItemByItemCondition(page, item);
@@ -57,6 +48,9 @@ public class ItemController {
         if (item == null) {
             return ServerResponse.createByErrorCodeMessage(400, "添加失败，项目信息为空");
         }
+        if(item.getCatalog()==null){
+            return ServerResponse.createByErrorCodeMessage(400, "添加失败，请先选择项目类型");
+        }
         //通过seasonId、parentId和性别判断是否已存在相同Item
         Item tempItem = new Item();
         tempItem.setParentId(item.getParentId());
@@ -66,7 +60,7 @@ public class ItemController {
             tempItem.setSeason(season);
         }
         if (itemService.getOneItemByCondition(tempItem) != null) {
-            return ServerResponse.createByErrorCodeMessage(400, "添加失败，改项目已存在");
+            return ServerResponse.createByErrorCodeMessage(400, "添加失败，该项目已存在");
         }
         System.out.println(item.getItemName());
         Item itemTemplate = itemService.getItemTemplateDetail(item);

@@ -17,6 +17,7 @@
         i.create_time,
         i.end_time,
         i.catalog,
+        i.process,
         se.season_id,
         se.season_name,
         se.season_status,
@@ -43,6 +44,7 @@
         <result column="create_time" property="createTime"/>
         <result column="edit_time" property="editTime"/>
         <result column="catalog" property="catalog"/>
+        <result column="process" property="process"/>
         <association property="season" javaType="com.ashuo.scms.entity.Season">
             <id column="season_id" property="seasonId"/>
             <result column="season_name" property="seasonName"/>
@@ -60,12 +62,12 @@
             useGeneratedKeys="true" keyColumn="item_id" keyProperty="itemId">
         INSERT INTO item(parent_id, se_id, u_id, item_name, item_place, item_unit, item_sex, item_amount,
         athlete_amount, start_time, end_time,
-        create_time, edit_time)
+        create_time, edit_time, catalog,process)
         VALUES (#{parentId}, #{season.seasonId}, #{user.userId}, #{itemName}, #{itemPlace}, #{itemUnit}, #{itemSex},
         #{itemAmount}, #{athleteAmount},
         #{startTime},
         #{endTime},
-        #{createTime}, #{editTime})
+        #{createTime}, #{editTime} , #{catalog},#{process})
     </insert>
 
     <update id="updateItem" parameterType="com.ashuo.scms.entity.Item">
@@ -115,6 +117,8 @@
             <if test="item.athleteAmount!=null ">AND i.athlete_amount=#{item.athleteAmount}</if>
             <if test="item.startTime!=null">AND i.start_time=#{item.startTime}</if>
             <if test="item.endTime!=null">AND i.end_time=#{item.endTime}</if>
+            <if test="item.catalog!=null">AND i.catalog=#{item.catalog}</if>
+            <if test="item.process!=null">AND i.process=#{item.process}</if>
             AND i.parent_id IS NOT NULL
         </where>
     </select>
@@ -138,6 +142,8 @@
             <if test="item.athleteAmount!=null ">AND i.athlete_amount=#{item.athleteAmount}</if>
             <if test="item.startTime!=null">AND i.start_time=#{item.startTime}</if>
             <if test="item.endTime!=null">AND i.end_time=#{item.endTime}</if>
+            <if test="item.catalog!=null">AND i.catalog=#{item.catalog}</if>
+            <if test="item.process!=null">AND i.process=#{item.process}</if>
             AND i.parent_id IS NOT NULL
         </where>
     </select>
@@ -160,6 +166,7 @@
         item_name,
         item_unit,
         item_amount
+
         FROM
         item
         <where>

@@ -52,7 +52,7 @@
             <el-select
                 v-model="athlete.item.user.userId"
                 filterable
-                placeholder="记分员"
+                placeholder="裁判"
                 @change="page(true)"
             >
               <el-option
@@ -87,7 +87,7 @@
           </el-col>
           <el-col :span="4">
             <el-button type="primary" :disabled="finalCanUse" @click="addvance2()"
-            >生成半决赛名单
+            >生成决赛名单
             </el-button
             >
           </el-col>
@@ -128,7 +128,7 @@
         <el-table-column label="报名时间" prop="signTime"></el-table-column>
 
         <el-table-column
-            label="记分员"
+            label="裁判"
             prop="item.user.nickname"
         ></el-table-column>
 
@@ -341,6 +341,51 @@
 
       </span>
     </el-dialog>
+    <el-dialog
+        :visible.sync="addDialogVisible"
+        title="添加时间地点，裁判"
+        width="40%"
+        @close="addDialogClosed"
+    >
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          class="demo-ruleForm"
+          label-width="180px"
+
+      >
+        <el-form-item label="裁判">
+          <el-input id="seasonName" v-model= "addForm.seasonName" placeholder="第一届运动会"></el-input>
+        </el-form-item>
+        <el-form-item label="比赛地点">
+          <el-input id="seasonTopicDesc" v-model="addForm.seasonTopicDesc" placeholder="友谊第一比赛第二" type="textarea"></el-input>
+        </el-form-item>
+
+        <el-form-item label="比赛开始时间">
+          <el-date-picker id="seasonBeginTime"
+                          v-model="addForm.seasonBeginTime"
+                          placeholder="选择日期时间"
+                          type="datetime"
+                          value-format="yyyy-MM-dd HH:mm:ss">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="比赛结束时间">
+          <el-date-picker id="seasonEndTime"
+                          v-model="addForm.seasonEndTime"
+                          placeholder="选择日期时间"
+                          type="datetime"
+                          value-format="yyyy-MM-dd HH:mm:ss">
+          </el-date-picker>
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取消</el-button>
+        <el-button id="submit" type="primary" @click="addSeason">确定</el-button>
+
+
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -359,6 +404,13 @@ export default {
         user: {
           userName: "",
         },
+      },
+      addForm: {
+        itemId: "",
+        uId: "",
+        startTime: "",
+        endTime: "",
+
       },
       //记分员
       scorers: "",

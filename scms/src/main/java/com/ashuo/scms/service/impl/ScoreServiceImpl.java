@@ -2,13 +2,16 @@ package com.ashuo.scms.service.impl;
 
 import com.ashuo.scms.dto.AthleteScoreDto;
 import com.ashuo.scms.entity.Athlete;
+import com.ashuo.scms.entity.Item;
 import com.ashuo.scms.entity.Score;
 import com.ashuo.scms.mapper.AthleteMapper;
+import com.ashuo.scms.mapper.ItemMapper;
 import com.ashuo.scms.mapper.ScoreMapper;
 import com.ashuo.scms.service.ScoreService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,8 @@ import java.util.List;
 public class ScoreServiceImpl extends ServiceImpl<ScoreMapper,Score> implements ScoreService {
     @Autowired
     ScoreMapper scoreMapper;
+    @Autowired
+    ItemMapper itemMapper;
     @Autowired
     AthleteMapper athleteMapper;
 
@@ -176,6 +181,9 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper,Score> implements 
 
     @Override
     public void checkAndPromoteTwo(int itemId, String process) {
+
+
+        Item item = itemMapper.selectById(itemId);
         List<Integer> groups = scoreMapper.findGroupsByItemAndProcess(itemId, process);
         System.out.println(groups);
         for (int group : groups) {
@@ -185,16 +193,37 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper,Score> implements 
         }
         scoreMapper.promoteRemainTwo(itemId, process);
         List<Integer> atheleteIds = scoreMapper.promoteTopThreeAndGetAtheleteIds(itemId, process);
-        if (process.equals("heats")){
+        if (process.equals("heats")&&item.getCatalog().length()==2){
+            item.setProcess("finals");
+
+            itemMapper.insert(item);
+            Item item1 = itemMapper.queryOneItemByItemCondition(item);
             for (Integer athleteId:atheleteIds) {
                 Athlete athlete=athleteMapper.selectById(athleteId);
+                athlete.setIId(item1.getItemId());
+                athlete.setProcess("finals");
+                athlete.setScoreStatus(0);
+                athleteMapper.insert(athlete);
+            }
+        }else if (process.equals("heats")&&item.getCatalog().length()==3){
+            item.setProcess("semifinals");
+            itemMapper.insert(item);
+            Item item1 = itemMapper.queryOneItemByItemCondition(item);
+            for (Integer athleteId:atheleteIds) {
+                Athlete athlete=athleteMapper.selectById(athleteId);
+                athlete.setIId(item1.getItemId());
                 athlete.setProcess("semifinals");
                 athlete.setScoreStatus(0);
                 athleteMapper.insert(athlete);
             }
-        }else if(process.equals("semifinals")){
+        }
+        else if(process.equals("semifinals")){
+            item.setProcess("finals");
+            itemMapper.insert(item);
+            Item item1 = itemMapper.queryOneItemByItemCondition(item);
             for (Integer athleteId:atheleteIds) {
                 Athlete athlete = athleteMapper.selectById(athleteId);
+                athlete.setIId(item1.getItemId());
                 athlete.setProcess("finals");
                 athlete.setScoreStatus(0);
                 athleteMapper.insert(athlete);
@@ -209,7 +238,6 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper,Score> implements 
         for (int group : groups) {
             if (scoreMapper.countNonQualifiedAthletes(itemId, group, process) == 0) {
                 scoreMapper.promoteTopThree(itemId, group, process);
-
             }
         }
         scoreMapper.promoteRemainThree(itemId, process);

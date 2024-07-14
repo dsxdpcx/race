@@ -104,7 +104,7 @@
         <el-table-column label="项目分数单位" prop="itemUnit"></el-table-column>
 
         <el-table-column
-            label="项目记分员"
+            label="裁判员"
             prop="user.nickname"
         ></el-table-column>
         <el-table-column
@@ -405,7 +405,7 @@
 
 
         <el-form-item label="比赛类型">
-          <el-select v-model="addForm.competitionType" placeholder="请选择比赛类型">
+          <el-select v-model="catalog" placeholder="请选择比赛类型">
             <el-option
                 v-for="type in competitionTypes"
                 :key="type.id"
@@ -413,42 +413,37 @@
                 :value="type.id">
             </el-option>
           </el-select>
+
         </el-form-item>
 
-        <el-form-item v-if="addForm.competitionType !== 'finals_only'" label="预赛晋级规则">
-          <el-select v-model="addForm.prelimsAdvancementRule" placeholder="请选择预赛晋级规则">
+        <el-form-item v-if="catalog ==='0'||catalog==='2'" label="预赛晋级规则">
+<!--          <el-select v-model="rule1" placeholder="请选择预赛晋级规则">-->
+<!--            <el-option-->
+<!--                v-for="rule in advancementRuleOptions"-->
+<!--                :key="rule.id"-->
+<!--                :label="rule.label"-->
+<!--                :value="rule.id">-->
+<!--            </el-option>-->
+<!--          </el-select>-->
+          <div class="block">
+            <el-cascader
+                v-model="rule1"
+                :options="advancementRuleOptions"
+                :props="{ expandTrigger: 'hover' }"
+            ></el-cascader>
+          </div>
+        </el-form-item>
+
+        <el-form-item v-if="catalog === '0'" label="半决赛晋级规则">
+          <el-select v-model="rule2" placeholder="请选择半决赛晋级规则">
             <el-option
                 v-for="rule in advancementRuleOptions"
-                :key="rule.value"
+                :key="rule.id"
                 :label="rule.label"
-                :value="rule.value">
+                :value="rule.id">
             </el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item v-if="addForm.competitionType === 'all_rounds'" label="半决赛晋级规则">
-          <el-select v-model="addForm.semiFinalsAdvancementRule" placeholder="请选择半决赛晋级规则">
-            <el-option
-                v-for="rule in advancementRuleOptions"
-                :key="rule.value"
-                :label="rule.label"
-                :value="rule.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="决赛晋级规则">
-          <el-select v-model="addForm.finalsAdvancementRule" placeholder="请选择决赛晋级规则">
-            <el-option
-                v-for="rule in advancementRuleOptions"
-                :key="rule.value"
-                :label="rule.label"
-                :value="rule.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-
 
         <el-form-item label="项目人数">
           <el-input v-model="addForm.itemAmount" placeholder="请输入项目人数"></el-input>
@@ -508,30 +503,42 @@ export default {
   name: "ItemList",
   data() {
     return {
-
+      value:[],
 
       // 当前选择的比赛类型
       selectedCompetitionType: null,
 
       // 比赛类型选项
       competitionTypes: [
-        { id: 'all_rounds', label: '预赛、半决赛和决赛' },
-        { id: 'no_semi', label: '预赛和决赛' },
-        { id: 'finals_only', label: '只有决赛' }
+        {id: '0', label: '预赛、半决赛和决赛'},
+        {id: '2', label: '预赛和决赛'},
+        {id: '1', label: '只有决赛'}
       ],
 
-      advancementRuleOptions: {
-        all_rounds: [
-          { value: 'top_50_percent', label: '前50%' },
-          { value: 'top_3_each_group', label: '每组前3名' }
-        ],
-        no_semi: [
-          { value: 'top_8_overall', label: '总排名前8名' }
-        ],
-        finals_only: [
-          { value: 'winner_takes_all', label: '胜者为王' }
-        ]
-      },
+      advancementRuleOptions: [
+        {
+          id: "1",
+          label: "游泳比赛规则",
+
+          children: [{id: '1', label: '前16晋级'},
+            {id: '3', label: '前8晋级'},]
+        },
+
+        {
+          id: "1",
+          label: "跑步比赛规则",
+
+          children: [{id: '0', label: '小组前两名再加两名最好成绩晋级'},
+            {id: '2', label: '小组前三再加三名最好成绩晋级'},]
+        },
+        {
+          id: "1",
+          label: "跑步比赛规则",
+          children: [{id: '4', label: '成绩大于8米15晋级,晋级人数不足12人，则取成绩最好的12名运动员晋级(跳远)'}
+            ,]
+        }
+
+      ],
       reverse: true,
       activities: [{
         content: '报名成功',
@@ -614,6 +621,11 @@ export default {
       addDialogVisible: false,
       addTemplateDialogVisible: false,
       templateListDialogVisible: false,
+
+
+      catalog: "",
+      rule1: "",
+      rule2: "",
       addForm: {
         itemName: "",
         parentId: "",
@@ -632,6 +644,8 @@ export default {
         },
         seId: "",
         scorer: [],
+
+        catalog: "",
       },
       editForm: {
         itemId: "",
@@ -791,6 +805,7 @@ export default {
     },
     addItem() {
       const _this = this;
+      _this.addForm.catalog = this.computedCatalog;
       _this.addForm.uId = _this.addForm.user.userId;
       _this.addForm.seId = _this.addForm.season.seasonId;
       _this.$refs.addFormRef.validate(async (valid) => {
@@ -799,6 +814,7 @@ export default {
           if (res.data.status != 200) {
             return _this.$message.error(res.data.msg);
           }
+          console.log("addForm", _this.addForm);
           _this.$message.success("操作成功");
           _this.addDialogVisible = false;
           _this.addTemplateDialogVisible = false;
@@ -847,6 +863,16 @@ export default {
         });
       });
     },
+  },
+  computed: {
+    computedCatalog: {
+      get() {
+        return this.catalog + this.rule1 + this.rule2;
+      },
+      set(newValue) {
+        this.addForm.catalog = newValue;
+      }
+    }
   },
 };
 </script>
