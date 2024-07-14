@@ -335,7 +335,7 @@ public class FootballController {
            footballrace.setTeam_a(footballa.getWinner());
            footballrace.setTeam_b(footballb.getWinner());
            footballrace.setTime(time1);
-           footballrace.setName("狮子山杯");
+           footballrace.setName(football.getName());
            footballrace.setReferee("裁判E");
            footballrace.setMatch_class("四分之一决赛");
            footballrace.setLocation("第二运动场");
@@ -388,7 +388,7 @@ public class FootballController {
             footballrace.setTime(time1);
             footballrace.setTeam_a(footballa.getWinner());
             footballrace.setTeam_b(footballb.getWinner());
-            footballrace.setName("狮子山杯");
+            footballrace.setName(football.getName());
             footballrace.setReferee("裁判F");
             footballrace.setMatch_class("半决赛");
             footballrace.setLocation("第二运动场");
@@ -431,7 +431,7 @@ public class FootballController {
         footballrace.setTime(time1);
         footballrace.setTeam_a(footballa.getWinner());
         footballrace.setTeam_b(footballb.getWinner());
-        footballrace.setName("狮子山杯");
+        footballrace.setName(football.getName());
         footballrace.setMatch_class("决赛");
         footballrace.setReferee("裁判G");
         footballrace.setLocation("第一运动场");

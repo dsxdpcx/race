@@ -36,27 +36,27 @@
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addraceDialogVisible = true"
+          <el-button type="success" @click="addraceDialogVisible1 = true"
           >生成小组赛
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addraceDialogVisible1 = true"
+          <el-button type="success" @click="addraceDialogVisible2 = true"
           >生成八分之一决赛
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addraceDialogVisible2 = true"
+          <el-button type="success" @click="addraceDialogVisible3 = true"
           >生成四分之一决赛
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addraceDialogVisible3 = true"
+          <el-button type="success" @click="addraceDialogVisible4 = true"
           >生成半决赛
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" @click="addraceDialogVisible4 = true"
+          <el-button type="success" @click="addraceDialogVisible5 = true"
           >生成决赛
           </el-button>
         </el-col>
@@ -168,7 +168,7 @@
         :visible.sync="addraceDialogVisible1"
         title="生成小组赛"
         width="40%"
-        @close="addraceDialogClosed"
+        @close="addraceDialogClosed1"
     >
       <el-form
           ref="addFormRef"
@@ -179,7 +179,7 @@
         <el-form-item label="赛程名称">
           <el-input v-model="addForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="比赛时间">
+        <el-form-item label="小组赛开始时间">
           <el-date-picker
               v-model="addForm.time"
               placeholder="选择时间"
@@ -197,10 +197,10 @@
 
      <!--生成八分之一决赛对话框-->
     <el-dialog
-        :visible.sync="addraceDialogVisible1"
+        :visible.sync="addraceDialogVisible2"
         title="生成八分之一决赛"
         width="40%"
-        @close="addraceDialogClosed1"
+        @close="addraceDialogClosed2"
     >
       <el-form
           ref="addFormRef"
@@ -211,7 +211,7 @@
       <el-form-item label="赛程名称">
         <el-input v-model="addForm.name"></el-input>
       </el-form-item>
-        <el-form-item label="比赛时间">
+        <el-form-item label="八分之一决赛开始时间">
           <el-date-picker
               v-model="addForm.time"
               placeholder="选择时间"
@@ -222,47 +222,15 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addracetable">确定</el-button>
-        <el-button @click="addraceDialogVisible1 = false">取消</el-button>
+        <el-button type="primary" @click="produceracetable1">确定</el-button>
+        <el-button @click="addraceDialogVisible2 = false">取消</el-button>
       </span>
     </el-dialog>
 
     <!--生成四分之一决赛对话框-->
     <el-dialog
-        :visible.sync="addraceDialogVisible2"
-        title="生成四分之一决赛"
-        width="40%"
-        @close="addraceDialogClosed2"
-    >
-      <el-form
-          ref="addFormRef"
-          :model="addForm"
-          class="demo-ruleForm"
-          label-width="80px"
-      >
-        <el-form-item label="赛程名称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="比赛时间">
-          <el-date-picker
-              v-model="addForm.time"
-              placeholder="选择时间"
-              type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss"
-          >
-          </el-date-picker>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addracetable">确定</el-button>
-        <el-button @click="addraceDialogVisible2 = false">取消</el-button>
-      </span>
-    </el-dialog>
-
-    <!--生成半决赛对话框-->
-    <el-dialog
         :visible.sync="addraceDialogVisible3"
-        title="生成半决赛"
+        title="生成四分之一决赛"
         width="40%"
         @close="addraceDialogClosed3"
     >
@@ -275,7 +243,7 @@
         <el-form-item label="赛程名称">
           <el-input v-model="addForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="比赛时间">
+        <el-form-item label="四分之一决赛开始时间">
           <el-date-picker
               v-model="addForm.time"
               placeholder="选择时间"
@@ -286,15 +254,15 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addracetable">确定</el-button>
+        <el-button type="primary" @click="produceracetable2">确定</el-button>
         <el-button @click="addraceDialogVisible3 = false">取消</el-button>
       </span>
     </el-dialog>
 
-    <!--生成决赛对话框-->
+    <!--生成半决赛对话框-->
     <el-dialog
         :visible.sync="addraceDialogVisible4"
-        title="生成决赛"
+        title="生成半决赛"
         width="40%"
         @close="addraceDialogClosed4"
     >
@@ -307,7 +275,7 @@
         <el-form-item label="赛程名称">
           <el-input v-model="addForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="比赛时间">
+        <el-form-item label="半决赛开始时间">
           <el-date-picker
               v-model="addForm.time"
               placeholder="选择时间"
@@ -318,8 +286,40 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addracetable">确定</el-button>
+        <el-button type="primary" @click="produceracetable3">确定</el-button>
         <el-button @click="addraceDialogVisible4 = false">取消</el-button>
+      </span>
+    </el-dialog>
+
+    <!--生成决赛对话框-->
+    <el-dialog
+        :visible.sync="addraceDialogVisible5"
+        title="生成决赛"
+        width="40%"
+        @close="addraceDialogClosed5"
+    >
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          class="demo-ruleForm"
+          label-width="80px"
+      >
+        <el-form-item label="赛程名称">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="决赛开始时间">
+          <el-date-picker
+              v-model="addForm.time"
+              placeholder="选择时间"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="produceracetable4">确定</el-button>
+        <el-button @click="addraceDialogVisible5 = false">取消</el-button>
       </span>
     </el-dialog>
 
@@ -398,7 +398,8 @@ export default {
       addraceDialogVisible1:false,
       addraceDialogVisible2:false,
       addraceDialogVisible3:false,
-      addraceDialogVisible4:false,
+      addraceDialogVisible4: false,
+      addraceDialogVisible5:false,
       editDialogVisible: false,
       addForm: {
         name: "",
@@ -457,10 +458,56 @@ export default {
           return _this.$message.error(res.data.msg);
         }
         _this.$message.success("操作成功");
-        _this.addDialogVisible = false;
+        _this.addDialogVisible1 = false;
         _this.page();
       });
     },
+
+    produceracetable1() {
+      const _this = this;
+      axios.post("/racefootball/produceRace1", _this.addForm).then((res) => {
+        if (res.data.status != 200) {
+          return _this.$message.error(res.data.msg);
+        }
+        _this.$message.success("操作成功");
+        _this.addDialogVisible2 = false;
+        _this.page();
+      });
+    },
+     produceracetable2() {
+      const _this = this;
+      axios.post("/racefootball/produceRace2", _this.addForm).then((res) => {
+        if (res.data.status != 200) {
+          return _this.$message.error(res.data.msg);
+        }
+        _this.$message.success("操作成功");
+        _this.addDialogVisible3 = false;
+        _this.page();
+      });
+    },
+     produceracetable3() {
+      const _this = this;
+      axios.post("/racefootball/produceRace3", _this.addForm).then((res) => {
+        if (res.data.status != 200) {
+          return _this.$message.error(res.data.msg);
+        }
+        _this.$message.success("操作成功");
+        _this.addDialogVisible4 = false;
+        _this.page();
+      });
+    },
+     produceracetable4() {
+      const _this = this;
+      axios.post("/racefootball/produceRace4", _this.addForm).then((res) => {
+        if (res.data.status != 200) {
+          return _this.$message.error(res.data.msg);
+        }
+        _this.$message.success("操作成功");
+        _this.addDialogVisible5 = false;
+        _this.page();
+      });
+    },
+
     async deleterace(id) {
       const _this = this;
       const confirmResult = await _this
