@@ -1,7 +1,7 @@
 <template>
   <div class="dailySchdule">
     <!-- 选择运动会组件 -->
-    <div style="float: right">
+    <div style="float: left">
 <!--      <el-col :span="16">-->
 <!--        <el-select-->
 <!--            v-model="selectSeasonId"-->
@@ -48,7 +48,7 @@
     <div id="game4">
       <p>第<br>四<br>轮</p>
     </div>
-    <div style="font-size:8px;margin-top:0px;">
+    <div style="font-size:15px;margin-top:-20px;">
       <vue2-org-tree
           id="matches"
           :data="treeData.data"
@@ -89,10 +89,10 @@
   border-radius: 25px;
   font-weight: bold;
 }
-#game1 { top: 90px; left: 250px; height: 100px; }
-#game2 { top: 330px; left: 250px; height: 120px; }
-#game3 { top: 510px; left: 250px; height: 190px; }
-#game4 { top: 770px; left: 250px; height: 120px; }
+#game1 { top: 70px; left: 500px; height: 100px; }
+#game2 { top: 310px; left: 350px; height: 120px; }
+#game3 { top: 490px; left: 350px; height: 190px; }
+#game4 { top: 750px; left: 350px; height: 120px; }
 </style>
 <script>
 import axios from "axios";

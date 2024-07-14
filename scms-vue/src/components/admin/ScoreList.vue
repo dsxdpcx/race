@@ -11,7 +11,8 @@
     <el-card>
       <!--搜索区域-->
       <el-row :gutter="25">
-          <!--搜索添加-->
+        <!--搜索添加-->
+        <el-col :span="6">
           <el-select
               v-model="selectItemId"
               filterable
@@ -27,58 +28,58 @@
 
             </el-option>
           </el-select>
+        </el-col>
 
-        <div style="float: left">
-          <el-col>
-            <el-select
-                v-model="selectSeasonId"
-                filterable
-                placeholder="请选择运动会"
-                @change="page(true)"
+        <el-col :span="6">
+          <el-select
+              v-model="selectSeasonId"
+              filterable
+              placeholder="请选择运动会"
+              @change="page(true)"
+          >
+            <el-option
+                v-for="item in allSeasonOptions"
+                :key="item.seasonId"
+                :label="item.seasonName"
+                :value="item.seasonId"
             >
-              <el-option
-                  v-for="item in allSeasonOptions"
-                  :key="item.seasonId"
-                  :label="item.seasonName"
-                  :value="item.seasonId"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-        </div>
-        <div style="float: left">
-          <!-- 下拉列表选择区域 -->
-          <el-col>
-            <el-select
-                v-model="athlete.item.user.userId"
-                filterable
-                placeholder="裁判"
-                @change="page(true)"
+            </el-option>
+          </el-select>
+        </el-col>
+
+        <el-col :span="6">
+          <el-select
+              v-model="athlete.item.user.userId"
+              filterable
+              placeholder="裁判"
+              @change="page(true)"
+          >
+            <el-option
+                v-for="item in scorers"
+                :key="item.userId"
+                :label="item.nickname"
+                :value="item.userId"
             >
-              <el-option
-                  v-for="item in scorers"
-                  :key="item.userId"
-                  :label="item.nickname"
-                  :value="item.userId"
-              >
-              </el-option>
-            </el-select>
-            &nbsp;
-            <el-select
-                v-model="athlete.scoreStatus"
-                filterable
-                placeholder="是否录入成绩"
-                @change="page(true)"
+            </el-option>
+          </el-select>
+        </el-col>
+
+        <el-col :span="6">
+          <el-select
+              v-model="athlete.scoreStatus"
+              filterable
+              placeholder="是否录入成绩"
+              @change="page(true)"
+          >
+            <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
             >
-              <el-option
-                  v-for="item in statusOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
+            </el-option>
+          </el-select>
+        </el-col>
           <el-col :span="4">
             <el-button type="primary" :disabled="semiCanUse" @click="addvance1()"
             >生成半决赛名单
@@ -114,7 +115,7 @@
 
         <el-table-column label="学号" prop="user.userNo"></el-table-column>
         <el-table-column
-            label="参数运动员"
+            label="参赛运动员"
             prop="user.nickname"
         ></el-table-column>
         <el-table-column label="性别" prop="user.userSex"></el-table-column>
