@@ -32,7 +32,7 @@
     <div id="game4">
       <p>第<br>四<br>轮</p>
     </div>
-    <div style="font-size:15px;margin-top:0px;">
+    <div style="font-size:90%;margin-top:0px;">
       <vue2-org-tree
           id="matches"
           :data="treeData.data"
@@ -390,3 +390,26 @@ export default {
   }
 }
 </script>
+
+<style>
+/* 媒体查询样式 */
+@media (max-width: 768px) {
+  #game1, #game2, #game3, #game4 {
+    width: 50px; /* 宽度缩小到原来的50% */
+    height: 50px; /* 高度缩小到原来的50% */
+    top: 50%; /* 垂直居中 */
+    left: 50%; /* 水平居中 */
+    transform: translate(-50%, -50%); /* 移动到父元素的中心 */
+  }
+}
+
+@media (max-width: 480px) {
+  #game1, #game2, #game3, #game4 {
+    width: 40px; /* 宽度缩小到原来的40% */
+    height: 40px; /* 高度缩小到原来的40% */
+    top: 50%; /* 垂直居中 */
+    left: 50%; /* 水平居中 */
+    transform: translate(-50%, -50%); /* 移动到父元素的中心 */
+  }
+}
+</style>
