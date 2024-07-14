@@ -118,12 +118,19 @@
         <el-table-column label="个人总得分" prop="rank"></el-table-column>
       </el-table>
     </el-dialog>
+
+    <div id="main" class="main_container"></div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import * as echarts from "echarts/core"
+import { TitleComponent, GridComponent } from "echarts/components"
+import { BarChart } from "echarts/charts"
+import { CanvasRenderer } from "echarts/renderers"
+import rankingList from "@/components/admin/RankingList";
+echarts.use([TitleComponent, GridComponent, BarChart, CanvasRenderer])
 export default {
   name: "PersonRanking",
   data() {
@@ -149,7 +156,42 @@ export default {
   created() {
     this.getSeasons();
   },
+  mounted() {
+    this.initCharts();
+  },
   methods: {
+    initCharts() {
+      // 初始化echarts实例
+      var myChart = echarts.init(document.getElementById("main"));
+
+      // 准备横坐标数据（团队名称）
+      var teamNames = this.rankingList.map(item => item.athlete.user.team.teamName);
+
+      // 准备纵坐标数据（团队总得分）
+      var teamScores = this.rankingList.map(item => item.rank);
+
+      myChart.setOption({
+        title: {
+          text: "团队总分排名",
+        },
+        tooltip: {},
+        xAxis: {
+          type: 'category',
+          data: teamNames,
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [
+          {
+            name: "分数",
+            type: "bar",
+            data: teamScores,
+          },
+        ],
+      });
+    },
+
     async page(isSelect) {
       if (this.selectSeasonId == "") {
         return this.$message.info("请先选择运动会");
@@ -175,8 +217,10 @@ export default {
             _this.queryInfo.currentPage = data.current;
             _this.total = data.total;
             _this.queryInfo.pageSize = data.size;
+            _this.initCharts();
           });
     },
+
 
     //获取运动会届时
     async getSeasons() {
@@ -207,6 +251,7 @@ export default {
             _this.teamRankingDetail = data.records;
           });
     },
+
 
     async exportExcel() {
       const _this = this;
@@ -268,5 +313,10 @@ export default {
   border: 1px solid #cad9ea;
   color: #666;
   height: 40px;
+}
+.main_container {
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
 }
 </style>
