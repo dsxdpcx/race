@@ -66,7 +66,7 @@
           width="200"
           trigger="click"
       >
-        <el-image src="../assets/hzu_gate.jpg" alt="观众座位分布图"></el-image>
+        <el-image src="https://file3.renrendoc.com/fileroot_temp3/2022-1/17/22c66c5f-fa98-4998-ae48-be553b5b715f/22c66c5f-fa98-4998-ae48-be553b5b715f1.gif" alt="观众座位分布图"></el-image>
         <el-button slot="reference">观众座位分布</el-button>
       </el-popover>
     </el-footer>
