@@ -886,14 +886,16 @@ export default {
   computed: {
     computedCatalog: {
       get() {
-        if(typeof rule1 === 'undefined')
-          return this.catalog;
-        else if(typeof rule2 === 'undefined')
-          return this.catalog + this.rule1[1];
-        else
-        return this.catalog + this.rule1[1] + this.rule2[1];
+        // if(typeof rule1 === 'undefined')
+        //   return this.catalog;
+        // else if(typeof rule2 === 'undefined')
+        //   return this.catalog + this.rule1[1];
+        // else
+
+        return (this.catalog + this.rule1[1] + this.rule2[1]).replace("undefined", "");
       },
       set(newValue) {
+
         this.addForm.catalog = newValue;
       }
     }

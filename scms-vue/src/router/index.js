@@ -113,7 +113,7 @@ const routes = [{
         component: ShenheList
     },
     {
-        path: "/score/scorelist",
+        path: "/race/scorelist",
         component: ScoreList
     },
     {

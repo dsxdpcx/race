@@ -200,4 +200,13 @@
             AND i.parent_id IS NOT NULL
         </where>
     </select>
+    <select id="queryItemBysignCondition" resultType="com.ashuo.scms.entity.Item">
+        <include refid="itemSql"/>
+        <where>
+                (LENGTH(i.catalog) = 1 AND i.process = 'finals')
+                OR i.process = 'heats'
+            AND i.parent_id IS NOT NULL
+            AND i.item_amount!=1
+        </where>
+    </select>
 </mapper>

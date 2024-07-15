@@ -46,7 +46,7 @@ public class ItemController {
         item.setItemName(queryInfo.getQuery());
         Page<Item> page = new Page(queryInfo.getCurrentPage(), queryInfo.getPageSize());
         item.setProcess("heats");
-        IPage<Item> itemList = itemService.getItemByItemCondition(page, item);
+        IPage<Item> itemList = itemService.getItemBysignCondition(page, item);
 
 
         return ServerResponse.createBySuccess(itemList);
