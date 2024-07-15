@@ -224,13 +224,14 @@ export default {
     async getItem() {
       const _this = this;
       axios
-          .get("/item/queryItem?seasonId="+_this.selectSeasonId+"&queryInfo=", {params: _this.queryInfo})
+          .get("/item/queryItem?season.seasonId="+_this.selectSeasonId+"&queryInfo=", {params: _this.queryInfo})
           .then((res) => {
             let data = res.data.data.records;
             data.push({
               itemId: 0,
               itemName: "所有项目",
             });
+            console.log(_this.selectSeasonId)
             _this.allItemOptions = data;
             _this.page()
           });
@@ -279,6 +280,12 @@ export default {
       if (confirmResult !== "confirm") {
         return _this.$message.info("已取消报名");
       }
+
+      _this.football.eventName = _this.football.eventName.replace("(男)", "")
+      _this.football.eventName = _this.football.eventName.replace("(女)", "")
+      _this.football.eventName = _this.football.eventName.replace("(heats)","")
+      _this.football.eventName = _this.football.eventName.replace("(semifinals)","")
+      _this.football.eventName = _this.football.eventName.replace("(finals)","")
      axios.post("/teamEnter/addTeamEnter", _this.addTeamEnter).then((res) => {
         if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
