@@ -36,6 +36,7 @@
             </el-button
             >
           </el-col>
+         
         </el-col>
         <div style="float: left">
           <el-col>
@@ -74,7 +75,7 @@
           </el-col>
         </div>
          <!--小组赛分组-->
-      <el-col :span="5">
+            <el-col :span="5">
             <el-button type="primary" @click="groupTeamEnter"
             >小组赛分组
             </el-button
@@ -261,7 +262,14 @@ export default {
     //小组赛分组
     async groupTeamEnter() {
       const _this = this;
-      axios.get("/teamEnter/groupTeamEnter" ,  _this.addTeamEnter).then((res) => {
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(男)", "")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(女)", "")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(初赛)","")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(半决赛)","")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(决赛)","")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.slice(0, -2);
+      axios.post("/teamEnter/groupTeamEnter", _this.addTeamEnter).then((res) => {
+        console.log(_this.addTeamEnter);
          if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
         }

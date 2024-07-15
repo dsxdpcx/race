@@ -43,7 +43,7 @@
         SELECT * FROM TeamEnter
         <where>
             <if test="teamEnter!=null and teamEnter.id!=null and teamEnter.id!=0">AND id=#{teamEnter.id}</if>
-            <if test="teamEnter!=null and teamEnter.eventName!=null">AND event_name=#{teamEnter.eventName}</if>
+            <if test="teamEnter!=null and teamEnter.eventName!=null">AND event_name LIKE '%${teamEnter.eventName}%'</if>
             <if test="teamEnter!=null and teamEnter.teamName!=null">AND team_name=#{teamEnter.teamName}</if>
         </where>
     </select>
