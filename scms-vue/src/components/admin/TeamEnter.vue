@@ -30,7 +30,7 @@
           </el-select>
         </el-col>
 
-          <el-col :span="4">
+          <el-col :span="3">
             <el-button type="primary" @click="signTeam"
             >报名
             </el-button
@@ -73,7 +73,15 @@
             </el-select>
           </el-col>
         </div>
+         <!--小组赛分组-->
+      <el-col :span="5">
+            <el-button type="primary" @click="groupTeamEnter"
+            >小组赛分组
+            </el-button
+            >
+      </el-col>
       </el-row>
+
       <!--项目列表 stripe隔行变色-->
       <el-table :data="itemList" border stripe>
         <!--索引列-->
@@ -81,22 +89,16 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column label="赛事名称" prop="eventName"></el-table-column>
         <el-table-column label="参赛队名" prop="teamName"></el-table-column>
-<!--        <el-table-column label="队伍组号" prop="groupName"></el-table-column>-->
+        <el-table-column label="队伍组号" prop="groupName"></el-table-column>
         <el-table-column label="操作" prop="state">
           <template slot-scope="scope">
-            <!--详情-->
-
-<!--            <el-button-->
-<!--                icon="el-icon-tickets"-->
-<!--                size="mini"-->
-<!--                type="primary"-->
-<!--                :isabled="scope.row.process==='semifianls'||(scope.row.process==='finals'&&scope.row.catalog.length!==1)"-->
-<!--                @click="-->
-<!--                signItem(scope.row);-->
-<!--              "-->
-<!--            >报名-->
-<!--            </el-button-->
-<!--            >-->
+            <!--删除-->
+            <el-button
+                icon="el-icon-delete"
+                size="mini"
+                type="danger"
+                @click="deleteTeamEnter(scope.row.id)"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -167,6 +169,7 @@ export default {
       addTeamEnter: {
         eventName: "",
         teamName: "",
+        groupName:"",
       },
       queryInfo: {
         currentPage: 1,
@@ -224,14 +227,14 @@ export default {
     async getItem() {
       const _this = this;
       axios
-          .get("/item/queryItem?season.seasonId="+_this.selectSeasonId+"&queryInfo=", {params: _this.queryInfo})
+          .get("/item/queryItem?seasonId="+_this.selectSeasonId+"&queryInfo=", {params: _this.queryInfo})
           .then((res) => {
             let data = res.data.data.records;
             data.push({
               itemId: 0,
               itemName: "所有项目",
             });
-            console.log(_this.selectSeasonId)
+
             _this.allItemOptions = data;
             _this.page()
           });
@@ -253,6 +256,16 @@ export default {
         let data = res.data.data;
         _this.itemDetail = [];
         _this.itemDetail.push(data);
+      });
+    },
+    //小组赛分组
+    async groupTeamEnter() {
+      const _this = this;
+      axios.get("/teamEnter/groupTeamEnter" ,  _this.addTeamEnter).then((res) => {
+         if (res.data.status != 200) {
+          return _this.$message.error(res.data.msg);
+        }
+         _this.$message.success("分组成功");
       });
     },
 
@@ -280,13 +293,8 @@ export default {
       if (confirmResult !== "confirm") {
         return _this.$message.info("已取消报名");
       }
-
-      _this.football.eventName = _this.football.eventName.replace("(男)", "")
-      _this.football.eventName = _this.football.eventName.replace("(女)", "")
-      _this.football.eventName = _this.football.eventName.replace("(heats)","")
-      _this.football.eventName = _this.football.eventName.replace("(semifinals)","")
-      _this.football.eventName = _this.football.eventName.replace("(finals)","")
      axios.post("/teamEnter/addTeamEnter", _this.addTeamEnter).then((res) => {
+        console.log(_this.addTeamEnter)
         if (res.data.status != 200) {
           return _this.$message.error(res.data.msg);
         }
@@ -294,7 +302,31 @@ export default {
         _this.page();
       });
     },
+  async deleteTeamEnter(id) {
+      const _this = this;
+      const confirmResult = await _this
+          .$confirm("是否确定取消报名？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          })
+          .catch((err) => err);
+      if (confirmResult !== "confirm") {
+        return _this.$message.info("已取消操作");
+      }
+      axios
+          .delete("/teamEnter/deleteTeamEnter?id=" + id)
+          .then((res) => {
+            if (res.data.status == 200) {
 
+              _this.$message.success("已取消报名");
+              _this.addDialogVisible = false;
+              _this.page();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
+    },
     //多人项目报名
     async signItemAthletes() {
       const _this = this;

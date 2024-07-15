@@ -47,8 +47,9 @@ public class TeamEnterController {
         if (teamEnter == null || teamEnter.getEventName() == null) {
             return ServerResponse.createByErrorCodeMessage(400, "添加失败，团体信息为空");
         }
+        List<TeamEnter>to=teamEnterService.getTeamByCondition(teamEnter);
+        if ( to.size()!=0) {
 
-        if (teamEnterService.getTeamByCondition(teamEnter) != null) {
             return ServerResponse.createByErrorCodeMessage(400, "添加失败，团体名称已存在");
         }
         //设置创建时间
