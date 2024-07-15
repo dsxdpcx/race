@@ -92,12 +92,12 @@
             </el-button
             >
           </el-col>
-          <el-col :span="4">
-            <el-button type="primary" :disabled="winnerCanUse" @click="addvance3()"
-            >生成获奖名单
-            </el-button
-            >
-          </el-col>
+<!--          <el-col :span="4">-->
+<!--            <el-button type="primary" :disabled="winnerCanUse" @click="addvance3()"-->
+<!--            >生成获奖名单-->
+<!--            </el-button-->
+<!--            >-->
+<!--          </el-col>-->
 
 
 

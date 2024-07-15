@@ -41,7 +41,7 @@ public class TeamEnterController {
 
     @ApiOperation("添加报名团队")
     @PostMapping("/addTeamEnter")
-    @RequiresRoles(value = {"1"})
+//    @RequiresRoles(value = {"1"})
     public ServerResponse addFootball(@RequestBody TeamEnter teamEnter) {
 
         if (teamEnter == null || teamEnter.getEventName() == null) {

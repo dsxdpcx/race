@@ -32,7 +32,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper,Item> implements Ite
         if (itemList.getRecords() != null && itemList.getRecords().size() > 0) ;
         //项目名称加上性别
         itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getItemSex() + ")")).collect(Collectors.toList()));
-        itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getProcess() + ")")).collect(Collectors.toList()));
+        itemList.setRecords(itemList.getRecords().stream().map(i -> {String process =i.getProcess();if("finals".equals(process)){return i.setItemName(i.getItemName() + " (" + "决赛" + ")");}else if("semifinals".equals(process)){return i.setItemName(i.getItemName()+"(半决赛)");}else{
+            return i.setItemName(i.getItemName() + " (" + "预赛" + ")");}})
+        .collect(Collectors.toList()));
         return itemList;
     }
 
@@ -117,9 +119,24 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper,Item> implements Ite
         if (itemList.getRecords() != null && itemList.getRecords().size() > 0) ;
         //项目名称加上性别
         itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getItemSex() + ")")).collect(Collectors.toList()));
-        itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getProcess() + ")")).collect(Collectors.toList()));
+        itemList.setRecords(itemList.getRecords().stream().map(i -> {String process =i.getProcess();if("finals".equals(process)){return i.setItemName(i.getItemName() + " (" + "决赛" + ")");}else if("semifinals".equals(process)){return i.setItemName(i.getItemName()+"(半决赛)");}else{
+                    return i.setItemName(i.getItemName() + " (" + "预赛" + ")");}})
+                .collect(Collectors.toList()));
         return itemList;
 
+    }
+
+    @Override
+    public IPage<Item> getItemBysignCondition(Page<Item> page, Item item) {
+
+        IPage<Item> itemList = itemMapper.queryItemBysignCondition(page, item);
+        if (itemList.getRecords() != null && itemList.getRecords().size() > 0) ;
+        //项目名称加上性别
+        itemList.setRecords(itemList.getRecords().stream().map(i -> i.setItemName(i.getItemName() + " (" + i.getItemSex() + ")")).collect(Collectors.toList()));
+        itemList.setRecords(itemList.getRecords().stream().map(i -> {String process =i.getProcess();if("finals".equals(process)){return i.setItemName(i.getItemName() + " (" + "决赛" + ")");}else if("semifinals".equals(process)){return i.setItemName(i.getItemName()+"(半决赛)");}else{
+                    return i.setItemName(i.getItemName() + " (" + "预赛" + ")");}})
+                .collect(Collectors.toList()));
+        return itemList;
     }
 
 }

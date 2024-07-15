@@ -40,4 +40,6 @@ public interface ItemMapper extends BaseMapper<Item> {
 
 
     IPage<Item> queryItemByExclude(Page<Item> page, Item item);
+
+    IPage<Item> queryItemBysignCondition(Page<Item> page, Item item);
 }

@@ -30,7 +30,7 @@
         <el-button
             slot="append"
             icon="el-icon-search"
-            @click="page"
+            @click="getSchedule"
         ></el-button>
       </el-input>
       </el-col>
@@ -324,18 +324,19 @@ export default {
   methods: {
     async page() {
       const _this = this;
-      axios
-          .post("/racefootball/showRaceTable",_this.football)
-          .then((res) => {
-            if (res.data.status != 200) {
-              return _this.$message.error(res.data.msg);
-            }
-            _this.$message.success("操作成功");
-            let data = res.data.data;
-            console.log(data)
-            _this.treeData.data=data;
-          });
+      // axios
+      //     .post("/racefootball/showRaceTable",_this.football)
+      //     .then((res) => {
+      //       if (res.data.status != 200) {
+      //         return _this.$message.error(res.data.msg);
+      //       }
+      //       _this.$message.success("操作成功");
+      //       let data = res.data.data;
+      //       console.log(data)
+      //       _this.treeData.data=data;
+      //     });
     },
+
     async getSeasons() {
       const _this = this;
       axios
@@ -359,7 +360,7 @@ export default {
     async getSchedule() {
       const _this = this;
       axios
-          .post("/racefootballshow/RaceTable"+this.football)
+          .post("/racefootball/showRaceTable",_this.football)
           .then((res) => {
             if (res.data.status != 200) {
               return _this.$message.error(res.data.msg);
