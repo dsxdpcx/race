@@ -135,13 +135,15 @@ public class FootballController {
     @ApiOperation("生成小组赛")
     @PostMapping("/groupRace")
     //@RequiresRoles(value = {"1"})
-    //只需要传入赛程名称和小组赛开始时间就行
+    //只需要传入赛程名称，小组赛开始时间和小组赛就行
     public ServerResponse addracetable(@RequestBody Football football) {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
         }
-        if (footballService.getFootballByCondition(football) != null ) {
-            return ServerResponse.createBySuccessMessage("不可重复生成");
+        football.setMatch_class("小组赛");
+        List<Football>query=footballService.queryWinnerName(football);
+        if ( query.size()!=0) {
+            return ServerResponse.createByErrorCodeMessage(400,"不可重复生成");
         }
         TeamEnter teamEnter = new TeamEnter();
         teamEnter.setEventName(football.getName());
@@ -204,13 +206,18 @@ public class FootballController {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
         }
-        if (footballService.getFootballByCondition(football) != null ) {
-            return ServerResponse.createBySuccessMessage("不可重复生成");
+        football.setMatch_class("八分之一决赛");
+        List<Football>query=footballService.queryWinnerName(football);
+        if ( query.size()!=0) {
+            return ServerResponse.createByErrorCodeMessage(400,"不可重复生成");
         }
         Football match = new Football();
         match.setName(football.getName());
         match.setMatch_class("小组赛");
         List<Football>matches=footballService.queryWinnerName(match);
+        if(matches.size()==0) {
+            return ServerResponse.createByErrorCodeMessage(400,"小组赛还未开始");
+        }
         for(Football to:matches) {
             if(to.getWinner()==null)
             {
@@ -299,13 +306,18 @@ public class FootballController {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
         }
-        if (footballService.getFootballByCondition(football) != null ) {
-            return ServerResponse.createBySuccessMessage("不可重复生成");
+        football.setMatch_class("四分之一决赛");
+        List<Football>query=footballService.queryWinnerName(football);
+        if ( query.size()!=0) {
+            return ServerResponse.createByErrorCodeMessage(400,"不可重复生成");
         }
         Football match = new Football();
         match.setName(football.getName());
         match.setMatch_class("八分之一决赛");
         List<Football>matches=footballService.queryWinnerName(match);
+        if(matches.size()==0) {
+            return ServerResponse.createByErrorCodeMessage(400,"八分之一决赛还未开始");
+        }
         for(Football to:matches) {
             if(to.getWinner()==null)
             {
@@ -352,13 +364,18 @@ public class FootballController {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
         }
-        if (footballService.getFootballByCondition(football) != null ) {
-            return ServerResponse.createBySuccessMessage("不可重复生成");
+        football.setMatch_class("半决赛");
+        List<Football>query=footballService.queryWinnerName(football);
+        if ( query.size()!=0) {
+            return ServerResponse.createByErrorCodeMessage(400,"不可重复生成");
         }
         Football match = new Football();
         match.setName(football.getName());
         match.setMatch_class("四分之一决赛");
         List<Football>matches=footballService.queryWinnerName(match);
+        if(matches.size()==0) {
+            return ServerResponse.createByErrorCodeMessage(400,"四分之一决赛还未开始");
+        }
         for(Football to:matches) {
             if(to.getWinner()==null)
             {
@@ -405,13 +422,18 @@ public class FootballController {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "生成失败，比赛信息为空");
         }
-        if (footballService.getFootballByCondition(football) != null ) {
-            return ServerResponse.createBySuccessMessage("不可重复生成");
+        football.setMatch_class("决赛");
+        List<Football>query=footballService.queryWinnerName(football);
+        if ( query.size()!=0) {
+            return ServerResponse.createByErrorCodeMessage(400,"不可重复生成");
         }
         Football match = new Football();
         match.setName(football.getName());
         match.setMatch_class("半决赛");
         List<Football>matches=footballService.queryWinnerName(match);
+        if(matches.size()==0) {
+            return ServerResponse.createByErrorCodeMessage(400,"半决赛还未开始");
+        }
         for(Football to:matches) {
             if(to.getWinner()==null)
             {
