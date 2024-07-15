@@ -15,7 +15,7 @@
           <!--搜索添加-->
         <el-col :span="20">
           <el-select
-              v-model="selectItemId"
+              v-model="addTeamEnter.eventName"
               filterable
               placeholder="请选择项目"
               @change="page(true)"
@@ -58,7 +58,7 @@
         <div style="float: left">
           <el-col>
             <el-select
-                v-model="selectTeamId"
+                v-model="addTeamEnter.teamName"
                 filterable
                 placeholder="请选择团队"
                 @change="page(true)"
@@ -82,9 +82,9 @@
         <el-table-column label="赛事名称" prop="eventName"></el-table-column>
         <el-table-column label="参赛队名" prop="teamName"></el-table-column>
 <!--        <el-table-column label="队伍组号" prop="groupName"></el-table-column>-->
-<!--        <el-table-column label="操作" prop="state">-->
-<!--          <template slot-scope="scope">-->
-<!--            &lt;!&ndash;详情&ndash;&gt;-->
+        <el-table-column label="操作" prop="state">
+          <template slot-scope="scope">
+            <!--详情-->
 
 <!--            <el-button-->
 <!--                icon="el-icon-tickets"-->
@@ -97,8 +97,8 @@
 <!--            >报名-->
 <!--            </el-button-->
 <!--            >-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+          </template>
+        </el-table-column>
       </el-table>
       <!--分页组件-->
       <div>
