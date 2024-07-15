@@ -16,7 +16,6 @@
         <el-col :span="20">
           <el-select
               v-model="addTeamEnter.eventName"
-              v-model="addTeamEnter.eventName"
               filterable
               placeholder="请选择项目"
               @change="page(true)"
