@@ -129,10 +129,13 @@ public class TeamEnterController {
         if (football == null ) {
             return ServerResponse.createByErrorCodeMessage(400, "分组失败，比赛信息为空");
         }
-
-        List<TeamEnter> teamList = teamEnterService.getTeamByCondition(football);
+        TeamEnter to=new TeamEnter();
+        to.setEventName(football.getEventName());
+        List<TeamEnter> teamList = teamEnterService.getTeamByCondition(to);
         if (teamList == null || teamList.size() != 32) {
-
+            System.out.println("--------------------------------------------");
+            System.out.println(football);
+            System.out.println(teamList.size());
             return ServerResponse.createByErrorMessage("比赛队数不足");
         }
 
