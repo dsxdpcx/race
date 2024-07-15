@@ -81,7 +81,7 @@
             >
       </el-col>
       </el-row>
-     
+
       <!--项目列表 stripe隔行变色-->
       <el-table :data="itemList" border stripe>
         <!--索引列-->
@@ -234,7 +234,7 @@ export default {
               itemId: 0,
               itemName: "所有项目",
             });
-            
+
             _this.allItemOptions = data;
             _this.page()
           });
@@ -293,6 +293,13 @@ export default {
       if (confirmResult !== "confirm") {
         return _this.$message.info("已取消报名");
       }
+
+
+      _this.football.eventName = _this.football.eventName.replace("(男)", "")
+      _this.football.eventName = _this.football.eventName.replace("(女)", "")
+      _this.football.eventName = _this.football.eventName.replace("(初赛)","")
+      _this.football.eventName = _this.football.eventName.replace("(半决赛)","")
+      _this.football.eventName = _this.football.eventName.replace("(决赛)","")
      axios.post("/teamEnter/addTeamEnter", _this.addTeamEnter).then((res) => {
         console.log(_this.addTeamEnter)
         if (res.data.status != 200) {

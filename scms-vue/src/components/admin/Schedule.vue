@@ -359,6 +359,7 @@ export default {
     },
     async getSchedule() {
       const _this = this;
+
       axios
           .post("/racefootball/showRaceTable",_this.football)
           .then((res) => {
