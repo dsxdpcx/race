@@ -85,8 +85,10 @@ public class ItemController {
         if(item.getCatalog()==null){
             return ServerResponse.createByErrorCodeMessage(400, "添加失败，请先选择项目类型");
         }
-        if (item.getEndTime().isBefore(item.getStartTime())) {
-            return ServerResponse.createByErrorCodeMessage(400, "添加失败，结束时间必须晚于开始时间");
+        if(item.getStartTime()!=null) {
+            if (item.getEndTime().isBefore(item.getStartTime())) {
+                return ServerResponse.createByErrorCodeMessage(400, "添加失败，结束时间必须晚于开始时间");
+            }
         }
         //通过seasonId、parentId和性别判断是否已存在相同Item
         Item tempItem = new Item();
