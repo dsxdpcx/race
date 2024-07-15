@@ -224,7 +224,7 @@ export default {
     async getItem() {
       const _this = this;
       axios
-          .get("/item/queryItem3?query=&currentPage=1&pageSize=999999999")
+          .get("/item/queryItem?seasonId="+_this.selectSeasonId+"&queryInfo=", {params: _this.queryInfo})
           .then((res) => {
             let data = res.data.data.records;
             data.push({

@@ -75,11 +75,12 @@
         </el-table-column>
         <el-table-column label="状态" prop="state">
           <template slot-scope="scope">
-            <el-steps :active=actnum >
-              <el-step v-for="(item,index) in activities"
+            <el-steps :active=actnum[scope.row] >
+              <el-step v-for="(item,index) in activities[scope.row]"
                        :key="index"
                        :title="item.content"
-                       :description="item.timestamp"></el-step>
+                       :description="item.timestamp"
+              ></el-step>
 
             </el-steps>
           </template>
@@ -111,20 +112,8 @@ export default {
     return {
 
       reverse: false,
-      actnum: 0,
-      activities: [{
-        content: '报名成功',
-        timestamp: '',
-        color: ''
-      }, {
-        content: '通过审核',
-        timestamp: '',
-        color: ''
-      }, {
-        content: '分组结束',
-        timestamp: '',
-        color: ''
-      }],
+      actnum: [],
+      activities: [],
       athletelist: [],
       scorers: [],
       itemDetail: [],
@@ -162,19 +151,20 @@ export default {
           .then((res) => {
             let data = res.data.data;
             _this.athletelist = data.records;
-            _this.activities[0].timestamp = _this.athletelist[0].signTime;
-            if(_this.activities[0].timestamp!='') {
-              _this.actnum = 1;
-            }
-            _this.activities[1].timestamp = _this.athletelist[0].shenheTime;
-            if(_this.activities[1].timestamp!='') {
-              _this.actnum = 2;
-            }
-            _this.activities[2].timestamp = _this.athletelist[0].editTime;
-            if (_this.activities[2].timestamp != '') {
-              _this.actnum = 3;
+            this.updateActivitiesFromAthletelist();
+            // _this.activities[0].timestamp = _this.athletelist[0].signTime;
+            // if(_this.activities[0].timestamp!='') {
+            //   _this.actnum = 1;
+            // }
+            // _this.activities[1].timestamp = _this.athletelist[0].shenheTime;
+            // if(_this.activities[1].timestamp!='') {
+            //   _this.actnum = 2;
+            // }
+            // _this.activities[2].timestamp = _this.athletelist[0].editTime;
+            // if (_this.activities[2].timestamp != '') {
+            //   _this.actnum = 3;
+            // }
 
-            }
             _this.queryInfo.currentPage = data.current;
             _this.total = data.total;
             _this.queryInfo.pageSize = data.size;
@@ -191,7 +181,38 @@ export default {
           });
     },
 
+
+
+     async updateActivitiesFromAthletelist() {
+        // 清空当前的activities
+        this.activities = [];
+        // 循环遍历athletelist中的每个athlete对象
+        this.athletelist.forEach((athlete, index) => {
+          this.activities[index] = [];
+          if (athlete.signTime) {
+            this.activities[index].push({ content: `报名成功`, timestamp: athlete.signTime });
+            this.actnum[index] = 1;
+          }
+          if (athlete.shenheTime) {
+            this.activities[index].push({ content: `审核通过`, timestamp: athlete.shenheTime });
+            this.actnum[index] = 2;
+          }
+          if (athlete.editTime) {
+            this.activities[index].push({ content: `分组结束`, timestamp: athlete.editTime });
+            this.actnum[index] = 3;
+          }
+          actnum[index] = 0;
+        });
+
+        // // 更新actnum为最后一个活动的索引
+        // row.actnum = row.activities.length;
+      },
+
+
+
 //获取运动会届时
+
+
     async getSeasons() {
       const _this = this;
       axios
