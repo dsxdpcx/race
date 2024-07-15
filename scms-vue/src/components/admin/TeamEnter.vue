@@ -295,11 +295,11 @@ export default {
       }
 
 
-      _this.football.eventName = _this.football.eventName.replace("(男)", "")
-      _this.football.eventName = _this.football.eventName.replace("(女)", "")
-      _this.football.eventName = _this.football.eventName.replace("(初赛)","")
-      _this.football.eventName = _this.football.eventName.replace("(半决赛)","")
-      _this.football.eventName = _this.football.eventName.replace("(决赛)","")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(男)", "")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(女)", "")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(初赛)","")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(半决赛)","")
+      _this.addTeamEnter.eventName = _this.addTeamEnter.eventName.replace("(决赛)","")
      axios.post("/teamEnter/addTeamEnter", _this.addTeamEnter).then((res) => {
         console.log(_this.addTeamEnter)
         if (res.data.status != 200) {

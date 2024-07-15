@@ -116,10 +116,6 @@ public class FootballController {
             return ServerResponse.createByErrorCodeMessage(400, "修改失败，团体信息为空");
         }
 
-        if (footballService.getFootballByCondition(football) != null) {
-            return ServerResponse.createByErrorCodeMessage(100, "修改失败，团体名称已存在");
-        }
-
         int effNum = 0;
         try {
             effNum = footballService.modifyFootball(football);
@@ -495,6 +491,10 @@ public class FootballController {
         for(int i=list1.size();i<15;i++){
             Football newMatch=new Football();
             newMatch.setName(football.getName());
+            newMatch.setTeam_a("");
+            newMatch.setTeam_b("");
+            newMatch.setA_score(0);
+            newMatch.setB_score(0);
             list1.add(newMatch);
         }
         Collections.reverse(list1);
@@ -515,23 +515,34 @@ public class FootballController {
         data.setId(index);
         Player player1 = new Player();
         Player player2 = new Player();
-        if(match.getA_score()>match.getB_score())
-        {
+        if(match.getA_score()==null||match.getB_score()==null) {
             player1.setName(match.getTeam_a());
             player2.setName(match.getTeam_b());
-            player1.setScore(match.getA_score());
-            player2.setScore(match.getB_score());
+            player1.setScore(-1);
+            player2.setScore(-1);
             data.setPlayer1(player1);
             data.setPlayer2(player2);
         }
         else{
-            player1.setName(match.getTeam_b());
-            player2.setName(match.getTeam_a());
-            player1.setScore(match.getB_score());
-            player2.setScore(match.getA_score());
-            data.setPlayer1(player1);
-            data.setPlayer2(player2);
+            if(match.getA_score()>match.getB_score())
+            {
+                player1.setName(match.getTeam_a());
+                player2.setName(match.getTeam_b());
+                player1.setScore(match.getA_score());
+                player2.setScore(match.getB_score());
+                data.setPlayer1(player1);
+                data.setPlayer2(player2);
+            }
+            else{
+                player1.setName(match.getTeam_b());
+                player2.setName(match.getTeam_a());
+                player1.setScore(match.getB_score());
+                player2.setScore(match.getA_score());
+                data.setPlayer1(player1);
+                data.setPlayer2(player2);
+            }
         }
+
         List<Node> children = new ArrayList<>();
         Node child1 = convertToNestedData(footballList, 2 * index);
         if (child1 != null) {
