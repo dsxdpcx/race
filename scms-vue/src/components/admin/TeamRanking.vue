@@ -63,7 +63,7 @@
             label="团体名称"
             prop="athlete.user.team.teamName"
         ></el-table-column>
-        <el-table-column label="团体总得分" prop="rank"></el-table-column>
+        <el-table-column label="团体总得分" prop="rankk"></el-table-column>
         <el-table-column label="操作" prop="state">
           <template slot-scope="scope">
             <!--详情-->
@@ -168,7 +168,7 @@ export default {
       var teamNames = this.rankingList.map(item => item.athlete.user.team.teamName);
 
       // 准备纵坐标数据（团队总得分）
-      var teamScores = this.rankingList.map(item => item.rank);
+      var teamScores = this.rankingList.map(item => item.rankk);
 
       myChart.setOption({
         title: {

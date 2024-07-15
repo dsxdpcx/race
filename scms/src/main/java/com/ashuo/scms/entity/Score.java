@@ -1,6 +1,7 @@
 package com.ashuo.scms.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,8 +31,10 @@ public class Score implements Serializable {
     @TableId(value = "score_id", type = IdType.AUTO)
     private Integer scoreId;
 
+    @TableField(exist = false)
     private Athlete athlete;
 
+    @TableField(exist = false)
     private Ranking ranking;
 
     private BigDecimal score;

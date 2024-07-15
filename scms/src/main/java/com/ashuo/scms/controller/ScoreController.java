@@ -133,7 +133,10 @@ public class ScoreController {
         //修改分数
         scoreService.modifyScore(score);
         //分数排名处理
-        scoreRankingHandle(score);
+        if(item.getProcess().equals("finals")){
+//        //分数排名处理
+            scoreRankingHandle(score);
+        }
         return ServerResponse.createBySuccessMessage("修改成功");
 
     }
@@ -201,7 +204,7 @@ public class ScoreController {
     private void scoreRankingHandle(Score score) {
         //删除原ranking中对应item的排名数据
         rankingService.removeRanking(score.getAthlete().getItem().getItemId());
-
+        System.out.println("删除原ranking中对应item的排名数据");
         //获取分数单位
         score = scoreService.getOneScoreByScoreId(score.getScoreId());
 
@@ -213,10 +216,10 @@ public class ScoreController {
         List<Score> scoreList = scoreService.getScoreByItemIdLimit(score.getAthlete().getItem().getItemId(), condition);
         //添加到Ranking对象中
         List<Ranking> rankingList = new ArrayList<>();
-
+        System.out.println("获取分数单位");
         Score tempScore = new Score();
         tempScore.setScore(new BigDecimal("-1"));
-
+        System.out.println(scoreList.size());
         //获取前三，并重新计算排名
         int limitAmount = 4;
         int i = 0;
@@ -230,7 +233,7 @@ public class ScoreController {
                 Ranking ranking = new Ranking();
                 ranking.setAthlete(s.getAthlete());
                 //设置排名得分3、2、1
-                ranking.setRank(limitAmount);
+                ranking.setRankk(limitAmount);
                 ranking.setPoints(3-limitAmount);
                 ranking.setEditTime(LocalDateTime.now());
                 rankingList.add(ranking);
@@ -288,14 +291,10 @@ public class ScoreController {
         else if(catalog.charAt(1)=='3'){
             fieldfinal(itemId, process);
         }else if(catalog.charAt(1)=='4'){
-            scoreService.checkAndPromoteTopSixteen(itemId, process);
+            scoreService.checkAndPromoteTopX(16,itemId, process);
         }else if(catalog.charAt(1)=='5'){
             scoreService.checkAndPromoteTopX(8,itemId, process);
         }
-
-
-        scoreService.checkAndPromoteThree(itemId, process);
-
         return ServerResponse.createBySuccessMessage("结束");
 
     }
@@ -348,8 +347,6 @@ public class ScoreController {
                 scoreService.checkAndPromoteTopX(8, itemId, process);
             }
         }
-
-        scoreService.checkAndPromoteThree(itemId, process);
 
         return ServerResponse.createBySuccessMessage("结束");
 

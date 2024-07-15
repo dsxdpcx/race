@@ -104,7 +104,7 @@ public class ExcelController {
         List<ExcelTeamRankingDto> excelTeamRankingDtoList = new ArrayList<>();
         int i = 1;
         for (Ranking r : rankingList) {
-            excelTeamRankingDtoList.add(new ExcelTeamRankingDto(r.getAthlete().getUser().getTeam().getTeamName(), r.getRank(), i));
+            excelTeamRankingDtoList.add(new ExcelTeamRankingDto(r.getAthlete().getUser().getTeam().getTeamName(), r.getRankk(), i));
             i++;
         }
 
@@ -168,7 +168,7 @@ public class ExcelController {
         List<Ranking> rankingList = pageRankingList.getRecords();
         List<ExcelPersonRankingDto> excelPersonRankingDtoList = new ArrayList<>();
         for (Ranking r : rankingList) {
-            excelPersonRankingDtoList.add(new ExcelPersonRankingDto(r.getAthlete().getUser().getTeam().getTeamName(), r.getAthlete().getUser().getUserNo(), r.getAthlete().getUser().getNickname(), r.getAthlete().getUser().getUserSex(), r.getRank()));
+            excelPersonRankingDtoList.add(new ExcelPersonRankingDto(r.getAthlete().getUser().getTeam().getTeamName(), r.getAthlete().getUser().getUserNo(), r.getAthlete().getUser().getNickname(), r.getAthlete().getUser().getUserSex(), r.getRankk()));
         }
 
         //设置内容表格格式

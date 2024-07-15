@@ -32,7 +32,7 @@ public class Ranking implements Serializable {
 
     private Athlete athlete;
 
-    private Integer rank;
+    private Integer rankk;
 
     private Integer points;
 

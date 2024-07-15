@@ -62,12 +62,12 @@
             useGeneratedKeys="true" keyColumn="item_id" keyProperty="itemId">
         INSERT INTO item(parent_id, se_id, u_id, item_name, item_place, item_unit, item_sex, item_amount,
         athlete_amount, start_time, end_time,
-        create_time, edit_time, catalog,process)
+        create_time, edit_time, catalog,process,group_amount)
         VALUES (#{parentId}, #{season.seasonId}, #{user.userId}, #{itemName}, #{itemPlace}, #{itemUnit}, #{itemSex},
         #{itemAmount}, #{athleteAmount},
         #{startTime},
         #{endTime},
-        #{createTime}, #{editTime} , #{catalog},#{process})
+        #{createTime}, #{editTime} , #{catalog},#{process},#{groupAmount})
     </insert>
 
     <update id="updateItem" parameterType="com.ashuo.scms.entity.Item">

@@ -36,7 +36,7 @@ public class RankingController {
 
     @ApiOperation("团体总排名")
     @GetMapping("/queryTeamRanking")
-    @RequiresAuthentication
+//    @RequiresAuthentication
     public ServerResponse queryTeamRanking(QueryInfo queryInfo, Ranking ranking) {
         Athlete athlete = ObjectUtils.isNull(ranking.getAthlete()) ? new Athlete() : ranking.getAthlete();
         User user = ObjectUtils.isNull(athlete.getUser()) ? new User() : athlete.getUser();

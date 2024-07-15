@@ -137,13 +137,12 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper,Score> implements 
             System.out.println(atheleteIds);
             if (process.equals("heats")&&item.getCatalog().length()==2){
                 item.setProcess("finals");
-
                 itemMapper.insert(item);
                 Item item1 = itemMapper.queryOneItemByItemCondition(item);
                 for (Integer athleteId:atheleteIds) {
                     Athlete athlete=athleteMapper.selectById(athleteId);
                     athlete.setIId(item1.getItemId());
-                    athlete.setProcess("semifinals");
+                    athlete.setProcess("finals");
                     athlete.setScoreStatus(0);
                     athleteMapper.insert(athlete);
                 }

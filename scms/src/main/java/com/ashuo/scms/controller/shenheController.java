@@ -41,7 +41,7 @@ public class shenheController {
         try {
             effNum = athleteService.modifyShenhe(athlete);
             Message message = new Message();
-            message.setUserId(athlete.getUId());
+            message.setUserId(athlete.getUser().getUserId());
             message.setMessage("您的信息已审核通过");
             message.setCreateTime(LocalDateTime.now());
             message.setIsRead(0);

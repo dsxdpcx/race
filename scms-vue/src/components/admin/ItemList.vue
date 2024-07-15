@@ -892,7 +892,7 @@ export default {
         //   return this.catalog + this.rule1[1];
         // else
 
-        return (this.catalog + this.rule1[1] + this.rule2[1]).replace("undefined", "");
+        return (this.catalog + this.rule1[1] + this.rule2[1]).replace("undefined", "").replace("undefined", "").replace("undefined", "");
       },
       set(newValue) {
 

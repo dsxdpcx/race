@@ -71,6 +71,23 @@ public class ItemController {
         QueryWrapper<Item> queryWrapper = new QueryWrapper<>();
         queryWrapper.gt("start_time", now);  // 使用gt（"greater than"）来查询之后的日期
         List<Item> itemList = itemService.list(queryWrapper);
+        itemList.forEach(item -> {
+            // 假设 Item 类有 getSex() 和 getType() 方法来获取性别和类型
+            String newName = item.getItemName() + "(" + item.getItemSex() + ")";
+            item.setItemName(newName);  // 设置新的 name
+        });
+        itemList.forEach(item -> {
+            String process = item.getProcess();
+            if ("finals".equals(process)) {
+                item.setItemName(item.getItemName() + " (决赛)");
+            } else if ("semifinals".equals(process)) {
+                item.setItemName(item.getItemName() + " (半决赛)");
+            } else {
+                item.setItemName(item.getItemName() + " (预赛)");
+            }
+        });
+
+
         return ServerResponse.createBySuccess(itemList);
     }
     @ApiOperation("添加项目")
