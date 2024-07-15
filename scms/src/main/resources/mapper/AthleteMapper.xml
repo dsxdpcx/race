@@ -54,8 +54,8 @@
 
     <insert id="insertAthlete" parameterType="com.ashuo.scms.entity.Athlete"
             useGeneratedKeys="true" keyColumn="athlete_id" keyProperty="athleteId">
-        INSERT INTO athlete(u_id, user_ids, i_id, score_status, sign_time)
-        VALUES (#{user.userId}, #{userIds}, #{item.itemId}, #{scoreStatus}, #{signTime})
+        INSERT INTO athlete(u_id, user_ids, i_id, score_status,shenhe, sign_time)
+        VALUES (#{user.userId}, #{userIds}, #{item.itemId}, #{scoreStatus},#{shenhe},#{signTime})
     </insert>
 
     <select id="queryAthleteByAthleteCondition" resultMap="athleteMap">

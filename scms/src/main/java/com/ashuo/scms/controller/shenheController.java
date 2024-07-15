@@ -25,6 +25,7 @@ public class shenheController {
 
     @Autowired
     AthleteService athleteService;
+    @Autowired
     MessageService messageService;
     @ApiOperation("审核通过")
     @PutMapping("/editAthlete1")
@@ -47,6 +48,7 @@ public class shenheController {
 
             messageService.save(message);
         } catch (Exception e) {
+            e.printStackTrace();
             return ServerResponse.createByErrorCodeMessage(400, "修改失败");
         }
         if (effNum == 0) {
